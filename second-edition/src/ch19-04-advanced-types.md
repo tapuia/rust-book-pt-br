@@ -65,49 +65,49 @@ The main use case for type synonyms is to reduce repetition. For example, we
 may have a lengthy type like this:
 
 ```rust,ignore
-Box<FnOnce() + Send + 'static>
+Box<Fn() + Send + 'static>
 ```
 
 Writing this out in function signatures and as type annotations all over the
 place can be tiresome and error-prone. Imagine having a project full of code
-like that in Listing 19-31:
+like that in Listing 19-35:
 
 ```rust
-let f: Box<FnOnce() + Send + 'static> = Box::new(|| println!("hi"));
+let f: Box<Fn() + Send + 'static> = Box::new(|| println!("hi"));
 
-fn takes_long_type(f: Box<FnOnce() + Send + 'static>) {
-    // ...snip...
+fn takes_long_type(f: Box<Fn() + Send + 'static>) {
+    // --snip--
 }
 
-fn returns_long_type() -> Box<FnOnce() + Send + 'static> {
-    // ...snip...
+fn returns_long_type() -> Box<Fn() + Send + 'static> {
+    // --snip--
 #     Box::new(|| ())
 }
 ```
 
-<span class="caption">Listing 19-31: Using a long type in many places</span>
+<span class="caption">Listing 19-35: Using a long type in many places</span>
 
 A type alias makes this code more manageable by reducing the amount of
 repetition this project has. Here, we’ve introduced an alias named `Thunk` for
 the verbose type, and we can replace all uses of the type with the shorter
-`Thunk` as shown in Listing 19-32:
+`Thunk` as shown in Listing 19-36:
 
 ```rust
-type Thunk = Box<FnOnce() + Send + 'static>;
+type Thunk = Box<Fn() + Send + 'static>;
 
 let f: Thunk = Box::new(|| println!("hi"));
 
 fn takes_long_type(f: Thunk) {
-    // ...snip...
+    // --snip--
 }
 
 fn returns_long_type() -> Thunk {
-    // ...snip...
+    // --snip--
 #     Box::new(|| ())
 }
 ```
 
-<span class="caption">Listing 19-32: Introducing a type alias `Thunk` to reduce
+<span class="caption">Listing 19-36: Introducing a type alias `Thunk` to reduce
 repetition</span>
 
 Much easier to read and write! Choosing a good name for a type alias can help
@@ -170,7 +170,7 @@ function will never return. For example:
 
 ```rust,ignore
 fn bar() -> ! {
-    // ...snip...
+    // --snip--
 }
 ```
 
@@ -178,7 +178,7 @@ This is read as “the function `bar` returns never,” and functions that retur
 never are called *diverging functions*. We can’t create values of the type `!`,
 so `bar` can never possibly return. What use is a type you can never create
 values for? If you think all the way back to Chapter 2, we had some code that
-looked like this, reproduced here in Listing 19-33:
+looked like this, reproduced here in Listing 19-37:
 
 ```rust
 # let guess = "3";
@@ -191,7 +191,7 @@ let guess: u32 = match guess.trim().parse() {
 # }
 ```
 
-<span class="caption">Listing 19-33: A `match` with an arm that ends in
+<span class="caption">Listing 19-37: A `match` with an arm that ends in
 `continue`</span>
 
 At the time, we skipped over some details in this code. In Chapter 6, we
@@ -207,17 +207,17 @@ let guess = match guess.trim().parse()  {
 What would the type of `guess` be here? It’d have to be both an integer and a
 string, and Rust requires that `guess` can only have one type. So what does
 `continue` return? Why are we allowed to return a `u32` from one arm in Listing
-19-33 and have another arm that ends with `continue`?
+19-37 and have another arm that ends with `continue`?
 
 As you may have guessed, `continue` has a value of `!`. That is, when Rust goes
 to compute the type of `guess`, it looks at both of the match arms. The former
 has a value of `u32`, and the latter has a value of `!`. Since `!` can never
 have a value, Rust is okay with this, and decides that the type of `guess` is
-`u32`. The formal way of describing this behavior of `!` is that the never type
-unifies with all other types. We’re allowed to end this `match` arm with
-`continue` because `continue` doesn’t actually return a value; it instead moves
-control back to the top of the loop, so in the `Err` case, we never actually
-assign a value to `guess`.
+`u32`. The formal way of describing this behavior is that expressions of type
+`!` can be coerced into any other type. We’re allowed to end this `match` arm
+with `continue` because `continue` doesn’t actually return a value; it instead
+moves control back to the top of the loop, so in the `Err` case, we never
+actually assign a value to `guess`.
 
 Another use of the never type is `panic!`. Remember the `unwrap` function that
 we call on `Option<T>` values to produce a value or panic? Here’s its
@@ -318,7 +318,7 @@ That is, a generic function definition like this:
 
 ```rust,ignore
 fn generic<T>(t: T) {
-    // ...snip...
+    // --snip--
 }
 ```
 
@@ -326,7 +326,7 @@ is actually treated as if we had written this:
 
 ```rust,ignore
 fn generic<T: Sized>(t: T) {
-    // ...snip...
+    // --snip--
 }
 ```
 
@@ -336,7 +336,7 @@ restriction:
 
 ```rust,ignore
 fn generic<T: ?Sized>(t: &T) {
-    // ...snip...
+    // --snip--
 }
 ```
 

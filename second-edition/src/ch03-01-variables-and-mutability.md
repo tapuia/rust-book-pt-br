@@ -1,52 +1,51 @@
-## Variáveis e Mutabilidade
+## Variables and Mutability
 
-Como mencionamos no capítulo 2, por padrão variáveis em Rust são *imutáveis*.
-Este é um de muitos “empurrõezinhos” que te encorajam a escrever seu código de
-forma a se beneficiar da segurança e concorrência oferecidas pela linguagem.
-Apesar disso, você ainda tem a opção de tornar as suas variáveis mutáveis.
-Vamos explorar como e por que Rust lhe encoraja a favorecer imutabilidade e sob
-quais circunstâncias você pode querer abrir mão dessa garantia.
+As mentioned in Chapter 2, by default variables are *immutable*. This is one of
+many nudges in Rust that encourages you to write your code in a way that takes
+advantage of the safety and easy concurrency that Rust offers. However, you
+still have the option to make your variables mutable. Let’s explore how and why
+Rust encourages you to favor immutability, and why you might want to opt out.
 
-Quando uma variável é imutável, assim que um valor passa a estar vinculado ao seu
-nome é impossível alterá-lo. Para ilustrar, vamos gerar um novo projeto chamado
-*variaveis* [sic] no seu diretório *projetos*, usando o comando `cargo new --bin variaveis`.
+When a variable is immutable, that means once a value is bound to a name, you
+can’t change that value. To illustrate, let’s generate a new project called
+*variables* in your *projects* directory by using `cargo new --bin variables`.
 
-Em seguida, no diretório *variaveis* que acabou de ser criado, abra *src/main.rs* e
-substitua seu código com o seguinte:
+Then, in your new *variables* directory, open *src/main.rs* and replace its
+code with the following:
 
-<span class="filename">Nome de Arquivo: src/main.rs</span>
+<span class="filename">Filename: src/main.rs</span>
 
 ```rust,ignore
 fn main() {
     let x = 5;
-    println!("O valor de x é: {}", x);
+    println!("The value of x is: {}", x);
     x = 6;
-    println!("O valor de x é: {}", x);
+    println!("The value of x is: {}", x);
 }
 ```
 
-Salve e execute o programa usando `cargo run`. Você deve receber uma mensagem
-de erro, conforme destacado nessa saída (em inglês):
+Save and run the program using `cargo run`. You should receive an error
+message, as shown in this output:
 
 ```text
-error[E0384]: re-assignment of immutable variable `x`
+error[E0384]: cannot assign twice to immutable variable `x`
  --> src/main.rs:4:5
   |
 2 |     let x = 5;
   |         - first assignment to `x`
 3 |     println!("The value of x is: {}", x);
 4 |     x = 6;
-  |     ^^^^^ re-assignment of immutable variable
+  |     ^^^^^ cannot assign twice to immutable variable
 ```
 
-*erro[E0384]: Re-atribuição de variável imutável*
+This example shows how the compiler helps you find errors in your programs.
+Even though compiler errors can be frustrating, they only mean your program
+isn’t safely doing what you want it to do yet; they do *not* mean that you’re
+not a good programmer! Experienced Rustaceans still get compiler errors.
 
-Este exemplo revela como o compilador lhe ajuda a encontrar erros em seus programas.
-Apesar dos erros do compilador serem frustrantes, eles significam apenas que seu programa
-não está ainda fazendo com segurança o que você quer que ele faça; eles *não* significam que você
-não é um bom programador! Rustáceos experientes ainda encontram erros do compilador. O
-erro indica que a causa do problema é a *re-atribuição de variável imutável*,
-já que tentamos atribuir um segundo valor a variável imutável `x`.
+The error indicates that the cause of the error is that we `cannot assign twice
+to immutable variable x`, because we tried to assign a second value to the
+immutable `x` variable.
 
 It’s important that we get compile-time errors when we attempt to change a
 value that we previously designated as immutable because this very situation
@@ -85,6 +84,7 @@ When we run this program, we get the following:
 ```text
 $ cargo run
    Compiling variables v0.1.0 (file:///projects/variables)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.30 secs
      Running `target/debug/variables`
 The value of x is: 5
 The value of x is: 6
@@ -176,6 +176,7 @@ When you run this program, it will output the following:
 ```text
 $ cargo run
    Compiling variables v0.1.0 (file:///projects/variables)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.31 secs
      Running `target/debug/variables`
 The value of x is: 12
 ```
@@ -201,15 +202,14 @@ and the second `spaces` variable, which is a brand-new variable that happens to
 have the same name as the first one, is a number type. Shadowing thus spares us
 from having to come up with different names, like `spaces_str` and
 `spaces_num`; instead, we can reuse the simpler `spaces` name. However, if we
-try to use `mut` for this, as shown here:
+try to use `mut` for this, as shown here, we’ll get a compile-time error:
 
 ```rust,ignore
 let mut spaces = "   ";
 spaces = spaces.len();
 ```
 
-we’ll get a compile-time error because we’re not allowed to mutate a variable’s
-type:
+The error says we’re not allowed to mutate a variable’s type:
 
 ```text
 error[E0308]: mismatched types
