@@ -46,7 +46,7 @@ muito comum: _strings_.
 <!-- PROD: START BOX -->
 
 > ### The Stack and the Heap
-> ### A _Stack_ e a _Heap_
+> ### A Pilha e a _Heap_
 >
 > In many programming languages, we don’t have to think about the stack and the
 > heap very often. But in a systems programming language like Rust, whether a
@@ -55,12 +55,12 @@ muito comum: _strings_.
 > ownership in relation to the stack and the heap later in this chapter, so here
 > is a brief explanation in preparation.
 >
-> Em muitas linguagens de programação, não temos que pensar muito sobre a
-> _stack_ (pilha) e sobre a _heap_. Mas em uma linguagem de programação de
-> sistemas, como Rust, o fato de um valor estar na stack ou na heap tem impacto
-> na forma como a linguagem se comporta e no porquê de termos que tomar certas
-> decisões. Vamos descrever partes do ownership em relação à stack e à heap mais
-> para a frente neste capítulo, então aqui vai uma explicação preparatória.
+> Em muitas linguagens de programação, não temos que pensar muito sobre a pilha
+> e sobre a _heap_. Mas em uma linguagem de programação de sistemas, como Rust,
+> o fato de um valor estar na pilha ou na heap tem impacto na forma como a
+> linguagem se comporta e no porquê de termos que tomar certas decisões. Vamos
+> descrever partes do ownership em relação à pilha e à heap mais para a frente
+> neste capítulo, então aqui vai uma explicação preparatória.
 >
 > Both the stack and the heap are parts of memory that is available to your code
 > to use at runtime, but they are structured in different ways. The stack stores
@@ -71,24 +71,24 @@ muito comum: _strings_.
 > bottom wouldn’t work as well! Adding data is called *pushing onto the stack*,
 > and removing data is called *popping off the stack*.
 >
-> Tanto a stack como a heap são partes da memória que estão disponíveis ao seu
+> Tanto a pilha como a heap são partes da memória que estão disponíveis ao seu
 > código para uso em tempo de execução, mas elas são estruturadas de formas
-> diferentes. A stack armazena valores na ordem em que eles chegam, e os remove
+> diferentes. A pilha armazena valores na ordem em que eles chegam, e os remove
 > na ordem inversa. Isto é chamado de *last in, first out* (último a chegar,
 > primeiro a sair). Imagine uma pilha de pratos: quando você coloca mais pratos,
 > você os põe em cima da pilha, e quando você precisa de um prato, você pega o
 > que está no topo. Adicionar ou remover pratos do meio ou do fundo não funciona
-> tão bem! Em inglês, diz-se *pushing onto the stack* quando se refere a inserir
-> dados, e *popping off the stack* quando se refere a remover dados.
+> tão bem! Dizemos fazer um *push* na pilha quando nos refererimos a inserir
+> dados, e fazer um *pop* da pilha quando nos referimos a remover dados.
 >
 > The stack is fast because of the way it accesses the data: it never has to
 > search for a place to put new data or a place to get data from because that
 > place is always the top. Another property that makes the stack fast is that
 > all data on the stack must take up a known, fixed size.
 >
-> A stack é rápida por conta da forma como ela acessa os dados: ela nunca tem
+> A pilha é rápida por conta da forma como ela acessa os dados: ela nunca tem
 > que procurar um lugar para colocar novos dados, ou um lugar de onde obter
-> dados, este lugar é sempre o topo da pilha. Outra propriedade que faz a stack
+> dados, este lugar é sempre o topo da pilha. Outra propriedade que faz a pilha
 > ser rápida é que todos os dados contidos nela devem ocupar um tamanho fixo e
 > conhecido.
 >
@@ -104,15 +104,15 @@ muito comum: _strings_.
 > follow the pointer.
 >
 > Para dados com um tamanho desconhecido em tempo de compilação, ou com um
-> tamanho que pode mudar, podemos usar a heap em vez da stack. A heap é menos
+> tamanho que pode mudar, podemos usar a heap em vez da pilha. A heap é menos
 > organizada: quando colocamos dados na heap, nós pedimos um certo espaço de
 > memória. O sistema operacional encontra um espaço vazio em algum lugar na heap
 > que seja grande o suficiente, marca este espaço como em uso, e nos retorna um
-> *ponteiro*, que é o endereço deste local. Em inglês, este processo é chamado
-> de *allocating on the heap*, e às vezes se abrevia esta frase como apenas
-> _"allocating"_ (alocação). Colocar valores na stack não é considerado uma
-> alocação. Como o ponteiro tem um tamanho fixo e conhecido, podemos armazená-lo
-> na stack, mas quando queremos os dados, de fato, temos que seguir o ponteiro. 
+> *ponteiro*, que é o endereço deste local. Este processo é chamado de
+> *alocar na heap*, e às vezes se abrevia esta frase como apenas "alocação".
+> Colocar valores na pilha não é considerado uma alocação. Como o ponteiro tem
+> um tamanho fixo e conhecido, podemos armazená-lo na pilha, mas quando queremos
+> os dados, de fato, temos que seguir o ponteiro. 
 >
 > Think of being seated at a restaurant. When you enter, you state the number of
 > people in your group, and the staff finds an empty table that fits everyone
@@ -135,7 +135,7 @@ muito comum: _strings_.
 > data (as it is on the stack) rather than farther away (as it can be on the
 > heap). Allocating a large amount of space on the heap can also take time.
 >
-> Acessar dados na heap é mais lento do que acessar dados na stack, porque você
+> Acessar dados na heap é mais lento do que acessar dados na pilha, porque você
 > precisa seguir um ponteiro para chegar lá. Processadores de hoje em dia são
 > mais rápidos se não precisarem pular tanto de um lugar para outro na memória.
 > Continuando com a analogia, considere um garçom no restaurante anotando os
@@ -144,7 +144,7 @@ muito comum: _strings_.
 > um da mesa B, depois outro da mesa A, e outro da mesa B novamente seria um
 > processo bem mais lento. Da mesma forma, um processador pode cumprir melhor
 > sua tarefa se trabalhar em dados que estão próximos uns dos outros (assim como
-> estão na stack) em vez de dados afastados entre si (como podem estar na heap).
+> estão na pilha) em vez de dados afastados entre si (como podem estar na heap).
 > Alocar um espaço grande na heap também pode levar tempo.
 >
 > When our code calls a function, the values passed into the function
@@ -154,7 +154,7 @@ muito comum: _strings_.
 >
 > Quando nosso código chama uma função, os valores passados para ela (incluindo
 > possíveis ponteiros para dados na heap) e as variáveis locais da função são
-> colocados na stack. Quando a função termina, esses valores são removidos dela.
+> colocados na pilha. Quando a função termina, esses valores são removidos dela.
 >
 > Keeping track of what parts of code are using what data on the heap,
 > minimizing the amount of duplicate data on the heap, and cleaning up unused
@@ -167,7 +167,7 @@ muito comum: _strings_.
 > quantidade de dados duplicados na heap e limpar segmentos inutilizados da heap
 > para que não fiquemos sem espaço são todos problemas tratados pelo ownership.
 > Uma vez que você entende ownership, você não vai mais precisar pensar tanto
-> sobre a stack e a heap, mas saber que ownership existe para gerenciar os dados
+> sobre a pilha e a heap, mas saber que ownership existe para gerenciar os dados
 > na heap pode ajudar a explicar como e por que ele funciona.
 >
 <!-- PROD: END BOX -->
@@ -281,7 +281,7 @@ Rust knows when to clean up that data.
 
 Para ilustrar as regras de ownership, precisamos de um tipo de dados que seja
 mais complexo do que aqueles abordados no Capítulo 3. Os tipos abordados na
-seção "Tipos de Dados" são todos armazenados na stack, e retirados dela quando
+seção "Tipos de Dados" são todos armazenados na pilha, e retirados dela quando
 seu escopo termina, mas queremos ver dados que são armazenados na heap e
 explorar como o Rust faz para saber quando limpar esses dados.
 
@@ -358,7 +358,7 @@ println!("{}", s); // Isso vai exibir `olá, mundo!`
 So, what’s the difference here? Why can `String` be mutated but literals
 cannot? The difference is how these two types deal with memory.
 
-Mas então, qual é a diferença, aqui? Por que `String` pode ser alterada enquanto
+Mas então, qual é a diferença aqui? Por que `String` pode ser alterada enquanto
 literais não podem? A diferença está em como esses dois tipos lidam com memória.
 
 ### Memory and Allocation
@@ -390,7 +390,7 @@ em tempo de compilação, para manter o seu conteúdo. Isto significa que:
 2. We need a way of returning this memory to the operating system when we’re
 done with our `String`.
 
-1. A mempória deve ser solicitada ao sistema operacional em tempo de execução.
+1. A memória deve ser solicitada ao sistema operacional em tempo de execução.
 2. Precisamos de uma forma de retornar esta memória ao sistema operacional
 quando tivermos finalizado nossa `String`.
 
@@ -512,7 +512,7 @@ com outras linguagens: "Associe o valor `5` a `x`; depois faça uma cópia do
 valor em `x` e a associe a `y`." Agora temos duas variáveis, `x` e `y`, e ambas
 são iguais a `5`. É isto mesmo que acontece, porque números inteiros são valores
 simples que possuem um tamanho fixo e conhecido, e esses dois valores `5` são
-colocados na stack.
+colocados na pilha.
 
 Now let’s look at the `String` version:
 
@@ -545,7 +545,7 @@ memory on the heap that holds the contents.
 Para explicar isso mais detalhadamente, vamos ver como a `String` funciona por
 baixo dos panos na Figura 4-1. Uma `String` é feita de três partes, mostradas
 à esquerda: um ponteiro para a memória que guarda o conteúdo da string, um
-tamanho, e uma capacidade. Este grupo de dados é armazenado na stack. No lado
+tamanho, e uma capacidade. Este grupo de dados é armazenado na pilha. No lado
 direito está a memória na heap que guarda o conteúdo.
 
 <img alt="String in memory" src="img/trpl04-01.svg" class="center" style="width: 50%;" />
@@ -577,7 +577,7 @@ representation in memory looks like Figure 4-2.
 
 Quando atribuímos `s1` a `s2`, os dados da `String` são copiados, o que
 significa que estamos copiando o ponteiro, o tamanho e a capacidade que estão na
-stack. Não estamos copiando os dados que estão na heap, aos quais o ponteiro se
+pilha. Não estamos copiando os dados que estão na heap, aos quais o ponteiro se
 refere. Em outras palavras, a representação dos dados na memória ocorre como
 na Figura 4-2.
 
@@ -695,12 +695,13 @@ also invalidates the first variable, instead of calling this a shallow copy,
 it’s known as a *move*. Here we would read this by saying that `s1` was *moved*
 into `s2`. So what actually happens is shown in Figure 4-4.
 
-Se você já ouviu os termos _"shallow copy"_ e _"deep copy"_ enquanto trabalhava
-com outras linguagens, o conceito de copiar o ponteiro, tamanho e capacidade sem
-copiar os dados provavelmente parece uma _shallow copy_. Mas como o Rust também
-invalida a primeira variável, em vez de chamar isto de _shallow copy_, isto é
-conhecido como um *move*. Aqui poderíamos dizer que `s1` foi *movida* para `s2`.
-Então, o que realmente acontece é mostrado na Figura 4-4.
+Se você já ouviu os termos "cópia rasa" e "cópia profunda" (_shallow copy_ e
+_deep copy_) enquanto trabalhava com outras linguagens, o conceito de copiar o
+ponteiro, tamanho e capacidade sem copiar os dados provavelmente parece uma
+cópia rasa. Mas como o Rust também invalida a primeira variável, em vez de
+chamar isto de cópia rasa, isto é conhecido como um *move*. Aqui poderíamos
+dizer que `s1` foi *movida* para `s2`. Então, o que realmente acontece é
+mostrado na Figura 4-4.
 
 <img alt="s1 moved to s2" src="img/trpl04-04.svg" class="center" style="width: 50%;" />
 
@@ -735,7 +736,7 @@ syntax in Chapter 5, but because methods are a common feature in many
 programming languages, you’ve probably seen them before.
 
 Se nós *queremos* fazer uma cópia profunda dos dados da `String` que estão na
-heap, e não apenas os dados que estão na stack, podemos usar um método comum
+heap, e não apenas os dados que estão na pilha, podemos usar um método comum
 chamado `clone`. Vamos discutir sintaxe de métodos no Capítulo 5, mas como os
 métodos constituem uma característica comum em várias linguagens de programação,
 você provavelmente já os viu antes.
@@ -773,7 +774,7 @@ está sendo executado, e que este código talvez seja custoso. É um indicador
 visual de que algo diferente está acontecendo.
 
 #### Stack-Only Data: Copy
-#### Dados Somente da Stack: Copy
+#### Dados Somente da Pilha: Copy
 
 There’s another wrinkle we haven’t talked about yet. This code using integers,
 part of which was shown earlier in Listing 4-2, works and is valid:
@@ -803,12 +804,11 @@ between deep and shallow copying here, so calling `clone` wouldn’t do anything
 differently from the usual shallow copying and we can leave it out.
 
 O motivo é que tipos como números inteiros têm um tamanho conhecido em tempo de
-compilação e são armazenados inteiramente na stack, e por isso, cópias desses
+compilação e são armazenados inteiramente na pilha, e por isso, cópias desses
 valores são rápidas de se fazer. Isso significa que não há razão para impedir
 `x` de ser válido após criarmos a variável `y`. Em outras palavras, não há
-diferença entre _shallow copy_ e _deep copy_ aqui, então chamar o método `clone`
-não faria nada diferente de uma _shallow copy_, por isso podemos deixá-lo de
-lado.
+diferença entre cópia rasa e profunda aqui, então chamar o método `clone` não
+faria nada diferente de uma cópia rasa, por isso podemos deixá-lo de lado.
 
 Rust has a special annotation called the `Copy` trait that we can place on
 types like integers that are stored on the stack (we’ll talk more about traits
@@ -821,7 +821,7 @@ learn about how to add the `Copy` annotation to your type, see Appendix C on
 Derivable Traits.
 
 O Rust tem uma anotação especial chamada de _trait_ `Copy`, que podemos colocar
-em tipos como números inteiros, que são armazenados na stack (falaremos mais
+em tipos como números inteiros, que são armazenados na pilha (falaremos mais
 sobre traits no Capítulo 10). Se um tipo possui o trait `Copy`, uma variável
 anterior vai continuar sendo utilizável depois de uma atribuição. O Rust não vai
 nos deixar anotar um tipo com o trait `Copy` se este tipo, ou qualquer uma de
@@ -945,7 +945,7 @@ pode usá-los e onde as regras de ownership lhe impedem de fazê-lo.
 Returning values can also transfer ownership. Here’s an example with similar
 annotations to those in Listing 4-3:
 
-Retornar valores também podem transferir a posse de um valor. Aqui está um
+Retornar valores também pode transferir a posse de um valor. Aqui está um
 exemplo com anotações similares àquelas da Listagem 4-3:
 
 <span class="filename">Filename: src/main.rs</span>

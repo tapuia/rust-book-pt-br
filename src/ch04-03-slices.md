@@ -204,7 +204,7 @@ fn main() {
 
     s.clear(); // Isso esvazia a String, deixando ela igual a "".
 
-    // palavra ainda tem o valor 5, aqui, mas já não há mais uma string para a
+    // palavra ainda tem o valor 5 aqui, mas já não há mais uma string para a
     // qual o valor 5 faça algum sentido. palavra agora é totalmente inválida!
 }
 ```
@@ -735,7 +735,7 @@ memory usage like other systems programming languages, but having the owner of
 data automatically clean up that data when the owner goes out of scope means
 you don’t have to write and debug extra code to get this control.
 
-Os conceitos de ownership, borrowing, e slices são o que garantem a segurança de
+Os conceitos de ownership, borrowing, e slices são o que garante a segurança de
 memória dos programas em Rust em tempo de compilação. A linguagem Rust lhe dá
 controle sobre o uso da memória, assim como outras linguagens de programação de
 sistemas, mas como o dono dos dados limpa automaticamente a memória quando ele

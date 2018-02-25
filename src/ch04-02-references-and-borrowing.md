@@ -631,7 +631,7 @@ Vamos recapitular o que discutimos sobre referências:
   * Any number of immutable references.
 2. References must always be valid.
 
-1. Em qualquer momento, você pode ter *um ou outro*, mas não os dois:
+1. Em um dado momento, você pode ter *um ou outro*, mas não os dois:
   * Uma referência mutável.
   * Qualquer número de referências imutáveis.
 2. Referências devem ser válidas sempre.

@@ -7,7 +7,7 @@ important to understand how ownership works in Rust. In this chapter we’ll tal
 about ownership as well as several related features: borrowing, slices, and how
 Rust lays data out in memory.
 
-_Ownership_ (posse) é a característica mais peculiar do Rust, que o permite ter
+_Ownership_ (posse) é a característica mais única do Rust, que o permite ter
 garantias de segurança de memória sem precisar de um _garbage collector_. Logo,
 é importante entender como funciona ownership no Rust. Neste capítulo, falaremos
 sobre ownership e também sobre várias características relacionadas: _borrowing_,
