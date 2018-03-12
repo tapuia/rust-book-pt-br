@@ -10,8 +10,8 @@ behavior or how they relate to other generics, without needing to know what
 will actually be in their place.
 
 Cada linguagem de programação tem ferramentas para lidar de forma efetiva com a
-duplicata de conceitos; em Rust, uma dessas ferramentas é a que cria tipos
-genéricos. Tipos genéricos são _stand-ins_ abstratos para tipos concretos ou 
+duplicação de conceitos; em Rust, uma dessas ferramentas são os tipos
+genéricos. Tipos genéricos são substitutos abstratos para tipos concretos ou 
 para outras propriedades. Quando estamos escrevendo e compilando o código 
 podemos expressar propriedades de tipos genéricos, como seu comportamento ou 
 como eles se relacionam com outros tipos genéricos, sem precisar saber o que 
@@ -60,7 +60,7 @@ give the compiler information about how references are related to each other.
 Lifetimes are the feature in Rust that allow us to borrow values in many
 situations and still have the compiler check that references will be valid.
 
-Finalmente, nós discutiremos *tempos de vida*, que são um tipo de generalismo 
+Finalmente, nós discutiremos *tempos de vida*, que são um tipo de generalização 
 que nos permite dar ao compilador informações sobre como as referências são
 relacionadas umas com as outras. Tempos de vida são as características em Rust
 que nos permitem pegar valores emprestados em muitas situações e ainda ter a 
@@ -68,7 +68,7 @@ aprovação do compilador de que as referências serão válidas.
 
 ## Removing Duplication by Extracting a Function
 
-## Removendo Duplicatas por meio da Extração de uma Função
+## Removendo Duplicação por meio da Extração de uma Função
 
 Before getting into generics syntax, let’s first review a technique for dealing
 with duplication that doesn’t use generic types: extracting a function. Once
@@ -228,7 +228,7 @@ we have multiple places to update the logic if we need to change it.
 
 Ao passo que esse código funciona, duplicar código é tedioso e tende a causar
 erros, e significa que temos múltiplos lugares para atualizar a lógica se
-precisarmos muda-lo.
+precisarmos mudá-lo.
 
 <!-- Are we safe assuming the reader will be familiar with the term
 "abstraction" in this context, or do we want to give a brief definition? -->
@@ -240,7 +240,7 @@ to the function in a parameter. This will increase the clarity of our code and
 let us communicate and reason about the concept of finding the largest number
 in a list independently of the specific places this concept is used.
 
-Para eliminar essa duplicata, nós podemos criar uma abstração, que nesse caso
+Para eliminar essa duplicação, nós podemos criar uma abstração, que nesse caso
 será na forma de uma função que opera em uma lista de inteiros passadas à 
 função como um parâmetro. Isso aumentará a clareza do nosso código e nos
 permitirá comunicar e pensar sobre o conceito de achar o maior número em uma
@@ -370,6 +370,6 @@ What if we had two functions, one that found the largest item in a slice of
 `i32` values and one that found the largest item in a slice of `char` values?
 How would we get rid of that duplication? Let’s find out!
 
-E se nós tivéssemos duas funções, uma que acha o maior item em um corte de 
+E se nós tivéssemos duas funções, uma que acha o maior item em um _slice_ de 
 valores `i32` e um que acha o maior item em um corte de valores `char`? Como 
 nos livraríamos dessa duplicação? Vamos descobrir!
