@@ -1,6 +1,6 @@
 ## Validating References with Lifetimes
 
-## Validando Referências com Tempos de Vida
+## Validando Referências com _Lifetimes_
 
 When we talked about references in Chapter 4, we left out an important detail:
 every reference in Rust has a *lifetime*, which is the scope for which that
@@ -12,13 +12,13 @@ annotate the relationships using generic lifetime parameters so that it can
 make sure the actual references used at runtime will definitely be valid.
 
 Quandos falamos sobre referêcias no Capítulo 4, nós deixamos de fora um detalhe
-importante: toda referência em Rust tem um *tempo de vida*, que é o escopo no qual
-aquela referência é válida. Na maior parte das vezes tempos de vida são implícitos e
+importante: toda referência em Rust tem um _lifetime_, que é o escopo no qual
+aquela referência é válida. A maior parte das vezes tempos de vida são implícitos e
 inferidos, assim como a maior parte do tempo tipos são inferidos. Similarmente
-quando temos que anotar typos porque múltiplos tipos são possíveis, há casos em
+quando temos que anotar tipos porque múltiplos tipos são possíveis, há casos em
 que os tempos de vida das referências poderiam estar relacionados de alguns modos
 diferentes, então Rust precisa que nós anotemos as relações usando parâmetros
-genéricos de tempo de vida para que ele tenha certeza que as referênciais atuais
+genéricos de tempo de vida para que ele tenha certeza que as referênciais reais
 usadas em tempo de execução serão definitivamente válidas.
 
 Yes, it’s a bit unusual, and will be different to tools you’ve used in other
@@ -52,7 +52,7 @@ inner scope declares a variable named `x` with the initial value of 5. Inside
 the inner scope, we attempt to set the value of `r` as a reference to `x`. Then
 the inner scope ends, and we attempt to print out the value in `r`:
 
-O principal alvo de lifetimes é prevenir referências soltas, que fazem com 
+O principal alvo de lifetimes é prevenir referências soltas, quais fazem com
 que o programa referencie dados quais nós não estamos querendo referenciar.
 Considere o programa na Listagem 10-18, com um escopo exterior e um interior.
 O escopo exterior declara uma variável chamada `r` com nenhum valor inicial, e
@@ -110,7 +110,7 @@ valor saiu de escopo</span>
 
 When we compile this code, we’ll get an error:
 
-Quando compilarmos esse códgiso, nós teremos um erro:
+Quando compilarmos esse código, nós teremos um erro:
 
 ```text
 error: `x` does not live long enough
@@ -288,7 +288,7 @@ want to get back a string slice. The code in Listing 10-21 should print `The
 longest string is abcd` once we’ve implemented the `longest` function:
 
 Vamos escrever uma função que retornará a mais longa de dois cortes de string. 
-Nós  queremos ser capazes de chamar essa função passando para ela dois cortes 
+Nós queremos ser capazes de chamar essa função passando para ela dois cortes 
 de strings, e queremos que retorne uma string. O código na Listagem 10-21
 deve imprimir `A string mais longa é abcd` uma vez que tivermos implementado a
 função `maior`:
@@ -517,7 +517,7 @@ as long as the same generic lifetime.
 
 Uma anotação de tempo de vida por si só não tem muito significado: anotações de
 tempos de vida dizem ao Rust como os parâmetros genéricos de tempos de vida de
-múltiplas referências se relacionam umas com as outras. Se tivermos uma função
+múltiplas referências se relacionam uns com os outros. Se tivermos uma função
 com o parâmetro `primeiro` que é uma referência para um `i32` que tem um tempo
 de vida de `'a`, e a função tem outro parâmetro chamado `segundo` que é outra
 referência para um `i32` que também possui um tempo de vida `'a`, essas duas
@@ -652,11 +652,11 @@ will compile and print `The longest string is long string is long` when run:
 
 Vamos ver como isso restringe o uso da função `maior` passando referências que
 tem diferentes tempos de vida concretos. A Listagem 10-25 é um exemplo direto
-que deve corresponder suas intuições de qualquer linguage: `string1` é válida
+que deve corresponder suas intuições de qualquer linguagem: `string1` é válida
 até o final do escopo exterior, `strin2` é válida até o final do escopo, a
 `string2` é válida até o final do escopo interior. Com o verificador de 
 empréstimos aprovando esse código; ele vai compilar e imprimir 
-`A string mais longa é longa a string longa é longa`:
+`A string mais longa é a string longa é longa`:
 
 <span class="filename">Filename: src/main.rs</span>
 
@@ -697,7 +697,7 @@ fn main() {
     {
         let string2 = String::from("xyz");
         let resultado = maior(string1.as_str(), string2.as_str());
-        println!("A string mais longa é longa {}", resultado);
+        println!("A string mais longa é {}", resultado);
     }
 }
 ```
@@ -718,7 +718,7 @@ inner scope, after it has ended. The code in Listing 10-25 will not compile:
 Em seguida, vamos tentar um exemplo que vai mostrar que o tempo de vida da 
 referência em `resultado` precisa ser o menor dos tempos de vida dos dois 
 argumentos. Nós vamos mover a declaração da variável `resultado` para fora do
-escopo interior, mas deixar a assinatura do valor para a variável `resultado`
+escopo interior, mas deixar a atribuição do valor para a variável `resultado`
 dentro do escopo com `string2`. Em seguida, vamos mover o `println!` que usa o
 `resultado` fora do escopo interior, depois que ele terminou. O código na 
 Listagem 10-25 não compilará:
@@ -1148,8 +1148,7 @@ should be. In this case, the compiler will give you an error that can be
 resolved by adding the lifetime annotations that correspond to your intentions
 for how the references relate to each other.
 
-As regras de elisão não fornecem total inferência: se o Rust de forma 
-determinista aplicar as regras mas ainda houver ambiguidade como quais tempos 
+As regras de elisão não fornecem total inferência:  se o Rust aplicar as regras de forma determinística ainda podem haver ambiguidades como quais tempos 
 de vida as referências restantes deveriam ter. Nesse caso, o compilador dará um
 erro que pode ser solucionado adicionando anotações de tempo de vida que 
 correspondem com as suas intenções para como as referências se relacionam umas
@@ -1200,8 +1199,8 @@ parar com um erro.
 
 3. Se há múltiplas entradas de parâmetros de tempo de vida, mas uma delas é
   `&self` ou `&mut self` porque é um método, então o tempo de vida de `self` é
-  atribuído para todos os parâmetro de tempo de vida de saída. Isso faz métodos
-  de escrita bem melhores.
+  atribuído para todos os parâmetro de tempo de vida de saída. Isso melhora a
+  escrita de métodos
 
 Let’s pretend we’re the compiler and apply these rules to figure out what the
 lifetimes of the references in the signature of the `first_word` function in
@@ -1210,7 +1209,7 @@ the references:
 
 Vamos fingir que somos o compilador e aplicamos essas regras para descobrir 
 quais os tempos de vida das referências na assinatura da função 
-`primeira_palavra` na Listagem 10-27. A Assinatura começa sem nenhum tempo de 
+`primeira_palavra` na Listagem 10-27. A assinatura começa sem nenhum tempo de 
 vida associado com as referências:
 
 ```rust,ignore
@@ -1225,8 +1224,8 @@ Then we (as the compiler) apply the first rule, which says each parameter gets
 its own lifetime. We’re going to call it `'a` as usual, so now the signature is:
 
 Então nós (como o compilador) aplicamos a primeira regra, que diz que cada 
-parâmetro tem sem próprio tempo de vida. Nós vamos chama-lo de `'a` como usual,
-então agora a assinatura é:
+parâmetro tem sem próprio tempo de vida. Nós vamos chama-lo de `'a` como é 
+usual, então agora a assinatura é:
 
 ```rust,ignore
 fn first_word<'a>(s: &'a str) -> &str {
@@ -1302,8 +1301,7 @@ figure out all the lifetimes of the references in the signature.
 Olhando para a segunda regra, ela não se aplica já que há mais de uma entrada 
 de tempo de vida. Olhando para a terceira regra, ela também não se aplica 
 porque isso é uma função e não um método, então nenhum dos parâmetros são 
-`self`. Então, acabaram as regras, mas não descobrimos qual é o tipo de 
-retorno do tempo de vida. É por isso que recebemos um erro quando tentamos
+`self`. Então, acabaram as regras, mas não descobrimos qual é o tempo de vida do tipo de retorno. É por isso que recebemos um erro quando tentamos
 compilar o código da Listagem 10-22: o compilador usou as regras de elisão de
 tempo de vida que sabia, mas ainda sim não conseguiu descobrir todos os tempos
 de vida das referências na assinatura.
@@ -1499,7 +1497,7 @@ Let’s briefly look at the syntax of specifying generic type parameters, trait
 bounds, and lifetimes all in one function!
 
 Vamos rapidamente olhar para a sintaxe de especificar parâmetros de tipos
-genéricos, limites de trair e tempos de vida todos em uma função!
+genéricos, limites de traits e tempos de vida todos em uma função!
 
 ```rust
 use std::fmt::Display;
