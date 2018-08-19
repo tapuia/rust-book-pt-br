@@ -84,9 +84,9 @@ Quando executamos o programa, recebemos isso:
 
 ```text
 $ cargo run
-   Compiling variables v0.1.0 (file:///projects/variables)
+   Compiling variaveis v0.1.0 (file:///projects/variaveis)
     Finished dev [unoptimized + debuginfo] target(s) in 0.30 secs
-     Running `target/debug/variables`
+     Running `target/debug/variaveis`
 O valor de x é: 5
 O valor de x é: 6
 ```
@@ -144,3 +144,84 @@ para transmitir o significado desse valor para futuros mantenedores do código. 
 ajuda ter apenas um lugar em seu código que você precisaria mudar se o
 valor codificado precisasse ser atualizado no futuro.
 
+### Shadowing
+
+Como você viu na seção “Comparando o Adivinha ao Número Secreto” no Capítulo
+2, você pode declarar uma nova variável com o mesmo nome de uma variável anterior,
+e a nova variável sombreia a variável anterior. Rustaceans dizem que a
+primeira variável é * sombreada * pela segunda, o que significa que o segundo
+valor da variável é o que aparece quando a variável é usada. Podemos sombrear uma
+variável usando o mesmo nome da variável e repetindo o uso da palavra-chave `let`
+da seguinte forma:
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust
+fn main() {
+    let x = 5;
+
+    let x = x + 1;
+
+    let x = x * 2;
+
+    println!("O valor de x é: {}", x);
+}
+```
+
+Esse programa primeiro vincula `x` ao valor `5`. Em seguida `x` é sombreado por
+`let x = `, pegando o valor original e adicionando `1`, então o valor de
+`x` é `6`. O terceiro `let` também sombrea `x`, multiplicando o 
+valor anterior por `2` para então `x` ficar com o valor final de `12`. Quando nós executamos esse programa, é
+produzida a seguinte saída:
+
+```text
+$ cargo run
+   Compiling variaveis v0.1.0 (file:///projects/variaveis)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.31 secs
+     Running `target/debug/variaveis`
+O valor de x é: 12
+```
+
+Shadowing é diferente do que dizer que uma variável é `mut`,porque teremos um
+erro em tempo de compilação se, acitentalmente, tentarmos reatribuir essa variável sem
+utilizar `let`. Usando `let`, nós podemos realizar algumas transformações,
+mas sem ter uma variável imutável após estas transformações terem
+sido concluídas.
+
+Uma outra diferença entre `mut` e shadowing é que,
+como estamos efetivamente criando uma nova várivel, quando usamos novamente a palavra-chave `let`, nós
+podemos mudar o tipo do valor, mas reutilizando o mesmo nome. Por exemplo, digamos que nosso programa
+solicite ao usuário que mostre quantos espaços deseja entre um texto, inserindo
+caracteres de espaço, mas queremos armazenar essa entrada como um número:
+
+```rust
+let espacos = "   ";
+let espacos = espacos.len();
+```
+
+Essa construção é permitida, porque a primeira variável `espacos` é do tipo string
+e a segunda variável, que é uma nova variável que tem o
+mesmo nome que a primeira, é do tipo numérico Shadowing nos poupa de
+ter de criar nomes diferentes, como `str_espacos` e
+`num_espacos`; em vez disso, podemos simplesmente reutilizar o nome `espacos`. No entanto, se
+tentassemos usar `mut` para isso, como mostramos aqui, teremos um erro em tempo de compilação:
+
+```rust,ignore
+let mut espacos = "   ";
+espacos = espacos.len();
+```
+
+O erro diz que não podemos alterar o tipo de variável:
+
+```text
+error[E0308]: mismatched types
+ --> src/main.rs:3:14
+  |
+3 |     espacos = espacos.len();
+  |              ^^^^^^^^^^^^ expected &str, found usize
+  |
+  = note: expected type `&str`
+             found type `usize`
+```
+
+Agora que exploramos como as variáveis funcionam, vamos ver mais tipos de dados.
