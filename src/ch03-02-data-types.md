@@ -151,3 +151,24 @@ fn main() {
 Cada expressão nessas declarações, usa um operador matemático e computa um único valor,
 que então é atribuído à uma variável.
 Apêndice B contém uma lista de todos os operadores que o Rust suporta.
+
+#### O tipo booleano
+
+Como em diversas linguagens de programação, o tipo Booleano em Rust possue dois valores
+possíveis: `true` e `false`. O tipo Booleano no Rust é especificado usando `bool`.
+Por exemplo:
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust
+fn main() {
+    let t = true;
+
+    let f: bool = false; // com tipo explícito
+}
+```
+
+A principal utilização de valores Booleanos é através dos condicionais, como um `if`.
+Veremos como a expressão `if` funciona em Rust na seção
+"Controle de fluxo".
+
