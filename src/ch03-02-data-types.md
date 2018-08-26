@@ -197,3 +197,70 @@ Valores Unicode vão de `U+0000` até `U+D7FF` e `U+E000` até
 então a sua intuição de o que é um "caractere" pode não combinar com o que é um
 `char` em Rust. Discutiremos esse tópico em detalhes em "Strings" no Capítulo 8.
 
+### Tipos compostos
+
+*Tipos compostos* pode agrupar vários valores em um único tipo. Rust tem dois
+tipos primitivos compostos: tuplas e vetores.
+
+#### O tipo tuplaero de valores
+
+Uma tupla é de modo geral uma forma de agrupar um certo número de valores
+com uma variável do tipo composto.
+
+Criamos uma tupla escrevendo uma lista de valores separados por vírgula
+dentro de parênteses. Cada posição da tupla tem um tipo e os tipos dos elementos
+da tupla não necessitam serem iguais.
+Adicionamos anotações de tipo neste exemplo:
+
+<span class="filename">Nomr do arquivo: src/main.rs</span>
+
+```rust
+fn main() {
+    let tup: (i32, f64, u8) = (500, 6.4, 1);
+}
+```
+
+A variável `tup` liga-se a tupla, porque uma tupla é considerada
+um único elemento composto. Para pegar os valores da tupla individualmente, podemos usar
+a correspondência de padrões para desestruturar o valor de uma tupla, como este:
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust
+fn main() {
+    let tup = (500, 6.4, 1);
+
+    let (x, y, z) = tup;
+
+    println!("O valor do y é: {}", y);
+}
+```
+
+Esse primeito programa cria uma tupla e vincula ela à variável `tup`. Em seguida,
+ele usa um padrão com `let` para tirar `tup` e tranformá-lo em três variáveis
+separadas, `x`, `y` e `z`. Isso é chamado de *desestruturação*, porque quebra uma única tupla
+em três partes. Finalmente, o programa exibe o valor de `y`,
+que é `6.4`.
+
+Além de desestruturar através da correspondência de padrões, podemos
+acessar diretamente um elemento da tupla usando um ponto (`.`) como índice
+do valore que queremos acessar. Por exemplo:
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust
+fn main() {
+    let x: (i32, f64, u8) = (500, 6.4, 1);
+
+    let quinhentos = x.0;
+
+    let seis_ponto_quatro = x.1;
+
+    let um = x.2;
+}
+```
+
+Esse programa cria uma tupla, `x`, e então cria uma uma variável para cada
+elemento usando seus índices. Como ocorre nas maiorias das linguagens, o primeiro
+índice em uma tupla é o 0.
+
