@@ -98,3 +98,25 @@ escolhas padrões do Rust são geralmente são boas, e por padrão os inteiros s
 tipo geralmente é o mais rápido, até em sistemas de 64-bit. A
 principal situação em que você usuaria `isize` ou `usize` é indexar algum tipo de coleção.
 
+#### Tipos de ponto flutuante
+
+Rust também tem dois tipos primitivos para *números de ponto flutuante*, que são
+números com casas decimais. Os pontos flutuantes do Rust são
+`f32` e `f64`, que têm respectivamente os tamanhos de 32 e 64 bits. Por padrão o tipo padrão é `f64`
+porque nos processadores modernos, a velocidade é quase a mesma que em um `f32`, mas possui
+maior precisão.
+
+Esse exemplo mostra números ponto flutuantes em ação:
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust
+fn main() {
+    let x = 2.0; // f64
+
+    let y: f32 = 3.0; // f32
+}
+```
+
+Números em ponto flutuante são representados de acordo com o padrão IEEE-754. O tipo
+`f32` é de precisão simples e `f64` tem precisão dupla. 
