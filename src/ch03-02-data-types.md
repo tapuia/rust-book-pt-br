@@ -320,3 +320,45 @@ Neste exemplo, a variável chamada `primeiro` irá pegar o valor `1`, porque
 é o valor indexado por `[0]` na matriz. A variável chamada `segundo` irá
 pegar o valor `2`, do indice `[1]` da matriz.
 
+##### Acesso inválido a elemento da matriz
+
+O que acontece se você tentar acessar um elemento da matriz que está além do fim
+da matriz? Digamos que você mude o exemplo para o código a seguir, que será compilado,
+mas existe um erro quando for executar:
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust,ignore
+fn main() {
+    let a = [1, 2, 3, 4, 5];
+    let indice = 10;
+
+    let elemento = a[indice];
+
+    println!("O valor do elemento é: {}", elemento);
+}
+```
+
+Executando esse código usando `cargo run`, é produzido o seguinte resultado:
+
+```text
+$ cargo run
+   Compiling arrays v0.1.0 (file:///projects/arrays)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.31 secs
+     Running `target/debug/arrays`
+thread '<main>' panicked at 'index out of bounds: the len is 5 but the index is
+ 10', src/main.rs:6
+note: Run with `RUST_BACKTRACE=1` for a backtrace.
+```
+
+A compilação não produz nenhum erro, mas o programa resulta um
+erro *em tempo de execução* e não uma saída com sucesso. Quando você
+tenta acessar um elemento usando indexação, o Rust verifica se o índice especificado é menor que o tamaho
+da matriz. Se o índice é maior que o tamanho, o Rust vai entrar
+em *pânico*, que é o termo usado pelo Rust quando um programa resulta em erro.
+
+Esse é o primeiro exemplo dos pricípios de segurança do Rust em ação. Em várias
+linguagens de baixo nível, esse tipo de verificação não é feita e quando você fornece um
+índice incorreto, memória inválida pode ser acessada. Rust protege você deste tipo
+de erro ao sair imediatamente, em vez de permitir o acesso à memória e
+continuando. Capítulo 9 discute mais sobre o tratamento de erros do Rust.
