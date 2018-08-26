@@ -119,4 +119,35 @@ fn main() {
 ```
 
 Números em ponto flutuante são representados de acordo com o padrão IEEE-754. O tipo
-`f32` é de precisão simples e `f64` tem precisão dupla. 
+`f32` é de precisão simples e `f64` tem precisão dupla.
+
+#### Operações numéricas
+
+Rust suporta operações matemáticas básicas, você pode esperar
+todas as seguintes operações para todos os tipos numéricos: adição, subtração, multiplicação, divisão e resto.
+O código a seguir mostra como usar cada declaração `let`:
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust
+fn main() {
+    // adição
+    let soma = 5 + 10;
+
+    // subtração
+    let diferenca = 95.5 - 4.3;
+
+    // multiplicação
+    let produto = 4 * 30;
+
+    // divisão
+    let quociente = 56.7 / 32.2;
+
+    // resto
+    let resto = 43 % 5;
+}
+```
+
+Cada expressão nessas declarações, usa um operador matemático e computa um único valor,
+que então é atribuído à uma variável.
+Apêndice B contém uma lista de todos os operadores que o Rust suporta.
