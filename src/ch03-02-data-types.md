@@ -172,3 +172,28 @@ A principal utilização de valores Booleanos é através dos condicionais, como
 Veremos como a expressão `if` funciona em Rust na seção
 "Controle de fluxo".
 
+#### O tipo de caractere
+
+Até agora trabalhamos apenas com números, mas Rust também suporta letras. O `char`
+é o tipo mais primitivo da linguaguem e o seguinte código
+mostra uma forma de utilizá-lo. (Observe que o `char` é
+específicado com aspas simples, é o oposto de strings, que usa aspas duplas.)
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust
+fn main() {
+    let c = 'z';
+    let z = 'ℤ';
+    let heart_eyed_cat = '😻';
+}
+```
+
+O tipo `char` representa um valor unicode, o que quer dizer que você pode
+armazenar muito mais que apenas ASCII. Letras com acentuação; ideogramas chinês, japonês e
+koreano; emoji; e caracteres não visíveis são válidos.
+Valores Unicode vão de `U+0000` até `U+D7FF` e `U+E000` até
+`U+10FFFF` incluso. Contudo, um "caractere" não é realmente um conceito em Unicode,
+então a sua intuição de o que é um "caractere" pode não combinar com o que é um
+`char` em Rust. Discutiremos esse tópico em detalhes em "Strings" no Capítulo 8.
+
