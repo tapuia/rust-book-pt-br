@@ -300,3 +300,23 @@ let meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho"
               "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 ```
 
+##### Acessando um elemento da matriz
+
+Uma matriz é um pedaço da memória alocada na pilha. Você pode acessar
+os elementos da matriz usando indices, como a seguir:
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust
+fn main() {
+    let a = [1, 2, 3, 4, 5];
+
+    let primeiro = a[0];
+    let segundo = a[1];
+}
+```
+
+Neste exemplo, a variável chamada `primeiro` irá pegar o valor `1`, porque
+é o valor indexado por `[0]` na matriz. A variável chamada `segundo` irá
+pegar o valor `2`, do indice `[1]` da matriz.
+
