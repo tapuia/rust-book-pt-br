@@ -121,14 +121,14 @@ erro[E0040]: uso explícito de método destrutor
 ```
 
 Essa mensagem de erro afirma que não nos é permitido chamar explicitamente
-`drop`. A mensagem de erro usa o termo *destrutor*, que é um termo geral de
-programação para uma função que limpa uma instância. Um *destrutor* é análogo a
-um *construtor*, que cria uma instância. A função `drop` em Rust é um destrutor
+`drop`. A mensagem de erro usa o termo _destrutor_, que é um termo geral de
+programação para uma função que limpa uma instância. Um _destrutor_ é análogo a
+um _construtor_, que cria uma instância. A função `drop` em Rust é um destrutor
 específico.
 
 O Rust não nos deixa chamar `drop` explicitamente porque o `drop` ainda seria
-chamado no valor ao final da `main`. Isso seria um erro de *liberação dupla*
-(*double free*) porque o Rust estaria tentando limpar o mesmo valor duas vezes.
+chamado no valor ao final da `main`. Isso seria um erro de _liberação dupla_
+(_double free_) porque o Rust estaria tentando limpar o mesmo valor duas vezes.
 
 Nós não podemos desabilitar a inserção automática do `drop` quando um valor sai
 de escopo, e também não podemos chamar o método `drop` explicitamente. Então, se
@@ -172,9 +172,8 @@ Destruindo CustomSmartPointer com dados `algum dado`!
 CustomSmartPointer destruído antes do final da main.
 ```
 
-O texto ```Destruindo CustomSmartPointer com dados `algum dado`!``` é impresso
-entre o texto `CustomSmartPointer criado.` e `CustomSmartPointer destruído antes
-do final da main.`, mostrando que o método `drop` é chamado para destruir o `c`
+O texto `` Destruindo CustomSmartPointer com dados `algum dado`! `` é impresso
+entre o texto `CustomSmartPointer criado.` e `CustomSmartPointer destruído antes do final da main.`, mostrando que o método `drop` é chamado para destruir o `c`
 naquele ponto.
 
 Podemos usar o código especificado em uma implementação da trait `Drop` de

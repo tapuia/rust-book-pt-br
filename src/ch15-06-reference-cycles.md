@@ -1,11 +1,11 @@
 ## Ciclos de Referências Podem Vazar Memória
 
-As garantias de segurança de memória do Rust tornam *difícil* mas não impossível
-acidentalmente criar memória que nunca é liberada (conhecida como um *vazamento
-de memória*, ou *memory leak*). O Rust garante em tempo de compilação que não
+As garantias de segurança de memória do Rust tornam _difícil_ mas não impossível
+acidentalmente criar memória que nunca é liberada (conhecida como um _vazamento
+de memória_, ou _memory leak_). O Rust garante em tempo de compilação que não
 haverá corridas de dados, mas não garante a prevenção de vazamentos de memória
 por completo da mesma forma, o que significa que vazamentos de memória são
-*memory safe* em Rust. Podemos ver que o Rust permite vazamentos de memória
+_memory safe_ em Rust. Podemos ver que o Rust permite vazamentos de memória
 usando `Rc<T>` e `RefCell<T>`: é possível criar referências onde os itens se
 referem uns aos outros em um ciclo. Isso cria vazamentos de memória porque a
 contagem de referências de cada item no ciclo nunca chegará a 0, e os valores
@@ -15,7 +15,7 @@ nunca serão destruídos.
 
 Vamos dar uma olhada em como um ciclo de referências poderia acontecer e como
 preveni-lo, começando com a definição do enum `List` e um método `tail`
-(*cauda*) na Listagem 15-25:
+(_cauda_) na Listagem 15-25:
 
 <span class="filename">Arquivo: src/main.rs</span>
 
@@ -183,13 +183,13 @@ ciclos de referências.
 ### Prevenindo Ciclos de Referência: Transforme um `Rc<T>` em um `Weak<T>`
 
 Até agora, demonstramos que chamar `Rc::clone` aumenta a `strong_count`
-(*contagem de referências fortes*) de uma instância `Rc<T>`, e que a instância
+(_contagem de referências fortes_) de uma instância `Rc<T>`, e que a instância
 `Rc<T>` só é liberada se sua `strong_count` é 0. Também podemos criar uma
-*referência fraca* (*weak reference*) ao valor dentro de uma instância `Rc<T>`
+_referência fraca_ (_weak reference_) ao valor dentro de uma instância `Rc<T>`
 chamando `Rc::downgrade` e passando-lhe uma referência ao `Rc<T>`. Quando
 chamamos `Rc::downgrade`, nós obtemos um ponteiro inteligente do tipo `Weak<T>`.
 Em vez de aumentar em 1 a `strong_count` na instância `Rc<T>`, chamar
-`Rc::downgrade` aumenta em 1 a `weeak_count` (*contagem de referências fracas*).
+`Rc::downgrade` aumenta em 1 a `weeak_count` (_contagem de referências fracas_).
 O tipo `Rc<T>` usa a `weak_count` para registrar quantas referências `Weak<T>`
 existem, parecido com a `strong_count`. A diferença é que a `weak_count` não
 precisa ser 0 para a instância `Rc<T>` ser destruída.
@@ -211,7 +211,7 @@ ponteiro inválido.
 
 Como exemplo, em vez de usarmos uma lista cujos itens sabem apenas a respeito do
 próximo item, iremos criar uma árvore cujos itens sabem sobre seus itens filhos
-*e* sobre seus itens pais.
+_e_ sobre seus itens pais.
 
 #### Criando uma Estrutura de Dados em Árvore: Um `Vertice` com Vértices Filhos
 
@@ -459,8 +459,8 @@ fn main() {
 <span class="caption">Listagem 15-29: Criando `galho` em um escopo interno e
 examinando contagens de referências fortes e fracas</span>
 
-Depois que `folha` é criada, seu `Rc<Vertice>` tem uma *strong count* de 1 e uma
-*weak count* de 0. Dentro do escopo interno, criamos `galho` e o associamos a
+Depois que `folha` é criada, seu `Rc<Vertice>` tem uma _strong count_ de 1 e uma
+_weak count_ de 0. Dentro do escopo interno, criamos `galho` e o associamos a
 `folha`. Nesse ponto, quando imprimimos as contagens, o `Rc<Vertice>` em `galho`
 tem uma strong count de 1 e uma weak count de 1 (porque `folha.pai` aponta para
 `galho` com uma `Weak<Vertice>`). Quando imprimirmos as contagens de `folha`,
@@ -503,7 +503,7 @@ podem causar vazamentos de memória e como preveni-los usando `Weak<T>`.
 
 Se esse capítulo tiver aguçado seu interesse e você quiser implementar seus
 próprios ponteiros inteligentes, dê uma olhada no "Rustnomicon" em
-*https://doc.rust-lang.org/stable/nomicon/* para mais informação útil.
+_https://doc.rust-lang.org/stable/nomicon/_ para mais informação útil.
 
 Em seguida, conversaremos sobre concorrência em Rust. Você irá até aprender
 sobre alguns novos ponteiros inteligentes.

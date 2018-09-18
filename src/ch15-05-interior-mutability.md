@@ -1,9 +1,9 @@
 ## `RefCell<T>` e a Pattern de Mutabilidade Interior
 
-*Mutabilidade interior* (*interior mutability*) é uma design pattern em Rust que
+_Mutabilidade interior_ (_interior mutability_) é uma design pattern em Rust que
 lhe permite modificar um dado mesmo quando há referências imutáveis a ele:
 normalmente, esta ação é proibida pelas regras de empréstimo. Para fazer isso, a
-pattern usa código `unsafe` (*inseguro*) dentro de uma estrutura de dados para
+pattern usa código `unsafe` (_inseguro_) dentro de uma estrutura de dados para
 dobrar as regras normais do Rust que governam mutação e empréstimo. Nós ainda
 não cobrimos código unsafe; faremos isso no Capítulo 19. Podemos usar tipos que
 usam a pattern de mutabilidade interior quando podemos garantir que as regras de
@@ -20,13 +20,13 @@ Diferente do `Rc<T>`, o tipo `RefCell<T>` representa posse única sobre o dado
 que ele contém. Então o que torna o `RefCell<T>` diferente de um tipo como o
 `Box<T>`? Lembre-se das regras de empréstimo que você aprendeu no Capítulo 4:
 
-* Em qualquer momento, você pode ter *um dos* mas não ambos os seguintes: uma
-  única referência mutável *ou* qualquer número de referências imutáveis;
-* Referências devem sempre ser válidas.
+- Em qualquer momento, você pode ter _um dos_ mas não ambos os seguintes: uma
+  única referência mutável _ou_ qualquer número de referências imutáveis;
+- Referências devem sempre ser válidas.
 
 Com referências e com o `Box<T>`, as invariantes das regras de empréstimo são
 aplicadas em tempo de compilação. Com o `RefCell<T>`, essas invariantes são
-aplicadas *em tempo de execução*. Com referências, se você quebra essas regras,
+aplicadas _em tempo de execução_. Com referências, se você quebra essas regras,
 você recebe um erro de compilação. Com o `RefCell<T>`, se você quebrar essas
 regras, seu programa irá sofrer um `panic!` e terminar.
 
@@ -37,8 +37,8 @@ esses motivos, checar as regras de empréstimo em tempo de compilação é a mel
 opção na maioria dos casos, e por isso este é o padrão do Rust.
 
 A vantagem de checar as regras de empréstimo em tempo de execução,
-alternativamente, é que certos cenários *memory-safe* (*seguros em termos de
-memória*) são então permitidos, ao passo que seriam proibidos pelas checagens em
+alternativamente, é que certos cenários _memory-safe_ (_seguros em termos de
+memória_) são então permitidos, ao passo que seriam proibidos pelas checagens em
 tempo de compilação. A análise estática, como a do compilador Rust, é
 inerentemente conservadora. Algumas propriedades do programa são impossíveis de
 detectar analisando o código: o exemplo mais famoso é o Problema da Parada, que
@@ -61,18 +61,18 @@ múltiplas threads. Falaremos sobre como obter a funcionalidade de um
 Aqui está uma recapitulação das razões para escolher o `Box<T>`, o `Rc<T>` ou o
 `RefCell<T>`:
 
-* O `Rc<T>` permite múltiplos possuidores do mesmo dado; `Box<T>` e `RefCell<T>`
+- O `Rc<T>` permite múltiplos possuidores do mesmo dado; `Box<T>` e `RefCell<T>`
   têm possuidores únicos.
-* O `Box<T>` permite empréstimos imutáveis ou mutáveis checados em tempo de
+- O `Box<T>` permite empréstimos imutáveis ou mutáveis checados em tempo de
   compilação; o `Rc<T>` permite apenas empréstimos imutáveis em tempo de
   compilação; o `RefCell<T>` permite empréstimos imutáveis ou mutáveis checados
   em tempo de execução.
-* Como o `RefCell<T>` permite empréstimos mutáveis checados em tempo de
+- Como o `RefCell<T>` permite empréstimos mutáveis checados em tempo de
   execução, nós podemos modificar o valor dentro de um `RefCell<T>` mesmo quando
   o `RefCell<T>` é imutável.
 
-Modificar o valor dentro de um valor imutável é a pattern de *mutabilidade
-interior*. Vamos dar uma olhada em uma situação em que a mutabilidade interior é
+Modificar o valor dentro de um valor imutável é a pattern de _mutabilidade
+interior_. Vamos dar uma olhada em uma situação em que a mutabilidade interior é
 útil e examinar como ela é possível.
 
 ### Mutabilidade Interior: Um Empréstimo Mutável de um Valor Imutável
@@ -115,9 +115,9 @@ modificar um valor imutável e ver por que isto é útil.
 
 #### Um Caso de Uso para a Mutabilidade Interior: Objetos Simulados
 
-Um *dublê de teste* (*test double*) é um conceito geral de programação para um
-tipo usado no lugar de outro durante os testes. *Objetos simulados* (*mock
-objects*) são tipos específicos de dublês de teste que registram o que acontece
+Um _dublê de teste_ (_test double_) é um conceito geral de programação para um
+tipo usado no lugar de outro durante os testes. _Objetos simulados_ (_mock
+objects_) são tipos específicos de dublês de teste que registram o que acontece
 durante o teste para que possamos confirmar que as ações corretas aconteceram.
 
 Rust não tem objetos da mesma forma que outras linguagens, e não tem
@@ -319,6 +319,7 @@ mod tests {
     }
 }
 ```
+
 <span class="caption">Listagem 15-22: Usando `RefCell<T>` para modificar um
 valor interno enquanto o valor externo é considerado imutável</span>
 
@@ -397,8 +398,7 @@ irá falhar:
 nota: Rode com `RUST_BACKTRACE=1` para um backtrace.
 ```
 
-Note como o código entrou em pânico com a mensagem `já emprestado:
-BorrowMutError`. É assim que o `RefCell<T>` lida com violações das regras de
+Note como o código entrou em pânico com a mensagem `já emprestado: BorrowMutError`. É assim que o `RefCell<T>` lida com violações das regras de
 empréstimo em tempo de execução.
 
 Pegar erros de empréstimo em tempo de execução em vez de em tempo de compilação
@@ -418,7 +418,7 @@ referências regulares nos dão.
 Um jeito comum de usar o `RefCell<T>` é em combinação com o `Rc<T>`. Lembre-se
 de que o `Rc<T>` nos permite ter múltiplos possuidores de algum dado, mas ele só
 nos permite acesso imutável a esse dado. Se temos um `Rc<T>` que contém um
-`RefCell<T>`, podemos ter um valor que pode ter múltiplos possuidores *e* que
+`RefCell<T>`, podemos ter um valor que pode ter múltiplos possuidores _e_ que
 podemos modificar!
 
 Por exemplo, lembre-se da cons list na Listagem 15-18 onde usamos o `Rc<T>` para

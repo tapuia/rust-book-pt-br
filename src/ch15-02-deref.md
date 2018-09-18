@@ -1,7 +1,7 @@
 ## Tratando Ponteiros Inteligentes como Referências Normais com a Trait `Deref`
 
 Implementar a trait `Deref` nos permite personalizar o comportamento do
-*operador de desreferência* (*dereference operator*), `*` (que é diferente do
+_operador de desreferência_ (_dereference operator_), `*` (que é diferente do
 operador de multiplicação ou de glob). Implementando a `Deref` de tal modo que o
 ponteiro inteligente possa ser tratado como uma referência normal, podemos
 escrever código que opere sobre referências e usar esse código com ponteiros
@@ -12,7 +12,7 @@ tentar definir nosso próprio tipo a la `Box<T>` e ver por que o `*` não funcio
 como uma referência no nosso tipo recém-criado. Vamos explorar como a trait
 `Deref` torna possível aos ponteiros inteligentes funcionarem de um jeito
 similar a referências. E então iremos dar uma olhada na funcionalidade de
-*coerção de desreferência* (*deref coercion*) e como ela nos permite trabalhar
+_coerção de desreferência_ (_deref coercion_) e como ela nos permite trabalhar
 tanto com referências quanto com ponteiros inteligentes.
 
 ### Seguindo o Ponteiro até o Valor com `*`
@@ -99,8 +99,8 @@ biblioteca padrão para vermos como ponteiros inteligentes, por padrão, se
 comportam diferente de referências. Em seguida, veremos como adicionar a
 habilidade de usar o operador de desreferência.
 
-O tipo `Box<T>` no fim das contas é definido como uma struct-tupla (*tuple
-struct*) de um elemento, então a Listagem 15-8 define um tipo `MeuBox<T>` da
+O tipo `Box<T>` no fim das contas é definido como uma struct-tupla (_tuple
+struct_) de um elemento, então a Listagem 15-8 define um tipo `MeuBox<T>` da
 mesma forma. Também vamos definir uma função `new` como a definida no `Box<T>`:
 
 <span class="filename">Arquivo: src/main.rs</span>
@@ -214,7 +214,7 @@ referência comum ou um tipo que implementa `Deref`.
 
 O fato de o método `deref` retornar uma referência ao valor, e a desreferência
 comum fora dos parênteses em `*(y.deref())` ainda ser necessária, é devido ao
-sistema de posse (*ownership*). Se o método `deref` retornasse o valor
+sistema de posse (_ownership_). Se o método `deref` retornasse o valor
 diretamente em vez de uma referência ao valor, o valor seria movido para fora do
 `self`. Nós não queremos tomar posse do valor interno do `MeuBox<T>` neste e na
 maioria dos casos em que usamos o operador de desreferência.
@@ -226,7 +226,7 @@ dado do tipo `i32`, que corresponde ao `5` em `assert_eq!` na Listagem 15-9.
 
 ### Coerções de Desreferência Implícitas com Funções e Métodos
 
-*Coerção de desreferência* (*deref coercion*) é uma conveniência que o Rust
+_Coerção de desreferência_ (_deref coercion_) é uma conveniência que o Rust
 aplica a argumentos de funções e métodos. A coerção de desreferência converte
 uma referência a um tipo que implementa `Deref` em uma referência a um tipo ao
 qual a `Deref` pode converter o tipo original. A coerção de desreferência
@@ -366,9 +366,9 @@ referências mutáveis.
 O Rust faz coerção de desreferência quando ele encontra tipos e implementações
 de traits em três casos:
 
-* De `&T` para `&U` quando `T: Deref<Target=U>`;
-* De `&mut T` para `&mut U` quando `T: DerefMut<Target=U>`;
-* De `&mut T` para `&U` quando `T: Deref<Target=U>`.
+- De `&T` para `&U` quando `T: Deref<Target=U>`;
+- De `&mut T` para `&mut U` quando `T: DerefMut<Target=U>`;
+- De `&mut T` para `&U` quando `T: Deref<Target=U>`.
 
 Os primeiros dois casos são o mesmo exceto pela mutabilidade. O primeiro caso
 afirma que se você tem uma `&T`, e `T` implementa `Deref` para algum tipo `U`,
@@ -376,7 +376,7 @@ você pode obter um `&U` de maneira transparente. O segundo caso afirma que a
 mesma coerção de desreferência acontece para referências mutáveis.
 
 O terceiro caso é mais complicado: o Rust também irá coagir uma referência
-mutável a uma imutável. Mas o contrário *não* é possível: referências imutáveis
+mutável a uma imutável. Mas o contrário _não_ é possível: referências imutáveis
 nunca serão coagidas a referências mutáveis. Por causa das regras de empréstimo,
 se você tem uma referência mutável, ela deve ser a única referência àqueles
 dados (caso contrário, o programa não compila). Converter uma referência mutável

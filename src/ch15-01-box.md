@@ -1,7 +1,7 @@
 ## `Box<T>` Aponta para Dados no Heap e Tem Tamanho Conhecido
 
-O ponteiro inteligente mais simples é um *box* (literalmente, "caixa"), cujo
-tipo é escrito `Box<T>`. *Boxes* (plural de *box*) lhe permitem armazenar dados
+O ponteiro inteligente mais simples é um _box_ (literalmente, "caixa"), cujo
+tipo é escrito `Box<T>`. _Boxes_ (plural de _box_) lhe permitem armazenar dados
 no heap em vez de na pilha. O que fica na pilha é o ponteiro para o dado no
 heap. Confira o Capítulo 4 para rever a diferença entre pilha e heap.
 
@@ -9,12 +9,12 @@ Boxes não têm custo adicional de desempenho além de armazenar dados no heap e
 vez de na pilha. Mas eles também não têm muitas habilidades a mais. Você irá
 usá-los mais comumente nestas situações:
 
-* Quando você tem um tipo cujo tamanho não é possível saber em tempo de
+- Quando você tem um tipo cujo tamanho não é possível saber em tempo de
   compilação, e você quer usar um valor desse tipo em um contexto que precisa
   saber um tamanho exato;
-* Quando você tem uma quantidade grande de dados e você quer transferir a posse
+- Quando você tem uma quantidade grande de dados e você quer transferir a posse
   mas garantir que os dados não serão copiados quando você o fizer;
-* Quando você quer possuir um valor e só se importa se é um tipo que implementa
+- Quando você quer possuir um valor e só se importa se é um tipo que implementa
   uma trait específica, em vez de saber o tipo concreto.
 
 Vamos demonstrar a primeira situação nesta seção. Mas antes disso, vamos falar
@@ -24,7 +24,7 @@ copiados de um lado para o outro na pilha. Para melhorar o desempenho nessa
 situação, podemos armazenar essa quantidade grande de dados no heap em um box.
 Assim, apenas uma quantidade pequena de dados referentes ao ponteiro é copiada
 na pilha, e os dados em si ficam em um lugar só no heap. O terceiro caso é
-conhecido como um *objeto de trait* (*trait object*), e o Capítulo 17 dedica uma
+conhecido como um _objeto de trait_ (_trait object_), e o Capítulo 17 dedica uma
 seção inteira somente a esse tópico. Então o que você aprender aqui você irá
 aplicar de novo no Capítulo 17!
 
@@ -64,14 +64,14 @@ poderíamos definir sem ele.
 ### Boxes Possibilitam Tipos Recursivos
 
 Em tempo de compilação, o Rust precisa saber quanto espaço um tipo ocupa. Um
-*tipo recursivo* (*recursive type*), onde um valor pode ter como parte de si
+_tipo recursivo_ (_recursive type_), onde um valor pode ter como parte de si
 mesmo outro valor do mesmo tipo, é um tipo cujo tamanho não se pode saber em
 tempo de compilação. Como esse aninhamento de valores poderia em teoria
 continuar infinitamente, o Rust não sabe quanto espaço um valor de um tipo
 recursivo precisa. Porém, boxes têm um tamanho conhecido, então podemos ter
 tipos recursivos inserindo um box em sua definição.
 
-Vamos explorar a *lista ligada* (*cons list*), que é um tipo de dados comum em
+Vamos explorar a _lista ligada_ (_cons list_), que é um tipo de dados comum em
 linguagens de programação funcional, como um exemplo de tipo recursivo. O tipo
 para lista ligada que vamos definir é bem básico exceto pela recursão; portanto,
 os conceitos no exemplo que vamos trabalhar vão ser úteis sempre que você se
@@ -79,7 +79,7 @@ encontrar em situações mais complexas envolvendo tipos recursivos.
 
 #### Mais Informações sobre a Cons List
 
-A *cons list* é uma estrutura de dados que vem da linguagem de programação Lisp
+A _cons list_ é uma estrutura de dados que vem da linguagem de programação Lisp
 e seus dialetos. Em Lisp, a função `cons` (abreviação de "construction
 function", função de construção) constrói um novo par a partir de seus dois
 argumentos, que geralmente são um valor único e um outro par. Esses pares
@@ -100,7 +100,7 @@ que é um valor inválido ou ausente.
 Apesar de linguagens de programação funcionais usarem cons lists frequentemente,
 essa não é uma estrutura de dados muito usada em Rust. Na maioria das vezes em
 que você tem uma lista de itens em Rust, `Vec<T>` é uma escolha melhor. Outros
-tipos recursivos *são* úteis em diversas situações. Mas começando com a cons
+tipos recursivos _são_ úteis em diversas situações. Mas começando com a cons
 list, podemos explorar como boxes nos permitem definir um tipo recursivo sem
 muita distração.
 
@@ -118,15 +118,15 @@ enum List {
 ```
 
 <span class="caption">Listagem 15-2: A primeira tentativa de definir um enum
-para representar uma estrutura de dados *cons list* de valores `i32` </span>
+para representar uma estrutura de dados _cons list_ de valores `i32` </span>
 
 > Nota: estamos implementando uma cons list que guarda apenas valores `i32` para
 > os propósitos deste exemplo. Poderíamos tê-la implementado usando tipos
 > genéricos, conforme discutimos no Capítulo 10, para definir um tipo cons list
 > que poderia armazenar valores de qualquer tipo.
 
-A listagem 15-3 mostra como fica o uso do tipo `List` para armazenar a lista `1,
-2, 3`.
+A listagem 15-3 mostra como fica o uso do tipo `List` para armazenar a lista
+`1, 2, 3`.
 
 <span class="filename">Arquivo: src/main.rs</span>
 
@@ -170,7 +170,7 @@ O erro diz que esse tipo "tem tamanho infinito". A razão é que nós definimos
 diretamente. Como resultado, o Rust não consegue determinar quanto espaço ele
 precisa para armazenar um valor `List`. Vamos analizar por partes por que
 recebemos esse erro: primeiro, vamos ver como o Rust decide quanto espaço
-precisa para armazenar o valor de um tipo *não* recursivo.
+precisa para armazenar o valor de um tipo _não_ recursivo.
 
 #### Computando o Tamanho de um Tipo Não Recursivo
 
