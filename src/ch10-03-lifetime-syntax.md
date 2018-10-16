@@ -656,7 +656,7 @@ que deve corresponder suas intuições de qualquer linguagem: `string1` é váli
 até o final do escopo exterior, `strin2` é válida até o final do escopo, a
 `string2` é válida até o final do escopo interior. Com o verificador de 
 empréstimos aprovando esse código; ele vai compilar e imprimir 
-`A string mais longa é a string longa é longa`:
+`A string mais longa é`:
 
 <span class="filename">Filename: src/main.rs</span>
 
