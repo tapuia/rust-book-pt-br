@@ -133,3 +133,12 @@ O valor de y é: 6
 Porque nós chamamos a função com `5` sendo o valor de` x` e `6` é passado
 como o valor de `y`, as duas cadeias são impressas com esses valores.
 
+### Corpos de função
+
+Corpos de são constituídos por uma série de declarações que terminam,
+opcionalmente, em uma expressão. Até agora, foram apresentadas apenas funções sem uma expressão final,
+mas você viu uma expressão como parte de instruções. Porque Rust é uma
+linguagem baseada em expressão, essa é uma importante distinção a ser entendida.
+Outras linguagens não têm as mesmas distinções, então, vamos ver o que são
+declarações e expressões e como elas afetamo os corpos
+das funções.
