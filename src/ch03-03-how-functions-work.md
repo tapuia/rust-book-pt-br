@@ -142,3 +142,95 @@ linguagem baseada em expressão, essa é uma importante distinção a ser entend
 Outras linguagens não têm as mesmas distinções, então, vamos ver o que são
 declarações e expressões e como elas afetamo os corpos
 das funções.
+
+### Declarações e Expressões
+
+Na verdade, já usamos delarações e expressões. *Declarações* são
+instruções que executam alguma ação e não retornam um resultado. E *expressões*
+retornam um resultado. Vamos ver alguns exemplos.
+
+Criar uma variável e atribuit um valor a ela com a palavra-chave `let` é uma declaração.
+Na Listagem 3-1, `let y = 6;` é uma declaração:
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust
+fn main() {
+    let y = 6;
+}
+```
+
+<span class="caption">Listagem 3-1: A declaração da função `main` contendo uma declaração.</span>
+
+Definições de função também são definições; todo o exemplo
+é uma declaração em si.
+
+Definições não retornam valores. Assim sendo, você não pode atribuit uma declaração `let` para
+outra variável, como o código a seguir tenta fazer; você receberá um erro:
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust,ignore
+fn main() {
+    let x = (let y = 6);
+}
+```
+
+Quando você rodar esse programa, o erro será o seguinte:
+
+```text
+$ cargo run
+   Compiling funcoes v0.1.0 (file:///projects/funcoes)
+error: expected expression, found statement (`let`)
+ --> src/main.rs:2:14
+  |
+2 |     let x = (let y = 6);
+  |              ^^^
+  |
+  = note: variable declaration using `let` is a statement
+```
+
+A declaração `let y = 6` não retorna um valor, então não existe nada para o
+`x` se ligar. Isso é diferente do que acontece em
+outras linguagens, como
+C e Ruby, onde a atribuição retorna o valor atribuído. Nestas linguagens, você pode escrever `x = y = 6` e ter ambos, `x` e `y` contendo o valor
+`6`; esse não é o caso em Rust.
+
+Expressões avaliam algo e compõem a mior parte do código que
+você escreverá em Rust. Considere uma simples operação matemática, como um `5 + 6`, que
+é uma expressão que avalia o valor `11`. Expressões podem fazer parte de
+declarações: na Listagem 3-1, o `6` na declaração `let y = 6;` é uma
+expressão que avalia o valor `6`. A chamada de função é uma
+expressão. Chamar uma macro é uma expressão. O bloco que vamos usar para criar
+um novo escopo, `{}`, é uma expressão, por exemplo:
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust
+fn main() {
+    let x = 5;
+
+    let y = {
+        let x = 3;
+        x + 1
+    };
+
+    println!("O valor de y é: {}", y);
+}
+```
+
+A expressão:
+
+```rust,ignore
+{
+    let x = 3;
+    x + 1
+}
+```
+
+é um bloco que, nesse exemplo, avlia `4`. Esse valor fica vinculado ao `y`
+como parte da declaração `let`. Note que  `x + 1` sem um ponto e vírgula linhas no final. 
+Expressões que não inclue o fim de ponyo e vírgula.
+Se você adicionar um ponto e vírgula ao fim de uma expressão,
+você a transforma em uma declaração, que então não retornará um valor.
+Tenha isso em mente, enquanto explora os valores e expressões de retorno da função a seguir.
