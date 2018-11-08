@@ -254,3 +254,12 @@ válido em todos os lugares em que usamos `numero`. Rust não seria capaz de faz
 de `numero` fosse determinado apenas em tempo de execução; o compilador seria mais complexo e
 faria menos garantias sobre o código se tivesse que manter o controle de
 vários tipos hipotéticos para qualquer variável.
+
+### Repetição com laços de repetição
+
+Geralmente, é útil executar um bloco de código mais de uma vez. Para essa tarefa,
+o Rust fornece vários *loops*. Um loop percorre o código dentro do corpo do loop
+até o final e, em seguida, inicia imediatamente no início. Para
+experimentar loops, vamos criar um novo projeto chamado *loops*.
+
+O Rust possui três tipos de loops: `loop`,` while` e `for`. Vamos tentar cada um.
