@@ -167,3 +167,90 @@ depois de encontrar um, não verifica o restante.
 Usar muitas expressões `else if` pode confundir seu código, portanto, se você tiver
 mais de uma, convém refatorar seu código. O Capítulo 6 descreve uma poderosa
 construção de ramificação em Rust chamada `match` para esses casos.
+
+#### Usando `if` em uma declaração `let`
+
+Pelo fato de `if` ser uma expressão, podemos usá-la do lado direito de uma declaração `let`,
+como na Listagem 3-2:
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust
+fn main() {
+    let condicao = true;
+    let numero = if condicao {
+        5
+    } else {
+        6
+    };
+
+    println!("O valor do número é: {}", numero);
+}
+```
+
+<span class = "caption"> Listagem 3-2: Atribuindo o resultado de uma expressão `if`
+para uma variável </span>
+
+A variável `numero` será ligada a um valor baseado no resultado da expressão `if`.
+Execute este código para ver o que acontece:
+
+```text
+$ cargo run
+   Compiling branches v0.1.0 (file:///projects/branches)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.30 secs
+     Running `target/debug/branches`
+O valor do número é: 5
+```
+
+Lembre-se de que os blocos de código são avaliados até a última expressão, e os
+números por si mesmos também são expressões. Neste caso, o valor de
+toda a expressão `if` depende de qual bloco de código é executado. Isso significa que
+os valores que têm o potencial de serem resultados de cada braço do `if` e que devem ser
+do mesmo tipo; na Listagem 3-2, os resultados do braço `if` e do `else`
+eram inteiros `i32`. Se os tipos forem incompatíveis, como no exemplo a
+seguir, receberemos um erro:
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust,ignore
+fn main() {
+    let condicao = true;
+
+    let numero = if condicao {
+        5
+    } else {
+        "seis"
+    };
+
+    println!("O valor do número é: {}", numero);
+}
+```
+
+Quando tentamos executar esse código, recebemos um erro. Os braços `if` e` else` possuem
+valores de tipos que são incompatíveis, e Rust indica exatamente onde encontrar o
+problema no programa:
+
+```text
+error[E0308]: if and else have incompatible types
+ --> src/main.rs:4:18
+  |
+4 |       let numero = if condicao {
+  |  __________________^
+5 | |         5
+6 | |     } else {
+7 | |         "seis"
+8 | |     };
+  | |_____^ expected integral variable, found &str
+  |
+  = note: expected type `{integer}`
+             found type `&str`
+```
+
+A expressão no bloco `if` é avaliada como um inteiro, e a expressão no bloco` else` é
+avaliada como uma string. Isso não funcionará porque as variáveis precisam ter
+um único tipo. Rust precisa saber em tempo de compilação qual é o tipo da variável `numero`,
+definitivamente, para que possa verificar em tempo de compilação que seu tipo é
+válido em todos os lugares em que usamos `numero`. Rust não seria capaz de fazer isso se o tipo
+de `numero` fosse determinado apenas em tempo de execução; o compilador seria mais complexo e
+faria menos garantias sobre o código se tivesse que manter o controle de
+vários tipos hipotéticos para qualquer variável.
