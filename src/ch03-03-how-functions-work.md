@@ -234,3 +234,113 @@ Expressões que não inclue o fim de ponyo e vírgula.
 Se você adicionar um ponto e vírgula ao fim de uma expressão,
 você a transforma em uma declaração, que então não retornará um valor.
 Tenha isso em mente, enquanto explora os valores e expressões de retorno da função a seguir.
+
+### Funções com valor de retorno
+
+Funções podem retornar valores para o código que os chama. Não nomeamos valores de
+retorno, mas declaramos o tipo deles depois de uma seta (`->`). Em Rust, o valor de retorno
+da função é sinônimo do valor da expressão
+final no bloco do corpo de uma função. Você pode retornar cedo de uma função usando
+a palavra-chave `return` e especificando um valor, mas a maioria das funções retorna
+a última expressão implicitamente. Veja um exemplo de uma função que retorna um
+valor:
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust
+fn cinco() -> i32 {
+    5
+}
+
+fn main() {
+    let x = cinco();
+
+    println!("O valor de x é: {}", x);
+}
+```
+
+Não há chamadas de função, macros ou até mesmo declarações `let` na função` cinco`
+- apenas o número `5` por si só. Essa é uma função perfeitamente válida em
+Rust. Observe que o tipo de retorno da função também é especificado como `-> i32`. Tente
+executar este código; a saída deve ficar assim:
+
+```text
+$ cargo run
+   Compiling funcoes v0.1.0 (file:///projects/funcoes)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.30 secs
+     Running `target/debug/funcoes`
+The value of x is: 5
+```
+
+O `5` em` cinco` é o valor de retorno da função, e é por isso que o tipo de retorno
+é `i32`. Vamos verificar isso com mais detalhes. Existem dois bits importantes:
+primeiro, a linha `let x = cinco ();` mostra que estamos usando o valor de retorno de uma
+função para inicializar uma variável. Porque a função `cinco` retorna um` 5`,
+essa linha é a mesma que a seguinte:
+
+```rust
+let x = 5;
+```
+
+Em segundo lugar, a função `cinco` não tem parâmetros e define o tipo de
+valor de retorno, mas o corpo da função é um `5` solitário sem ponto e vírgula
+porque é uma expressão cujo valor queremos retornar.
+
+Vamos ver outro exemplo:
+
+<span class="filename">Filename: src/main.rs</span>
+
+```rust
+fn main() {
+    let x = soma_um(5);
+
+    println!("O valor de x é: {}", x);
+}
+
+fn soma_um(x: i32) -> i32 {
+    x + 1
+}
+```
+
+A execução deste código irá imprimir `O valor de x é: 6`. Mas se colocarmos um
+ponto e vírgula no final da linha que contém `x + 1`, alterando-o de
+expressão para uma declaração, receberemos um erro.
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust,ignore
+fn main() {
+    let x = soma_um(5);
+
+    println!("O valor de x é: {}", x);
+}
+
+fn soma_um(x: i32) -> i32 {
+    x + 1;
+}
+```
+
+Executar este código produz um erro, da seguinte maneira:
+
+```text
+error[E0308]: mismatched types
+ --> src/main.rs:7:28
+  |
+7 |   fn soma_um(x: i32) -> i32 {
+  |  ____________________________^
+8 | |     x + 1;
+  | |          - help: consider removing this semicolon
+9 | | }
+  | |_^ expected i32, found ()
+  |
+  = note: expected type `i32`
+             found type `()`
+```
+
+A principal mensagem de erro, "tipos incompatíveis", revela o problema central com este
+código. A definição da função `soma_um` diz que retornará uma
+`i32`, mas as declarações não avaliam um valor expresso por` () `,
+a tupla vazia. Portanto, nada é retornado, o que contradiz a função
+definição e resulta em erro. Nesta saída, Rust fornece uma mensagem para
+possivelmente ajudar a corrigir este problema: sugere a remoção do ponto e vírgula, que
+iria corrigir o erro.
