@@ -122,3 +122,48 @@ fn main() {
 ```
 
 A execução deste código irá imprimir `número era algo diferente de zero`.
+
+#### Gerenciando Múltiplas Condições com `else if`
+
+Você pode ter várias condições combinando `if` e` else` em um `else if`.
+Por exemplo:
+
+<span class="filename">Nome do arquivo: src/main.rs</span>
+
+```rust
+fn main() {
+    let numero = 6;
+
+    if numero % 4 == 0 {
+        println!("número é divisível por 4");
+    } else if numero % 3 == 0 {
+        println!("número é divisível por 3");
+    } else if numero % 2 == 0 {
+        println!("número é divisível por 2");
+    } else {
+        println!("número não é divisível por 4, 3 ou 2");
+    }
+}
+```
+
+Este programa tem quatro caminhos possíveis. Depois de executá-lo, você deve
+ver a seguinte saída:
+
+```text
+$ cargo run
+   Compiling branches v0.1.0 (file:///projects/branches)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.31 secs
+     Running `target/debug/branches`
+número é divisível por 3
+```
+
+Quando este programa é executado, ele verifica cada expressão `if` por sua vez e executa
+o primeiro corpo para o qual a condição é verdadeira. Note que mesmo que 6 seja
+divisível por 2, nós não vemos a saída `o número é divisível por 2`, nem vemos o
+texto `número não é divisível por 4, 3 ou 2` do bloco `else`.
+Isso ocorre porque o Rust só executa o bloco para a primeira condição verdadeira e,
+depois de encontrar um, não verifica o restante.
+
+Usar muitas expressões `else if` pode confundir seu código, portanto, se você tiver
+mais de uma, convém refatorar seu código. O Capítulo 6 descreve uma poderosa
+construção de ramificação em Rust chamada `match` para esses casos.
