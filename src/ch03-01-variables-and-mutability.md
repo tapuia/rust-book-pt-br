@@ -107,7 +107,7 @@ um desempenho menor pode ser uma penalidade que vale a pena para obter mais clar
 Ser incapaz de mudar o valor de uma variável, pode ter feito você lembrar de
 outro conceito de programação, que a maioria das outras linguagens possui, chamado: *constantes*. Como
 variáveis imutáveis, contantes são valores que estão vinculados ao nome e não
-podem serem alterados, mas há algumas diferenças entre contantes e
+podem serem alterados, mas há algumas diferenças entre constantes e
 variáveis.
 
 Primeiro, você não pode usar `mut` com constantes. Constante não são apenas
