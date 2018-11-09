@@ -51,7 +51,7 @@ imutável x`, porque você tentou atribuir um segundo valor à variável `x`.
 É importante que nos recebamos erros em tempo de compilação quando tentamos
 alterar um valor que anteriormente foi indicado como imutável, porque
 esta situação pode ocasionar erros. Se uma parte do seu código funciona assumindo
-que o valor nunca será alterdo e outra parte do seu código muda este valor, é
+que o valor nunca será alterado e outra parte do seu código muda este valor, é
 possível que a primeira parte do código não faça o que foi projetada para fazer.
 A causa desse tipo de falha pode ser difícil de rastrear,
 especialmente quando o segundo trecho de código muda o valor apenas *algumas vezes*.
