@@ -397,7 +397,7 @@ através do loop.
 Como uma alternativa mais concisa, você pode usar um laço `for` e executar algum código
 para cada item de uma coleção. Um laço `for` parece com este código na Listagem 3-5:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Nome do arquivo: src/main.rs</span>
 
 ```rust
 fn main() {
