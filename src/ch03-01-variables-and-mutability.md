@@ -201,7 +201,7 @@ let espacos = espacos.len();
 
 Essa construção é permitida, porque a primeira variável `espacos` é do tipo string
 e a segunda variável, que é uma nova variável que tem o
-mesmo nome que a primeira, é do tipo numérico Shadowing nos poupa de
+mesmo nome que a primeira, é do tipo numérico. Shadowing nos poupa de
 ter de criar nomes diferentes, como `str_espacos` e
 `num_espacos`; em vez disso, podemos simplesmente reutilizar o nome `espacos`. No entanto, se
 tentassemos usar `mut` para isso, como mostramos aqui, teremos um erro em tempo de compilação:
