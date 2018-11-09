@@ -149,7 +149,7 @@ valor codificado precisasse ser atualizado no futuro.
 Como você viu na seção “Comparando o Adivinha ao Número Secreto” no Capítulo
 2, você pode declarar uma nova variável com o mesmo nome de uma variável anterior,
 e a nova variável sombreia a variável anterior. Rustaceans dizem que a
-primeira variável é * sombreada * pela segunda, o que significa que o segundo
+primeira variável é *sombreada* pela segunda, o que significa que o segundo
 valor da variável é o que aparece quando a variável é usada. Podemos sombrear uma
 variável usando o mesmo nome da variável e repetindo o uso da palavra-chave `let`
 da seguinte forma:
