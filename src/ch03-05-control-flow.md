@@ -43,7 +43,7 @@ Capítulo 2.
 Opcionalmente, também podemos incluir uma expressão `else`, que escolhemos
 fazer aqui, para dar ao programa um bloco de código alternativo a ser executado, caso a
 condição seja avaliada como falsa. Se você não fornecer uma expressão `else` e a
-condição for falsa, o programa simplesmente ignorará o bloco` if` e passará para o
+condição for falsa, o programa simplesmente ignorará o bloco `if` e passará para o
 próximo bit de código.
 
 Tente executar este código; você deve ver a seguinte saída:
