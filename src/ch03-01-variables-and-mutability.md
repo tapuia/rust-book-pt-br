@@ -183,7 +183,7 @@ O valor de x é: 12
 ```
 
 Shadowing é diferente do que dizer que uma variável é `mut`,porque teremos um
-erro em tempo de compilação se, acitentalmente, tentarmos reatribuir essa variável sem
+erro em tempo de compilação se, acidentalmente, tentarmos reatribuir essa variável sem
 utilizar `let`. Usando `let`, nós podemos realizar algumas transformações,
 mas sem ter uma variável imutável após estas transformações terem
 sido concluídas.
