@@ -39,7 +39,7 @@ error[E0384]: cannot assign twice to immutable variable `x`
   |     ^^^^^ cannot assign twice to immutable variable
 ```
 
-Esse exemplo mostra como o compilador ajuda você a encontrar error no seus programas.
+Esse exemplo mostra como o compilador ajuda você a encontrar erros no seus programas.
 Mesmo que erros de compilação sejam frustrantes, eles apenas significam que seu programa
 não está fazendo de modo seguro o que você espera fazer; eles *não* siginificam que você
 não é um bom programador! Programadores experientes também recebem erros de compilação.
