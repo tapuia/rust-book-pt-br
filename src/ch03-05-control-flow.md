@@ -31,7 +31,7 @@ fn main() {
 
 <!-- NEXT PARAGRAPH WRAPPED WEIRD INTENTIONALLY SEE #199 -->
 
-Todas as expressões `if` começam com a palavra-chave` if`, que é seguida por uma
+Todas as expressões `if` começam com a palavra-chave `if`, que é seguida por uma
 condição. Neste caso, a condição verifica se a variável
 `number` tem um valor menor que 5. O bloco de código que queremos executar se o
 condição é verdadeira é colocada imediatamente após a condição dentro de chaves.
