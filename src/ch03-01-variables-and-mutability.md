@@ -45,7 +45,7 @@ não está fazendo de modo seguro o que você espera fazer; eles *não* siginifi
 não é um bom programador! Programadores experientes também recebem erros de compilação.
 
 A mensagem indica que a causa do erro é que você
-`não pode atribuir mais de uma vez à variáve
+`não pode atribuir mais de uma vez à variável
 imutável x`, porque você tentou atribuir um segundo valor à variável `x`.
 
 É importante que nos recebamos erros em tempo de compilação quando tentamos
