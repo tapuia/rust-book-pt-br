@@ -102,7 +102,7 @@ alocada. Com estruturas de dados menores, criar novas instâncias e escrever
 em um estilo de programação funcional pode ser mais fácil de entender, portanto,
 um desempenho menor pode ser uma penalidade que vale a pena para obter mais clareza.
 
-### Diferenças entre variáveis e contantes
+### Diferenças entre variáveis e constantes
 
 Ser incapaz de mudar o valor de uma variável, pode ter feito você lembrar de
 outro conceito de programação, que a maioria das outras linguagens possui, chamado: *constantes*. Como
