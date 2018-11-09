@@ -121,7 +121,7 @@ não se preocupe com os detalhes por agora. Apenas saiba que você precisa espec
 Contantes podem ser declaradas em qualquer escopo, incluindo o escopo global, o que os tornam
 úteis para valores que várias partes do código precisa conhecer.
 
-A última diferença é que as contantes podem serem definidas apenas para uma expressão contante,
+A última diferença é que as constantes podem ser definidas apenas para uma expressão constante,
 ou seja, não pode ser o resultado de uma chamada de função ou qualquer outro valor que só poderia ser
 calculado em tempo de execução.
 
