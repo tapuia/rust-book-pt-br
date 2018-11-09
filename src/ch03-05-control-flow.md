@@ -104,7 +104,7 @@ error[E0308]: mismatched types
 
 O erro indica que Rust esperava um `bool`, mas obteve um inteiro. Ao contrário de
 linguagens como Ruby e JavaScript, o Rust não tentará automaticamente
-converter tipos não-booleanos em um booleano. Você deve explícitar e sempre fornecer
+converter tipos não-booleanos em um booleano. Você deve explicitar e sempre fornecer
 `if` com um booleano como sua condição. Se quisermos que o bloco de código `if` seja executado
 somente quando um número não é igual a `0`, por exemplo, podemos mudar o `if`
 para o seguinte:
