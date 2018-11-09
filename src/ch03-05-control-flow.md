@@ -385,7 +385,7 @@ O valor é: 40
 O valor é: 50
 ```
 
-Todos os cinco valores de matriz aparecem no terminal, conforme esperado. Embora `indixe`
+Todos os cinco valores de matriz aparecem no terminal, conforme esperado. Embora `indice`
 vai chegar a um valor de `5` em algum momento, o loop para de executar antes de tentar
 para buscar um sexto valor da matriz.
 
