@@ -2,7 +2,7 @@
 
 Como mencionado no Capítulo 2, por padrão, as variáveis são imutáveis. Essa é uma das
 maneiras que o Rust lhe dá para escrever o seu código de
-modo seguro e a fácil concorrência que Rust oforece. No entanto, você ainda tem
+modo seguro e a fácil concorrência que Rust oferece. No entanto, você ainda tem
 a opção de tornar a sua variável mutável. Vamos explorar como e por que Rust
 incentiva você a usar variáveis imutáveis e por que às vezes pode
 não optar por utilizá-las.
