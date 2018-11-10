@@ -449,7 +449,7 @@ Este código é um pouco melhor, não é?
 ## Resumo
 
 Você conseguiu! Esse foi um capítulo considerável: você aprendeu sobre variáveis, tipos
-e tipos de dados compostos, funções, comentários, expressões `if` e loops! E se
+de dados escalares e compostos, funções, comentários, expressões `if` e loops! E se
 você quer praticar com os conceitos discutidos neste capítulo, tente construir
 programas para fazer o seguinte:
 
