@@ -12,4 +12,4 @@ Especificamente, você aprenderá sobre variáveis, tipos básicos, funções, c
 > um significado específico, e você estará usando-as para várias tarefas em programas em Rust;
 > algumas ainda não possuem funcionalidades associadas a elas, mas
 > foram reservadas para funcionalidades que podem ser adicionadas ao Rust futuramente. Você
-> encontrará uma lista de palavras-chaves no Apêncide A.
+> encontrará uma lista de palavras-chaves no Apêndice A.
