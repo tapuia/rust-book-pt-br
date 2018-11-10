@@ -431,7 +431,7 @@ que gera todos os números em sequência a partir de um número e terminando
 antes de outro número.
 
 Veja como seria a contagem regressiva usando um loop `for` e outro método,
-nós ainda não falamos, `rev`, para reverter o intervalo:
+que nós ainda não falamos, `rev`, para reverter o intervalo:
 
 <span class="filename">Nome do arquivo: src/main.rs</span>
 
