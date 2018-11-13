@@ -35,7 +35,7 @@ Você verá anotações de tipos diferentes para outros tipos de dados.
 ### Tipos escalares
 
 Um tipo *escalar* representa um valor único. Rust tem quatro tipos escalares primários:
-inteiros, números de ponto flutuante, booleanos e caracteres. You pode reconhecer
+inteiros, números de ponto flutuante, booleanos e caracteres. Você pode reconhecer
 esses tipos de outras linguagens de programação. Vamos pular para como eles funcionam no Rust.
 
 ### Tipos inteiros
