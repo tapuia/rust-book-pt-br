@@ -112,7 +112,7 @@ fn outra_funcao(x: i32, y: i32) {
 }
 ```
 
-Este exemplo criar uma função com dois parâmetros, ambos com o 
+Este exemplo cria uma função com dois parâmetros, ambos com o 
 tipo `i32`. Então a função exibe os valores de ambos os parâmetros. Note que os
 parâmetros de função não precisam ser do mesmo tipo, isto apenas
 aconteceu neste exemplo.
