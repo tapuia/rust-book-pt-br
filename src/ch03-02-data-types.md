@@ -212,7 +212,7 @@ dentro de parênteses. Cada posição da tupla tem um tipo e os tipos dos elemen
 da tupla não necessitam serem iguais.
 Adicionamos anotações de tipo neste exemplo:
 
-<span class="filename">Nomr do arquivo: src/main.rs</span>
+<span class="filename">Nome do arquivo: src/main.rs</span>
 
 ```rust
 fn main() {
