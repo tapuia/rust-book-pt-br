@@ -18,7 +18,7 @@ linha. Para comentários que se estendem além de uma única linha, você precis
 ```rust
 // Então, estamos fazendo algo complicado aqui, tempo suficiente para que precisemos
 // várias linhas de comentários para fazer isso! Ufa! Espero que este comentário
-// explica o que está acontecendo.
+// explique o que está acontecendo.
 ```
 
 Comentários também podem ser colocados no final das linhas contendo código:
