@@ -87,7 +87,7 @@ O valor de x é: 5
 ```
 
 A declaração de `outra_funcao` tem um parâmetro chamado `x`. O tipo do
-`x` é especificado como `i32`. Quando `5` é ássadp para a `outra_funcao`, a macro
+`x` é especificado como `i32`. Quando `5` é passado para a `outra_funcao`, a macro
 `println!` coloca `5` onde o par de chaves estava na string
 de formato.
 
