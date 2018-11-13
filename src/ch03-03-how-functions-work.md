@@ -55,7 +55,7 @@ Primeiro, a mensagem "Olá, mundo!" é exibida, e então
 
 Funções também podem ser definidas tendo *parâmetros*, que são variáveis especiais
 que fazem parte da assinatura da função. Quando uma função tem parâmetros, você
-pode fornecer específicos para esses parâmetros. Tecnicamente, os
+pode fornecer tipos específicos para esses parâmetros. Tecnicamente, os
 valores definidos são chamados de *argumentos*, mas informalmente, as pessoas tendem
 a usar as palavras *parâmetro* e *argumento* para falar tanto de
 variáveis da definição da função como os valores passados quando você
