@@ -145,7 +145,7 @@ das funções.
 
 ### Declarações e Expressões
 
-Na verdade, já usamos delarações e expressões. *Declarações* são
+Na verdade, já usamos declarações e expressões. *Declarações* são
 instruções que executam alguma ação e não retornam um resultado. E *expressões*
 retornam um resultado. Vamos ver alguns exemplos.
 
