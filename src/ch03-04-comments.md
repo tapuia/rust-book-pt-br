@@ -11,7 +11,7 @@ Aqui está um comentário simples:
 // Olá, mundo.
 ```
 
-Em Rust, os comentários devem começar com duas barras e continuar até o final do
+Em Rust, os comentários devem começar com duas barras e continuar até o final da
 linha. Para comentários que se estendem além de uma única linha, você precisará incluir
 `//` em cada linha, assim:
 
