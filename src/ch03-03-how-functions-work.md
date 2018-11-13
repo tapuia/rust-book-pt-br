@@ -47,7 +47,7 @@ Olá, mundo!
 Outra função.
 ```
 
-As linhas sã executadas na ordem em que aparecem na função `main`.
+As linhas são executadas na ordem em que aparecem na função `main`.
 Primeiro, a mensagem "Olá, mundo!" é exibida, e então
 `outra_funcao` é chamada e exibida a mensagem.
 
