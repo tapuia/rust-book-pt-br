@@ -230,7 +230,7 @@ A expressão:
 
 é um bloco que, nesse exemplo, avalia `4`. Esse valor fica vinculado ao `y`
 como parte da declaração `let`. Note o  `x + 1` sem um ponto e vírgula no final, que é diferente da maioria das linhas vistas até agora.
-Expressões que não inclue o fim de ponyo e vírgula.
+Expressões não terminam com ponto e vírgula.
 Se você adicionar um ponto e vírgula ao fim de uma expressão,
 você a transforma em uma declaração, que então não retornará um valor.
 Tenha isso em mente, enquanto explora os valores e expressões de retorno da função a seguir.
