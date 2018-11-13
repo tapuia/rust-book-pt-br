@@ -149,7 +149,7 @@ Na verdade, já usamos declarações e expressões. *Declarações* são
 instruções que executam alguma ação e não retornam um resultado. E *expressões*
 retornam um resultado. Vamos ver alguns exemplos.
 
-Criar uma variável e atribuit um valor a ela com a palavra-chave `let` é uma declaração.
+Criar uma variável e atribuir um valor a ela com a palavra-chave `let` é uma declaração.
 Na Listagem 3-1, `let y = 6;` é uma declaração:
 
 <span class="filename">Nome do arquivo: src/main.rs</span>
