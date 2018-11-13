@@ -43,7 +43,7 @@ esses tipos de outras linguagens de programação. Vamos pular para como eles fu
 Um *inteiro* é um número sem a parte fracionária. Usamos
 um tipo inteiro no Capítulo 2, o tipo `u32`. Esse tipo de
 declaração indica que
-o valor associado com deve ser um inteiro sem sinal (tipos inteiros com sinal começam com `i`, em vez de `u`) que ocupa 32 bits de espaço. Tabela 3-1 mostra
+o valor associado deve ser um inteiro sem sinal (tipos inteiros com sinal começam com `i`, em vez de `u`) que ocupa 32 bits de espaço. Tabela 3-1 mostra
 os tipos inteiros internos ao Rust. Cada variante está na
 coluna com sinal e sem sinal (por exemplo, `i16`) pode ser usada para declara um valor do tipo
 inteiro.
