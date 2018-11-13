@@ -118,7 +118,7 @@ e o tipo do valor *necessita* ser específicado. Falaremos sobre tipos de dados
 na próxima seção, "Data Type", então
 não se preocupe com os detalhes por agora. Apenas saiba que você precisa especificar o tipo.
 
-Contantes podem ser declaradas em qualquer escopo, incluindo o escopo global, o que os tornam
+Constantes podem ser declaradas em qualquer escopo, incluindo o escopo global, o que os tornam
 úteis para valores que várias partes do código precisa conhecer.
 
 A última diferença é que as constantes podem ser definidas apenas para uma expressão constante,
