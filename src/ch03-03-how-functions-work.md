@@ -140,7 +140,7 @@ opcionalmente, em uma expressão. Até agora, foram apresentadas apenas funçõe
 mas você viu uma expressão como parte de instruções. Porque Rust é uma
 linguagem baseada em expressão, essa é uma importante distinção a ser entendida.
 Outras linguagens não têm as mesmas distinções, então, vamos ver o que são
-declarações e expressões e como elas afetamo os corpos
+declarações e expressões e como elas afetam o corpo
 das funções.
 
 ### Declarações e Expressões
