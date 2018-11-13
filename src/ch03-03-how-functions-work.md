@@ -165,7 +165,7 @@ fn main() {
 Definições de função também são definições; todo o exemplo
 é uma declaração em si.
 
-Definições não retornam valores. Assim sendo, você não pode atribuit uma declaração `let` para
+Definições não retornam valores. Assim sendo, você não pode atribuir uma declaração `let` para
 outra variável, como o código a seguir tenta fazer; você receberá um erro:
 
 <span class="filename">Nome do arquivo: src/main.rs</span>
