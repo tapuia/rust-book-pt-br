@@ -268,7 +268,7 @@ elemento usando seus índices. Como ocorre nas maiorias das linguagens, o primei
 
 Uma outra maneira de ter uma coleção de vários valores é uma *matriz*. Diferentemente
 de uma tupla, todos os elementos de uma matriz devem ser do mesmo tipo.
-Matrizes em Rust são diferentes de matrizes de outros linguagens, porque matrizes em Rust são de
+Matrizes em Rust são diferentes de matrizes de outras linguagens, porque matrizes em Rust são de
 tamanhos fixos: uma vez declado, eles não podem aumentar ou diminuir de tamanho.
 
 Em Rust, os valores entram numa matriz são escritos em uma lista separados
