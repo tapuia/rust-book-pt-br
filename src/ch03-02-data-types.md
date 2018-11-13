@@ -64,7 +64,7 @@ negativo ou positivo - em outras palavras, se o número precisa de um sinal
 com ele (signed) ou se sempre for
 positivo pode ser representado sem um sinal (unsigned). É como escrevemos números no papel: Quando
 o sinal importa, o número é mostrado com um sinal de mais ou menos; contudo,
-quando é seguro assimit que o número é positivo, é mostrado sem sinal.
+quando é seguro assumir que o número é positivo, é mostrado sem sinal.
 Números com sinais são armazenados usando a representação complemento de dois (se você não tiver
 certeza do que é isso, você pode procurar sobre isso na internet; uma explicação está fora do escopo
 deste livro).
