@@ -45,7 +45,7 @@ um tipo inteiro no Capítulo 2, o tipo `u32`. Esse tipo de
 declaração indica que
 o valor associado deve ser um inteiro sem sinal (tipos inteiros com sinal começam com `i`, em vez de `u`) que ocupa 32 bits de espaço. Tabela 3-1 mostra
 os tipos inteiros internos ao Rust. Cada variante está na
-coluna com sinal e sem sinal (por exemplo, `i16`) pode ser usada para declara um valor do tipo
+coluna com sinal e sem sinal (por exemplo, `i16`) pode ser usada para declarar um valor do tipo
 inteiro.
 
 <span class="caption">Tabela 3-1: Tipos inteiros no Rust</span>
