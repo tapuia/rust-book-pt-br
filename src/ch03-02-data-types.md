@@ -244,7 +244,7 @@ que é `6.4`.
 
 Além de desestruturar através da correspondência de padrões, podemos
 acessar diretamente um elemento da tupla usando um ponto (`.`) como índice
-do valore que queremos acessar. Por exemplo:
+do valor que queremos acessar. Por exemplo:
 
 <span class="filename">Nome do arquivo: src/main.rs</span>
 
