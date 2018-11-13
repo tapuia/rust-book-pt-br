@@ -260,7 +260,7 @@ fn main() {
 }
 ```
 
-Esse programa cria uma tupla, `x`, e então cria uma uma variável para cada
+Esse programa cria uma tupla, `x`, e então cria uma variável para cada
 elemento usando seus índices. Como ocorre nas maiorias das linguagens, o primeiro
 índice em uma tupla é o 0.
 
