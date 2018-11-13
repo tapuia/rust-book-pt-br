@@ -196,7 +196,7 @@ outras linguagens, como
 C e Ruby, onde a atribuição retorna o valor atribuído. Nestas linguagens, você pode escrever `x = y = 6` e ter ambos, `x` e `y` contendo o valor
 `6`; esse não é o caso em Rust.
 
-Expressões avaliam algo e compõem a mior parte do código que
+Expressões avaliam algo e compõem a maior parte do código que
 você escreverá em Rust. Considere uma simples operação matemática, como um `5 + 6`, que
 é uma expressão que avalia o valor `11`. Expressões podem fazer parte de
 declarações: na Listagem 3-1, o `6` na declaração `let y = 6;` é uma
