@@ -93,7 +93,7 @@ de formato.
 
 Nas assinaturas de função, você *deve* declarar o tipo de cada parâmetro. Essa é
 decisão deliberada no design do Rust: exigir anotações de tipo na definição da função,
-significa que o compilador quase nunca precisará que as use em outr lugar do código
+significa que o compilador quase nunca precisará que as use em outro lugar do código
 para especificar o que você quer.
 
 Quando você precisa que uma função tenha vários parâmetros, separe as declarações de parâmetros
