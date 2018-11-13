@@ -1,7 +1,7 @@
 # Tipos de dados
 
 Todo valor em Rust é um *tipo de dado*, que informa ao Rust que tipos de
-datos estão sendo especificados para que saiba como trabalhar com esses dados. Vamos olhar para
+dados estão sendo especificados para que saiba como trabalhar com esses dados. Vamos olhar para
 dois subconjuntos tipos de dados: escalar e composto.
 
 Tenha em ment que Rust é uma linguagem de *tipagem estática*, o que significa
