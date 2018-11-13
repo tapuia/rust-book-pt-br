@@ -269,7 +269,7 @@ $ cargo run
    Compiling funcoes v0.1.0 (file:///projects/funcoes)
     Finished dev [unoptimized + debuginfo] target(s) in 0.30 secs
      Running `target/debug/funcoes`
-The value of x is: 5
+O valor de x é: 5
 ```
 
 O `5` em` cinco` é o valor de retorno da função, e é por isso que o tipo de retorno
