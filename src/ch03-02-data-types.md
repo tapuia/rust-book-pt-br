@@ -69,7 +69,7 @@ Números com sinais são armazenados usando a representação complemento de doi
 certeza do que é isso, você pode procurar sobre isso na internet; uma explicação está fora do escopo
 deste livro).
 
-Cada variante com sinap pode armazenar números de -(2<sup>n - 1</sup>) até 2<sup>n -
+Cada variante com sinal pode armazenar números de -(2<sup>n - 1</sup>) até 2<sup>n -
 1</sup> - 1 incluso, sendo *n* o número de bits que varia de acordo com o uso. Então, um
 `i8` pode armazenar números de -(2<sup>7</sup>) até 2<sup>7</sup> - 1, que é  igual
 a -128 até 127. Variantes sem sinal pode pode armazenar números de 0 até 2<sup>n</sup> - 1,
