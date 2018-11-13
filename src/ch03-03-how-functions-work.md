@@ -92,7 +92,7 @@ A declaração de `outra_funcao` tem um parâmetro chamado `x`. O tipo do
 de formato.
 
 Nas assinaturas de função, você *deve* declarar o tipo de cada parâmetro. Essa é
-decisão deliberada no deign do Rust: exigir anotações de tipo na definição da função,
+decisão deliberada no design do Rust: exigir anotações de tipo na definição da função,
 significa que o compilador quase nunca precisará que as use em outr lugar do código
 para especificar o que você quer.
 
