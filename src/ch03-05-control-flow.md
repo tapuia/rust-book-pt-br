@@ -37,7 +37,7 @@ condição. Neste caso, a condição verifica se a variável
 condição é verdadeira é colocada imediatamente após a condição dentro de chaves.
 Blocos de código associados às condições em expressões `if` são
 às vezes chamado de *divisões*, assim como as expressões `de combinação` que nós
-discutido na seção “Comparando o Palpite ao Número Secreto” de
+discutimos na seção “Comparando o Palpite ao Número Secreto” de
 Capítulo 2.
 
 Opcionalmente, também podemos incluir uma expressão `else`, que escolhemos
