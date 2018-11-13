@@ -6,7 +6,7 @@ ponto de entrada de diversos programas. Você também já viu a notação `fn`, 
 declarar uma nova função.
 
 Códigos em Rust usam, por convenção, o estilo *snake case* para nomes de função e
-veriável. No snake case, todas as letras são minúsculas e sublinhado (underline) separa as palavras.
+variável. No snake case, todas as letras são minúsculas e sublinhado (underline) separa as palavras.
 Aqui está um programa que contém uma definição de função de exemplo:
 
 <span class="filename">Nome do arquivo: src/main.rs</span>
