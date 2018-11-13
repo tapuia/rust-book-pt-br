@@ -106,7 +106,7 @@ números com casas decimais. Os pontos flutuantes do Rust são
 porque nos processadores modernos, a velocidade é quase a mesma que em um `f32`, mas possui
 maior precisão.
 
-Esse exemplo mostra números ponto flutuantes em ação:
+Esse exemplo mostra números de ponto flutuante em ação:
 
 <span class="filename">Nome do arquivo: src/main.rs</span>
 
