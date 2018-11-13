@@ -72,7 +72,7 @@ deste livro).
 Cada variante com sinal pode armazenar números de -(2<sup>n - 1</sup>) até 2<sup>n -
 1</sup> - 1 incluso, sendo *n* o número de bits que varia de acordo com o uso. Então, um
 `i8` pode armazenar números de -(2<sup>7</sup>) até 2<sup>7</sup> - 1, que é  igual
-a -128 até 127. Variantes sem sinal pode pode armazenar números de 0 até 2<sup>n</sup> - 1,
+a -128 até 127. Variantes sem sinal pode armazenar números de 0 até 2<sup>n</sup> - 1,
 entao um `u8` pode armazenar números de 0 até 2<sup>8</sup> - 1, que é de 0 até 255.
 
 Além disso, os tipos `isize` e `usize` dependem do computador em que seu programa
