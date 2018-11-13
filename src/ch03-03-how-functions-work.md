@@ -229,7 +229,7 @@ A expressão:
 ```
 
 é um bloco que, nesse exemplo, avalia `4`. Esse valor fica vinculado ao `y`
-como parte da declaração `let`. Note que  `x + 1` sem um ponto e vírgula linhas no final. 
+como parte da declaração `let`. Note o  `x + 1` sem um ponto e vírgula no final, que é diferente da maioria das linhas vistas até agora.
 Expressões que não inclue o fim de ponyo e vírgula.
 Se você adicionar um ponto e vírgula ao fim de uma expressão,
 você a transforma em uma declaração, que então não retornará um valor.
