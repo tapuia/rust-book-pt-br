@@ -191,7 +191,7 @@ fn main() {
 
 O tipo `char` representa um valor unicode, o que quer dizer que você pode
 armazenar muito mais que apenas ASCII. Letras com acentuação; ideogramas chinês, japonês e
-koreano; emoji; e caracteres não visíveis são válidos.
+coreano; emoji; e caracteres não visíveis são válidos.
 Valores Unicode vão de `U+0000` até `U+D7FF` e `U+E000` até
 `U+10FFFF` incluso. Contudo, um "caractere" não é realmente um conceito em Unicode,
 então a sua intuição de o que é um "caractere" pode não combinar com o que é um
