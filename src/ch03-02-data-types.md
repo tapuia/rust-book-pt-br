@@ -286,7 +286,7 @@ Matrizes são úteis quando você deseja que seus dados sejam alocados em pilha 
 no heap (discutiremos mais sobre pilha e heap no Capítulo 4), ou quando
 você quer garantir que sempre terá um número fixo de elementos. Uma matriz não
 é tão flexível como um vetor. Um vetor é de tipo semelhante,
-formnecido pela biblioteca padrão que *é* permitido diminuir ou aumentar o tamanho.
+fornecido pela biblioteca padrão que *é* permitido diminuir ou aumentar o tamanho.
 Se você não tem certeza se deve usar uma matriz ou vetor, você provavlemente usará um
 vetor. O Capítulo 8 discute sobre vetores com mais detalhes.
 
