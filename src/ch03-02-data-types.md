@@ -77,7 +77,7 @@ entao um `u8` pode armazenar números de 0 até 2<sup>8</sup> - 1, que é de 0 a
 
 Além disso, os tipos `isize` e `usize` dependem do computador em que seu programa
 está rodando: 64 bits se estiver em uma arquitetura de 64-bit e 32 bits
-se sua arquitetura for 32-bit.W
+se sua arquitetura for 32-bit.
 
 Você criar inteiros literais em qualquer uma das formas mostrada na Tabela 3-2. Observe
 que todos os literais de números, exceto o byte literal, permitem um sufixo de tipo,
