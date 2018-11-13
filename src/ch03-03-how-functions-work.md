@@ -135,7 +135,7 @@ como o valor de `y`, as duas cadeias são impressas com esses valores.
 
 ### Corpos de função
 
-Corpos de são constituídos por uma série de declarações que terminam,
+Corpos de função são constituídos por uma série de declarações que terminam,
 opcionalmente, em uma expressão. Até agora, foram apresentadas apenas funções sem uma expressão final,
 mas você viu uma expressão como parte de instruções. Porque Rust é uma
 linguagem baseada em expressão, essa é uma importante distinção a ser entendida.
