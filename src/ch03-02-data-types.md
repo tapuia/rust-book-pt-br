@@ -61,7 +61,7 @@ inteiro.
 Cada variante pode ser com ou sem sinal e ter tamanho explícito.
 *Signed* e *unsigned* refere-se à possibilidade do número ser
 negativo ou positivo - em outras palavras, se o número precisa de um sinal
-com ele (signed) ou se sempre for sempre
+com ele (signed) ou se sempre for
 positivo pode ser representado sem um sinal (unsigned). É como escrevemos números no papel: Quando
 o sinal importa, o número é mostrado com um sinal de mais ou menos; contudo,
 quando é seguro assimit que o número é positivo, é mostrado sem sinal.
