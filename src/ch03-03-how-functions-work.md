@@ -288,7 +288,7 @@ porque é uma expressão cujo valor queremos retornar.
 
 Vamos ver outro exemplo:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Nome do arquivo: src/main.rs</span>
 
 ```rust
 fn main() {
