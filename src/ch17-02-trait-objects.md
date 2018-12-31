@@ -162,3 +162,169 @@ Por outro lado, com o método usando objetos trait, uma instância de `Screen`
 pode conter um `Vec` que contém um `Box<Button>` assim como um `Box<TextField>`.
 Vamos ver como isso funciona e falaremos sobre as impliciações do desempenho
 em tempo de compilação.
+
+### Implementando o Trait
+
+Agora, adicionaremos alguns tipos que implementam o trait `Draw`. Forneceremos o
+tipo `Button`. Novamente, a implementação de uma biblioteca gráfica está além do escopo
+deste livro, então o método `draw` não terá nenhum implementação útil.
+Para imaginar como a implementação pode parecerm uma estrutura `Button`
+pode ter os campos `width`, `height` e `label`, como mostra  a Listagem 17-7:
+
+<span class="filename">Arquivo: src/lib.rs</span>
+
+```rust
+# pub trait Draw {
+#     fn draw(&self);
+# }
+#
+pub struct Button {
+    pub width: u32,
+    pub height: u32,
+    pub label: String,
+}
+
+impl Draw for Button {
+    fn draw(&self) {
+        // Code to actually draw a button
+    }
+}
+```
+
+<span class="caption">Listagem 17-7: Uma estrutura `Button` que implementa o
+trait `Draw`</span>
+
+Os campos `width`, `height` e `label` do `Button` serão diferentes
+de campos de outros componentes, como o tipo `TextField`, que pode ter esses campos,
+mais um campo `placeholder`. Para cada um dos tipo, queremos que desenhar na
+tela o que implementamos no trait `Draw`, mas usará códigos diferentes no
+método `draw` para definir como desenhar aquele tipo em específico, como o `Button` tem
+aqui (sem o atual código da interface gráfica que está além do escopo desse capítulo).
+`Button`, por exemplo, pode ter um bloco `impl` adicional,
+contêndo métodos reladionados com o que acontece quando um usuário clica no botão. Esses tipos de
+métodos não se aplicam a tipos como `TextField`.
+
+Se alguém estiver usando nossa biblioteca para implementar a estrutura `SelectBox` que tem
+os campos `width`, `height` e `options`, eles implementam o 
+trait `Draw` no tipo `SelectBox`, como mostra a Listagem 17-8:
+
+<span class="filename">Arquivo: src/main.rs</span>
+
+```rust,ignore
+extern crate gui;
+use gui::Draw;
+
+struct SelectBox {
+    width: u32,
+    height: u32,
+    options: Vec<String>,
+}
+
+impl Draw for SelectBox {
+    fn draw(&self) {
+        // Code to actually draw a select box
+    }
+}
+```
+
+<span class="caption">Listagem 17-8: Outro crate usando `gui` e implementando
+o trait `Draw` na estrutura `SelectBox`</span>
+
+Os usuários da nosso biblioteca agoora podem escrever suas funções `main` para criar uma
+instância de `Screen`. Para a instância de `Screen`, eles podem adicionar um `SelectBox` e um `Button`
+colocando cada um em um `Box<T>` para se tornar um objeto trait. Eles podem chamar o
+método `run` na instância de `Screen`, que irá chamar o `draw` para cada um dos
+componentes. A Listagem 17-9 mostra essa implementação:
+
+<span class="filename">Arquivo: src/main.rs</span>
+
+```rust,ignore
+use gui::{Screen, Button};
+
+fn main() {
+    let screen = Screen {
+        components: vec![
+            Box::new(SelectBox {
+                width: 75,
+                height: 10,
+                options: vec![
+                    String::from("Yes"),
+                    String::from("Maybe"),
+                    String::from("No")
+                ],
+            }),
+            Box::new(Button {
+                width: 50,
+                height: 10,
+                label: String::from("OK"),
+            }),
+        ],
+    };
+
+    screen.run();
+}
+```
+
+<span class="caption">Listagem 17-9: Usando objetos trait para armazenar valores
+de tipos diferentes que implmentam trait semelhantes.</span>
+
+Quando escrevemos uma biblioteca, não sabemos o que alguém pode adicionar ao
+tipo `SelectBox`, mas nossa implementação de `Screen` foi capaz de operar no
+novo tipo e desenhá-lo, porque `SelectBox` implementa o tipo `Draw`, o que
+significa que ele implementa o método `draw`.
+
+Esse conceito - de se preocupar apenas com as mensagem que um valor responde
+em vez do tipo concreto de valores - é similar ao conceito *duck typing*
+em linguagens dinâmicamente tipadas: se anda como um pato e é como um pato,
+então deve ser um pato! Na implementação do `run` na `Screen` na Listagem
+17-5, `run` não precisa saber qual é o tipo concreto que cada componente é.
+Ele não verifica se um componente é uma instância de `Button` ou
+um `SelectBox`, apenas chama o método `draw` do componente. Especificando
+`Box<Draw>` como o tipo dos valores do vetor `components`, definimos
+`Screen` por precisarmos de valores nos quais podemos chamar o método `draw`.
+
+A vantagem de usar objetos trait e o sistema de tipos do Rust para escrever códigos
+semelhante ao código usando duck typing é que nunca precisamos verificar se um valor
+implementa umm método em particular no tempo de execução ou se preocupar com erros se
+um valor não implementa um método, mas nós o chamamos mesmo assim. Rust não irá compilar nosso
+código se os valores não implementarem os traits que o objeto trait precisa.
+
+Por exemplo, a Listagem 17-10 mostra o que acontece se tentarmos criar uma `Screen`
+com uma `String` como um componente:
+
+<span class="filename">Arquivo: src/main.rs</span>
+
+```rust,ignore
+extern crate gui;
+use gui::Screen;
+
+fn main() {
+    let screen = Screen {
+        components: vec![
+            Box::new(String::from("Hi")),
+        ],
+    };
+
+    screen.run();
+}
+```
+
+<span class="caption">Listagem 17-10: Tentativa de usar um tipo que não
+implementa o trait do objeto trait.</span>
+
+Obteremos esse erro, porque `String` não implementa o trait `Draw`:
+
+```text
+error[E0277]: the trait bound `std::string::String: gui::Draw` is not satisfied
+  --> src/main.rs:7:13
+   |
+ 7 |             Box::new(String::from("Hi")),
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait gui::Draw is not
+   implemented for `std::string::String`
+   |
+   = note: required for the cast to the object type `gui::Draw`
+```
+
+Esse erro nos permite saber se estamos passando algo para `Screen` que não
+pretenderíamos passar e que deveríamos passar um tipo diferente ou devemos implementar
+`Draw` na `String`, para que `Screen` possa chamar `draw` nela.
