@@ -328,3 +328,28 @@ error[E0277]: the trait bound `std::string::String: gui::Draw` is not satisfied
 Esse erro nos permite saber se estamos passando algo para `Screen` que não
 pretenderíamos passar e que deveríamos passar um tipo diferente ou devemos implementar
 `Draw` na `String`, para que `Screen` possa chamar `draw` nela.
+
+### Objetos trait executam despacho dinâmico
+
+Lembre-se da seção "Desempenho de código usando genéricos" no Capítulo 10, nossa
+discussão sobre o processo de monomorfização realizado pelo compilador quando
+usamos trait bounds em genéricos: o compilador gera implementações não genéricas
+de funções e métodos para cada tipo concreto que usamos no lugar
+de um parâmetro de tipo genérico. O código que resulta da monomorfização
+está fazendo *despacho estático*, que é quando o compilador sabe qual método você está
+chamando em tempo de compilação. Isso é oposto ao *despacho dinâmico*, que é quando
+o compilador não sabe dizer que método você está chamando em tempo de compilação. Nos casos
+de despacho dinâmico, o compilador emite códigos que, em tempo de execução, descobrirá qual método
+chamar.
+
+Quando usamos objetos trait, o Rust deve usar despacho dinâmico. O compilador não
+sabe todos os tipos que podem ser usados com código que está usando os objetos trait,
+por isso não sabe qual método implementado em que tipo chamar.
+Em vez disso, em tempo de execução, Rust usa os ponteiros dentro de objeto trait para saber
+que método, específico, deve chamar. Há um custo de tempo de execução quando essa pesquisa ocorre,
+que não ocorre com despacho estático. Dispacho dinâmico também impede que o
+compilador escolha inline o código de um método, o que, por vezes, impede
+algumas otimizações. No entanto, conseguimos uma maior flexibilidade no código que escrevemos
+na Listagem 17-5 e foram capazes de suportar na Listagem 17-9, é uma desvantagem
+a se considerar.
+
