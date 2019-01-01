@@ -353,3 +353,68 @@ algumas otimizações. No entanto, conseguimos uma maior flexibilidade no códig
 na Listagem 17-5 e foram capazes de suportar na Listagem 17-9, é uma desvantagem
 a se considerar.
 
+### A segurança do objeto é necessário para objetos trait
+
+Você apenas pode fazer *objetos traits seguros* em objetos traits. Algumas regras complexas
+determinam todas as propriedades que fazem um objeto trait seguro, mas em prática, apenas
+duas regras são relevantes. Um trait é um objeto seguro se todos os métodos definidos no
+trait tem as seguintes propriedades:
+
+* O retorno não é do tipo `Self`.
+* Não há parâmetros de tipo genérico.
+
+A palavra-chave `Self` é um pseudônimo para o tipo que estamos implementando o trait ou
+método. Os objetos trait devem ser seguros, porque depois de usar um objeto trait,
+o Rust não conhece mais o tipo concreto que está implementando aquele trait.
+Se um método trait renorna o tipo concreto `Self`, mas um objeto trait esquece
+o tipo exato que `Self é, não há como o método usar o tipo concreto
+original. O mesmo é verdade para parâmetros de tipo genérico que  são preenchidos com
+um parâmetro de tipo concreto, quando o trait é usado: os tipos concretos fazem
+parte do tipo que implementa o trait. Quando o tipo é esquecido através 
+do uso de um objeto trait, não há como saber  que tipo preenchem os parâmetros de
+tipo genérico.
+
+Um exemplo de trait cujos métodos não são seguros para objetos
+é o trait `Clone` da biblioteca padrão. A assinatura do método `clone` é o trait `Clone`
+se parece com isso:
+
+```rust
+pub trait Clone {
+    fn clone(&self) -> Self;
+}
+```
+
+O tipo `String` implemento o trait `Clone` e quando chamamos o método `clone`
+numa instância de `String`, obtemos de retorno uma instância de `String`.
+Da mesma forma, se chamarmos `clone` numa instância de `Vec`, retornamos uma instância
+de `Vec`. A assinatura de do `clone` precisa saber que tipo terá o
+`Self`, porque esse é o tipo de retorno.
+
+O compilador indicará quando você estiver tentando fazer algo que viole as
+regras de segurança de objetos em relação a objetos trait. Por exemplo, digamos
+que tentamos implementar a estrutuda da Listagem 17-4 para manter os tipos que
+implementam o trait `Clone` em vez do trait `Draw`, desta forma:
+
+```rust,ignore
+pub struct Screen {
+    pub components: Vec<Box<Clone>>,
+}
+```
+
+Teremos o seguinte erro:
+
+```text
+error[E0038]: the trait `std::clone::Clone` cannot be made into an object
+ --> src/lib.rs:2:5
+  |
+2 |     pub components: Vec<Box<Clone>>,
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `std::clone::Clone` cannot be
+made into an object
+  |
+  = note: the trait cannot require that `Self : Sized`
+```
+
+Esse erro significa que você não pode usar esse trait como um objeto trait dessa maneira. Se
+estiver interessado em mais detalhes sobre segurança de objetos, veja [Rust RFC 255].
+
+[Rust RFC 255]: https://github.com/rust-lang/rfcs/blob/master/text/0255-object-safety.md
