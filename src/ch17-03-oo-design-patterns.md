@@ -163,3 +163,35 @@ portanto, não faz parte do padrão de estados. O método `add_text` não intera
 com o campo `state`, mas faz parte do comportamento que queremos
 suportar.
 
+### Garantindo que o conteúdo de um rascunho de postagem esteja vazio
+
+Mesmo depois que chamamos `add_text` e adicionamos algum conteúdo para nossa postagem, ainda
+queremos que o método `content` retorne um pedaço de string vazia, porque a postagem ainda
+está no está de rascunho, como mostrado na linha 8 da Listagem 17-11. Por hora, vamos
+implementar o método `content` com a coisa mais simples que atenderá a esse
+requisito: sempre retornando um pedaço de string vazia. Mudaremos isso mais tarde,
+quando implementaremos a possibilidade de mudar o estado de uma postagem para que ela possa ser publicada.
+Até agora, postagens apenas podem estar no estado de rascunho, portanto, o conteúdo da publicação deve estar
+vazio. Listagem 17-14 mostra essa implementação substituta:
+
+<span class="filename">Arquivo: src/lib.rs</span>
+
+```rust
+# pub struct Post {
+#     content: String,
+# }
+#
+impl Post {
+    // --snip--
+    pub fn content(&self) -> &str {
+        ""
+    }
+}
+```
+
+<span class="caption">LIstagem 17-14: Adicionando temporária para
+o método `content` do `Post` que sempre retorna uma string vazia</span>
+
+Como o método `content` adicionado, tudo na Listagem 17-11 até a linha 8
+funciona como prentendido.
+
