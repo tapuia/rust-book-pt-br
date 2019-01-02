@@ -195,3 +195,91 @@ o método `content` do `Post` que sempre retorna uma string vazia</span>
 Como o método `content` adicionado, tudo na Listagem 17-11 até a linha 8
 funciona como prentendido.
 
+### Solicitando uma revisão da postagem que altera seu estado
+
+Em seguida, nós precisamos adicionar funcionalidade para solicitar uma revisão da postagem, que deve
+mudar seu estado de `Draft` para `PendingReview`. Listagem 17-15 mostra este código:
+
+<span class="filename">Arquivo: src/lib.rs</span>
+
+```rust
+# pub struct Post {
+#     state: Option<Box<State>>,
+#     content: String,
+# }
+#
+impl Post {
+    // --snip--
+    pub fn request_review(&mut self) {
+        if let Some(s) = self.state.take() {
+            self.state = Some(s.request_review())
+        }
+    }
+}
+
+trait State {
+    fn request_review(self: Box<Self>) -> Box<State>;
+}
+
+struct Draft {}
+
+impl State for Draft {
+    fn request_review(self: Box<Self>) -> Box<State> {
+        Box::new(PendingReview {})
+    }
+}
+
+struct PendingReview {}
+
+impl State for PendingReview {
+    fn request_review(self: Box<Self>) -> Box<State> {
+        self
+    }
+}
+```
+
+<span class="caption">Listagem 17-15: Implementando método `request_review` no
+`Post` e no trait `State`</span>
+
+Nós fornecemos ao `Post` um método público chamado `request_review` que irá tormar uma referência
+mutável para `self`. Em seguida, chamamos internamente o método `request_review`
+do estado atual do `Post` e esse segundo método `request_review` consome o
+estado atual e retorna um novo estado.
+
+Adicionamos o método `request_review` para o trait `State`; todos os tipos
+que implementam o trait, agora precisarão implementar o método `request_review`.
+Note que em vez de ter `self`, `&self` ou `&mut self` como
+primeiro parâmetro do método, temos `self: Box<Self> `. Essa sintaxe significa que
+o método é apenas válido quando chamado em um `Box` contendo o tipo. Essa sintaxe apropria-se
+do `Box<Self>`, invalidando o antigo estado para que o valor de estado do
+`Post` possa se transfor em um novo estado.
+
+Para consumir o antigo estado, o método `request_review` precisa apropriar-se
+do valor do estado. Este é o lugar onde o `Option` no campo `state` do `Post`:
+chamamos o método `take` para tirar o valor de `Some` do campo `state`
+e deixar um `None` no lugar, porque Rust não nos permite ter
+campos não preenchidos nas estruturas. Isso nos permite mover o valor do `state` para fora
+do `Post` em vez de pedir emprestado. Em seguida, definiremos o valor do `state` da postagem como
+resultado da operação.
+
+Precisamos definir o `state` como `None` temporariamente em vez de configurá-la diretamente
+com o código `self.state = self.state.request_review();` para obter a posse do
+valor de `state`. Isso garante que o `Post` não pode usar o antigo valor do `state` depois
+de transformá-lo em um novo estado.
+
+O método `request_review` no `Draft` precisa retornar uma nova instância em caixa de
+uma nova estrutura `PendingReview`, que representa o estado quando uma postagem está aguardando
+uma revisão. A estrutura `PendingReview` também implementa o método `request_review`,
+mas não faz nenhuma transformação. Em vez disso, ele retorna a si mesmo, porque
+quando solicitamos uma revisão em uma publicação já no estado `PendingReview`, ele deve
+permanecer no estado `PendingReview`.
+
+Agora podemos começar a ver as vantagens do padrçao de estados: o método
+`request_review` no `Post` é o mesmo, não importa seu valor `state`. Cada
+estado é responsável por suas próprias regras.
+
+Deixaremos o método `content` do `Post` como está, retornando uma string
+vazia. Agora podemos ter um `Post` no estado `PendingReview`, bem como no estado
+`Draft`, mas queremos o mesmo comportamento no estado `PendingReview`.
+Listagem 17-11 agora funciona até a linha 11!
+
