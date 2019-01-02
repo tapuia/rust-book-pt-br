@@ -125,3 +125,41 @@ conterá um `Box`. Este `Box` aponta para uma nova instância da estrutura `Draf
 garante que sempre criamos uma nova instância de `Post`, ela começará como um
 rascunho. Como o campo `state` do `Post` é privado, não há como
 criar um `Post` em qualquer outro estado!
+
+### Armazenando o texto do conteúdo do post
+
+Na função `Post::new`, definimos o campo `content` como uma novo
+`String` vazia. Listagem 17-11 mostrou que queremos poder chamar o método chamado
+`add_text` e passar um `&str` que é então adicionado ao conteúdo do texto da
+postagem do blog. Implementamos isso como uma método, em vez de expor o campo `content`
+como `pub`. Isso significa que podemos implementar um método posteriormente que controlará
+como os dados do campo `content` são lidos. O método `add_text` é bastante direto,
+então vamos adicionar a implementação na Listagem 17-13 ao bloco
+`impl Post`:
+
+<span class="filename">Arquivo: src/lib.rs</span>
+
+```rust
+# pub struct Post {
+#     content: String,
+# }
+#
+impl Post {
+    // --snip--
+    pub fn add_text(&mut self, text: &str) {
+        self.content.push_str(text);
+    }
+}
+```
+
+<span class="caption">Listagem 17-13: Implementando o método `add_text` para adicionar o
+texto ao `content` da postagem</span>
+
+O método `add_text` usa uma referência mutável ao `self`, porque estamos
+mudando a instância `Post` que estamos chamando a partir de`add_text`. Então chamamos
+`push_str` na `String` em `content` e passamos o argumento `text` para adicionar ao `content`
+salvo. Esse comportamento não depende do estado em que a postagem está,
+portanto, não faz parte do padrão de estados. O método `add_text` não interage
+com o campo `state`, mas faz parte do comportamento que queremos
+suportar.
+
