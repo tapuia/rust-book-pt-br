@@ -77,3 +77,51 @@ resposta aos métodos chamados pelos usuários da bibliotéca sobre a instância
 mas eles não precisam gerenciar as alterações de estados diretamente. Além disso, usuários não podem
 cometer erros nos estados, como publicar uma postagem antes de revisá-la.
 
+### Definindo `Post` e criando uma nova instância no estado de rascunho
+
+Vamos começar a implementação da biblioteca! Sabemos que precisamos da
+estrutura pública `Post` que contenha algum conteúdo, por isso começaremos com a
+definição da estrutura e a função pública `new` associada para criar uma
+instância de `Post`, como mostra a Listageḿ 17-12. Também faremos um trait privado
+`State`. Então o `Post` conterá um objeto trait `Box<State>` dentro de um
+`Option` em um campo privado, chamado `state`. Você verá porquê o `Option`
+é necessário.
+
+O trait `State` define o comportamento compartilhado por diferentes estados de postagem e os
+estados `Draft`, `PendingReview` e `Published` implementarão todos os
+trait `State`. Por equanto, o trait não tem nenhum método; e começaremos definindo
+apenas o estado `Draft`, porque esse é o estado em que queremos uma postagem inicialmente:
+
+<span class="filename">Arquivo: src/lib.rs</span>
+
+```rust
+pub struct Post {
+    state: Option<Box<State>>,
+    content: String,
+}
+
+impl Post {
+    pub fn new() -> Post {
+        Post {
+            state: Some(Box::new(Draft {})),
+            content: String::new(),
+        }
+    }
+}
+
+trait State {}
+
+struct Draft {}
+
+impl State for Draft {}
+```
+
+<span class="caption">Listagem 17-12: Definição da estrutura `Post` e a função `new`,
+que cria uma nova instância de `Post`, um trait `State` e uma 
+estrutura `Draft`</span>
+
+Quando criamos um novo `Post`, definimos seu campo `state` como um valor `Some`, que
+conterá um `Box`. Este `Box` aponta para uma nova instância da estrutura `Draft`. Isso
+garante que sempre criamos uma nova instância de `Post`, ela começará como um
+rascunho. Como o campo `state` do `Post` é privado, não há como
+criar um `Post` em qualquer outro estado!
