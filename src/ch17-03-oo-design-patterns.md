@@ -283,3 +283,175 @@ vazia. Agora podemos ter um `Post` no estado `PendingReview`, bem como no estado
 `Draft`, mas queremos o mesmo comportamento no estado `PendingReview`.
 Listagem 17-11 agora funciona até a linha 11!
 
+### Adicionando o método `approve` que muda o coportamento do `content`
+
+O método `approve` será semelhante ao método `request_review`: ele
+definirá `state` com um valor que o estado atual diz que deve ter quando esse
+estado é aprovado, como mostra a Listagem 17-16:
+
+<span class="filename">Arquivo: src/lib.rs</span>
+
+```rust
+# pub struct Post {
+#     state: Option<Box<State>>,
+#     content: String,
+# }
+#
+impl Post {
+    // --snip--
+    pub fn approve(&mut self) {
+        if let Some(s) = self.state.take() {
+            self.state = Some(s.approve())
+        }
+    }
+}
+
+trait State {
+    fn request_review(self: Box<Self>) -> Box<State>;
+    fn approve(self: Box<Self>) -> Box<State>;
+}
+
+struct Draft {}
+
+impl State for Draft {
+#     fn request_review(self: Box<Self>) -> Box<State> {
+#         Box::new(PendingReview {})
+#     }
+#
+    // --snip--
+    fn approve(self: Box<Self>) -> Box<State> {
+        self
+    }
+}
+
+struct PendingReview {}
+
+impl State for PendingReview {
+#     fn request_review(self: Box<Self>) -> Box<State> {
+#         self
+#     }
+#
+    // --snip--
+    fn approve(self: Box<Self>) -> Box<State> {
+        Box::new(Published {})
+    }
+}
+
+struct Published {}
+
+impl State for Published {
+    fn request_review(self: Box<Self>) -> Box<State> {
+        self
+    }
+
+    fn approve(self: Box<Self>) -> Box<State> {
+        self
+    }
+}
+```
+
+<span class="caption">Listagem 17-16: Implementando o método `approve` no
+`Post` e o trait `State`</span>
+
+Adicionamos o método `approve` para o trait `State` e adicionamos uma nova estrutura que
+implementa `State`, o estado `Published`.
+
+Semelhante ao `request_review`, se chamarmos o método `approve` no `Draft`, ele
+não terá efeito, porque ele retornará `self`. Quando chamamos `approve` do
+`PendingReview`, ele retorna uma nova instância em caixa da estrutura `Published`.
+A estrutura `Published` implementa o trait `State` e, tanto para
+o método `request_review` quanto para o `approve`, ele retorna si próprio., porque
+a postagem deve permanecer no estado `Published` nesses casos.
+
+Agora, precisamos atualizar o método `content` do `Post`: se o estado for
+`Published`, queremos que retorne o valor do campo `content` da publicação;
+caso contrário, queremos que retorne uma string vazia, como mostra a Listagem 17-17:
+
+<span class="filename">Arquivo: src/lib.rs</span>
+
+```rust
+# trait State {
+#     fn content<'a>(&self, post: &'a Post) -> &'a str;
+# }
+# pub struct Post {
+#     state: Option<Box<State>>,
+#     content: String,
+# }
+#
+impl Post {
+    // --snip--
+    pub fn content(&self) -> &str {
+        self.state.as_ref().unwrap().content(&self)
+    }
+    // --snip--
+}
+```
+
+<span class="caption">Listagem 17-17: Atualizando o método `content` do `Post` para
+encarregar o método `content` em `State`</span>
+
+Porque o objetivo é manter todos essas regras dentro das estruturas que implementam
+`State`, chamamos o método `content`no valor em `state` e passamos a instância
+da postagem (que é, `self`) como um argumento. Então retornamos o valor que é
+retornado usando o método `content` do valor do `state`.
+
+Nós chamamos o método `as__ref` do `Option` porque queremos uma referência ao valor
+do `Option` em vez da propriedade do valor. Como `state`
+é um `Option<Box<State>>`, quando chamamos `as_ref`, um `Option<Box<State>>` é
+retornado. Se não chamarmos `as__ref`, receberíamos um erro,
+porque não podemos obter `state` emprestado do `&self` do parâmetro da função.
+
+Então chamamos o método `unwrap`, que sabemos que nunca vai entrar em pânico, porque sabemos
+que os métodos em `Post`garantem que o `state` sempre conterá um valor `Some`
+quando esses métodos forem realizados. Esse é um dos casos sobre os quais falamos na
+seção "Casos em que Você Tem Mais Informação Que o Compilador" do Capítulo
+9, quando sabemos que um valor `None` nunca é possível, mesmo que o compilador não
+consiga ententer isso.
+
+Nesse momento, quando chamamos `content` no `&Box<State>`, a coerção deref terá
+efeito no `&` e no `Nox`, então finalmente o método
+`content` é chamado no tipo que implementa o trait `State`. Isso significa que precisamos adicionar
+`content` à definição do trait `State` e que é onde colocaremos
+a lógica de qual conteúdo retornar, dependendo do estado que temos, como mostra
+a Listagem 17-18:
+
+<span class="filename">Arquivo: src/lib.rs</span>
+
+```rust
+# pub struct Post {
+#     content: String
+# }
+trait State {
+    // --snip--
+    fn content<'a>(&self, post: &'a Post) -> &'a str {
+        ""
+    }
+}
+
+// --snip--
+struct Published {}
+
+impl State for Published {
+    // --snip--
+    fn content<'a>(&self, post: &'a Post) -> &'a str {
+        &post.content
+    }
+}
+```
+
+<span class="caption">Listagem 17-18: Adicionando o método `content` ao trait
+`State`</span>
+
+Adicionamos uma implementação padrão para o método `content`, que retorna uma
+string vazia. Isso significa que não preciamos implementar `content` nas estruturas `Draft` e
+`PendingReview`. A estrutura `Published` irá sobrepor o método `content`
+e retornar o valor do `post.content`.
+
+Observe que precisamos anotações de vida útil nesse método, como discutimos no
+Capítulo 10. Estamos fazendo uma referência a um `post` como argumento e retornando uma
+referência a parte desse `post`, então o tempo de vida útil da referência retornada é
+relacionada ao tempo de vida útil do argumento `post`.
+
+E estamos prontos - tudo da Listagem 17-11 agora funcionam! Nós implementamos o padrão de estados
+com as regras do fluxo de trabalho da postagem no blog. A lógica relacionada
+às regras vive nos objetos de estados, em vez de estar espalhada por todo o `Post`.
