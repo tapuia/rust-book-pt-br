@@ -40,10 +40,10 @@
     - [🇧🇷 Strings](ch08-02-strings.md)
     - [🇧🇷 Hash Maps](ch08-03-hash-maps.md)
 
-- [Error Handling](ch09-00-error-handling.md)
-    - [Unrecoverable Errors with `panic!`](ch09-01-unrecoverable-errors-with-panic.md)
-    - [Recoverable Errors with `Result`](ch09-02-recoverable-errors-with-result.md)
-    - [To `panic!` or Not To `panic!`](ch09-03-to-panic-or-not-to-panic.md)
+- [🇧🇷 Tratamento de Erros](ch09-00-error-handling.md)
+    - [🇧🇷 Erros Irrecuperáveis com `panic!`](ch09-01-unrecoverable-errors-with-panic.md)
+    - [🇧🇷 Erros recuperáveis com `Result`](ch09-02-recoverable-errors-with-result.md)
+    - [🇧🇷 Entrar em `panic!` ou Não Entrar em `panic!`](ch09-03-to-panic-or-not-to-panic.md)
 
 - [Generics](ch10-00-generics.md)
     - [Syntax](ch10-01-syntax.md)
