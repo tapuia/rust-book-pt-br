@@ -455,3 +455,63 @@ relacionada ao tempo de vida útil do argumento `post`.
 E estamos prontos - tudo da Listagem 17-11 agora funcionam! Nós implementamos o padrão de estados
 com as regras do fluxo de trabalho da postagem no blog. A lógica relacionada
 às regras vive nos objetos de estados, em vez de estar espalhada por todo o `Post`.
+
+### Vantagens e desvantagens do padrão de estados
+
+Mostramos que o Rust é capaz de implementar o padrão de estado orientação a objetos
+para encapsular os diferentes tipos de comportamentos que um post deve ter em
+cada estado. Os métodos do `Post` não sabem nada sobre os vários comportamentos. A
+maneira como organizamos o código, nós só temos de procurar num só lugar pra conhecer as
+diferentes formas como uma postagem pode comportar-se: a implementação do trait `State`
+na estrutura `Published`.
+
+Se fôssemos criar uma implementação alternativa que não usasse o padrão
+de estados, poderíamos usar instruções `match` nos métodos do `Post` ou
+mesmo no código `main`, que verifica o estado da postagem e muda o comportamento
+nesses locais. Isso significaria que teríamos que procurar em vários lugares para
+entender todas as implicações de uma postagem estar no estado publicado! Isso só
+aumentaria o número de estados que adicionamos: cada uma dessas instruções `match`
+precisaria de outra ramificação.
+
+Com o padrão de de estados, os métodos de `Post` e os locais que usam `Post` não
+precisam da instrução `match` e para adicionar um novo estado, apenas precisamos adicionar uma nova estrutura e
+implementar os métodos trait nessa estrutura.
+
+A implementação usando o padrão de estados é fácil de estender para adicionar mais
+funcionalidades. Para ver a simplicidade de manter o código que usa padrão de
+estados, tente usar essas sugestões:
+
+* Adicionar um método `reject` que altere o estado de postagem de `PendingReview` de volta
+para `Draft`.
+* Requer duas chamadas para `approve` antes que o estado possa ser alterado para `Published`.
+* Permitir que os usuários adicinem conteúdo de texto somente quando uma postagem estiver no estado `Draft`.
+  Dica: Ter o objeto de estado responsável pelo que pode mudar sobre o 
+  conteúdo, mas não responsável por modificar o `Post`.
+
+Uma desvantagem do padrão de estados é que como os estados implementam as
+transições entre estados, alguns dos estados estão acoplados uns aos outros. Se adicionarmos
+outros estados entre `PendingReview` e `Published`, como um `Scheduled`,
+teríamos que mudar o código de `PendingReview` para fazer a transição para
+`Scheduled`. Seria menos trabalhoso se `PendingReview` não precisasse de
+mudanças com a adição de um novo estado, mas isso significaria mudar para
+outro padrão de projetos.
+
+Outra desvantagem é que nós duplicamos algumas lógicas. Para eleminar parte da
+duplicação, podemos tentar fazer a implementação padrão dos métodos
+`request_review` e `approve` no trait `State`, que retorna `self`;
+no entanto, isso violaria a segurança dos objetos, porque o trait não sabe
+exatamente o que é o `self` concreto. Queremos que seja possível usar `State` como um
+objeto trait, entao precisamos que seus métodos sejam objetos seguros.
+
+Outra duplicação inclui a implementação semelhante dos métodos `request_review`
+e `approve` do `Post`. Ambos os métodos delegam a implementação do
+mesmo método sobre o valor do campo `state` do `Option` e definem  o novo
+valor do campo `state` para o resultado. Se tivéssemos muitos métodos no `Post`
+que seguissem  esse padrão, poderíamos considerar a definição de uma macro para eliminar
+a repetição (veja o Apêndice D, Macros).
+
+Ao implementar o padrão de estados exatamente como ele é definido para linguagens orientada a objetos,
+não estamos aproveitando ao máximo os pontos fortes do Rust como
+poderíamos. Vamos ver algumas mudanças que podemos fazer no o crate `blog`, que pode tornar
+estados e transições inválidas em erros em tempo de compilação.
+
