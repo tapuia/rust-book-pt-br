@@ -11,7 +11,7 @@ quando nosso código é compilado.
 No entanto, algumas vezes queremos que nosso usuário de biblioteca seja capaz de estender o conjunto de
 tipos que são válidos em uma situação específica. Para mostrar como podemos alcançar
 isso, criaremos um exemplo de ferramenta de interface gráfica (GUI) que interage
-através de uma lista de itens, chamando um método `draw` em cada um para desenhá-lo
+através de uma lista de itens, chamando um método `desenhar` em cada um para desenhá-lo
 na tela - uma técnica comum para ferramentas GUI. Criaremos uma crate chamada 
 `gui` que contém a estrutura da biblioteca GUI. Essa crate pode incluir
 alguns tipos para as pessoas usarem, como um `Button` ou `TextField`. Além disso,
@@ -23,23 +23,23 @@ Não implementamos uma biblioteca gráfica completa para esse exemplo, mas mostr
 como as peças se encaixariam. No momento de escrever a biblioteca, não podemos
 saber e definir todos os tipos que outros programadores podem querer criar. Mas sabemos
 que `gui` precisa manter o controle de diferentes valores de diferentes tipos e ele
-precisa chamar o método `draw` em cada um desses diferentes tipos de valores. Não
-é necessário saber exatamente o que acontecerá quando chamarmos o método `draw`,
+precisa chamar o método `desenhar` em cada um desses diferentes tipos de valores. Não
+é necessário saber exatamente o que acontecerá quando chamarmos o método `desenhar`,
 apenas que o valor tera este método disponível para executarmos.
 
 Para fazer isso em uma linguagem com herança, podemos definir uma classe chamada
-`Component` que possui um método chamado `draw`. As outras classes, como as
+`Component` que possui um método chamado `desenhar`. As outras classes, como as
 `Button`, `Image` e `SelectBox`, herdam de `Component` e, assim,
-herdam o método `draw`. Cada uma pode sobrescrever o método `draw` para definir
+herdam o método `desenhar`. Cada uma pode sobrescrever o método `desenhar` para definir
 seu comportamento próprio, mas o framework poderia tratar todos esses tipos se
-eles fossem instâncias de `Component` e chamar `draw` neles. Mas como Rust
+eles fossem instâncias de `Component` e chamar `desenhar` neles. Mas como Rust
 não tem herança, precisamos de outra maneira para estruturar a biblioteca `gui` para
 perminir que os usuários o estendam com novos tipos.
 
 ### Definindo um Trait para componentes comuns
 
 Para implementar o comportamento que queremos que `gui` tenha, definiremos um trait chamado
-`Draw` que terá um método chamado `draw`. Então podemos definir um vetor
+`Draw` que terá um método chamado `desenhar`. Então podemos definir um vetor
 que tenha um *objeto trait*. Um objeto trait aponta para uma instância de um tipo que
 implmenta o trait que especificamos. Criamos um objeto trait especificando alguns
 tipos de ponteiros, como uma referência `&` ou um ponteiro `Box<T>` e
@@ -62,13 +62,13 @@ linguagens: sua finalidade é simplemente possibilitar a abstração entre
 comportamento comum.
 
 Listagem 17-3 mostra como definir um trait chamado `Draw` com um método chamado
-`draw`:
+`desenhar`:
 
 <span class="filename">Arquivo: src/lib.rs</span>
 
 ```rust
 pub trait Draw {
-    fn draw(&self);
+    fn desenhar(&self);
 }
 ```
 
@@ -76,7 +76,7 @@ pub trait Draw {
 
 Essa sintaxe deve parecer familiar de outras discussões de como definir traits
 do Capítulo 10. Em seguida, vem uma nova sintaxe: A Listagem 17-4 define uma estrutuca chamada
-`Screen` que contém um vetor chamado `components`. Esse vetor é do tipo
+`Janela` que contém um vetor chamado `componentes`. Esse vetor é do tipo
 `Box<Draw>`, que é um objeto trait: é um substituto para qualquer tipo dentro de um
 `Box` que implementa o trait `Draw`.
 
@@ -84,81 +84,81 @@ do Capítulo 10. Em seguida, vem uma nova sintaxe: A Listagem 17-4 define uma es
 
 ```rust
 # pub trait Draw {
-#     fn draw(&self);
+#     fn desenhar(&self);
 # }
 #
-pub struct Screen {
-    pub components: Vec<Box<Draw>>,
+pub struct Janela {
+    pub componentes: Vec<Box<Draw>>,
 }
 ```
 
-<span class="caption">Listagem 17-4: Definição da estrutura `Screen` com um
-campo `components` que contém um vetor de objetos trait que implementam o
+<span class="caption">Listagem 17-4: Definição da estrutura `Janela` com um
+campo `componentes` que contém um vetor de objetos trait que implementam o
 trait `Draw`</span>
 
-Na estrutura `Screen`, definiremos um método chamado `run` que irá chamar o
-método `draw` em cada item do `components`, como mostrado na Listagem 17-5:
+Na estrutura `Janela`, definiremos um método chamado `executar` que irá chamar o
+método `desenhar` em cada item do `componentes`, como mostrado na Listagem 17-5:
 
-<span class="filename">Filename: src/lib.rs</span>
+<span class="filename">Arquivo: src/lib.rs</span>
 
 ```rust
 # pub trait Draw {
-#     fn draw(&self);
+#     fn desenhar(&self);
 # }
 #
-# pub struct Screen {
-#     pub components: Vec<Box<Draw>>,
+# pub struct Janela {
+#     pub componentes: Vec<Box<Draw>>,
 # }
 #
-impl Screen {
-    pub fn run(&self) {
-        for component in self.components.iter() {
-            component.draw();
+impl Janela {
+    pub fn executar(&self) {
+        for component in self.componentes.iter() {
+            component.desenhar();
         }
     }
 }
 ```
 
-<span class="caption">Listagem 17-5: Implementando um método`run` na `Screen`
-que chama o método `draw` para cada componente</span>
+<span class="caption">Listagem 17-5: Implementando um método`executar` na `Janela`
+que chama o método `desenhar` para cada componente</span>
 
 Isso funciona de forma diferente do que definir uma estrutura que usa um parâmetro de tipo
 genérico com trait bounds. Um parâmetro de tipo genérico pode
 apenas ser substituido por um tipo concreto de cada vez, enquanto objetos trait permitem vários tipos
 concretos para preencher o objeto trait em tempo de execução. Por exemplo, poderíamos
-ter definido a estrutura `Screen` usando um tipo genérico e um trait bounds
+ter definido a estrutura `Janela` usando um tipo genérico e um trait bounds
 como na Listagem 17-6:
 
 <span class="filename">Arquivo: src/lib.rs</span>
 
 ```rust
 # pub trait Draw {
-#     fn draw(&self);
+#     fn desenhar(&self);
 # }
 #
-pub struct Screen<T: Draw> {
-    pub components: Vec<T>,
+pub struct Janela<T: Draw> {
+    pub componentes: Vec<T>,
 }
 
-impl<T> Screen<T>
+impl<T> Janela<T>
     where T: Draw {
-    pub fn run(&self) {
-        for component in self.components.iter() {
-            component.draw();
+    pub fn executar(&self) {
+        for component in self.componentes.iter() {
+            component.desenhar();
         }
     }
 }
 ```
 
-<span class="caption">Listagem 17-6: Uma implementação alternativa da estrutura `Screen`
-e seu método `run` usando genéricos e trait bounds</span>
+<span class="caption">Listagem 17-6: Uma implementação alternativa da estrutura `Janela`
+e seu método `executar` usando genéricos e trait bounds</span>
 
-Isso nos restringe a uma instância de `Screen` que tem uma lista de componentes, todos
+Isso nos restringe a uma instância de `Janela` que tem uma lista de componentes, todos
 do tipo `Button` ou do tipo `TextField`. Se você tiver somente coleções do mesmo tipo,
 usar genéricos e  trait bounds é preferível, porque as
 definições serão monomorfizadas em tempo de compilação para os tipos concretos.
 
-Por outro lado, com o método usando objetos trait, uma instância de `Screen`
+Por outro lado, com o método usando objetos trait, uma instância de `Janela`
 pode conter um `Vec` que contém um `Box<Button>` assim como um `Box<TextField>`.
 Vamos ver como isso funciona e falaremos sobre as impliciações do desempenho
 em tempo de compilação.
@@ -167,26 +167,26 @@ em tempo de compilação.
 
 Agora, adicionaremos alguns tipos que implementam o trait `Draw`. Forneceremos o
 tipo `Button`. Novamente, a implementação de uma biblioteca gráfica está além do escopo
-deste livro, então o método `draw` não terá nenhum implementação útil.
+deste livro, então o método `desenhar` não terá nenhum implementação útil.
 Para imaginar como a implementação pode parecerm uma estrutura `Button`
-pode ter os campos `width`, `height` e `label`, como mostra  a Listagem 17-7:
+pode ter os campos `largura`, `altura` e `label`, como mostra  a Listagem 17-7:
 
 <span class="filename">Arquivo: src/lib.rs</span>
 
 ```rust
 # pub trait Draw {
-#     fn draw(&self);
+#     fn desenhar(&self);
 # }
 #
 pub struct Button {
-    pub width: u32,
-    pub height: u32,
+    pub largura: u32,
+    pub altura: u32,
     pub label: String,
 }
 
 impl Draw for Button {
-    fn draw(&self) {
-        // Code to actually draw a button
+    fn desenhar(&self) {
+        // Código para realmente desenhar um botão
     }
 }
 ```
@@ -194,18 +194,18 @@ impl Draw for Button {
 <span class="caption">Listagem 17-7: Uma estrutura `Button` que implementa o
 trait `Draw`</span>
 
-Os campos `width`, `height` e `label` do `Button` serão diferentes
+Os campos `largura`, `altura` e `label` do `Button` serão diferentes
 de campos de outros componentes, como o tipo `TextField`, que pode ter esses campos,
 mais um campo `placeholder`. Para cada um dos tipo, queremos que desenhar na
 tela o que implementamos no trait `Draw`, mas usará códigos diferentes no
-método `draw` para definir como desenhar aquele tipo em específico, como o `Button` tem
+método `desenhar` para definir como desenhar aquele tipo em específico, como o `Button` tem
 aqui (sem o atual código da interface gráfica que está além do escopo desse capítulo).
 `Button`, por exemplo, pode ter um bloco `impl` adicional,
 contêndo métodos reladionados com o que acontece quando um usuário clica no botão. Esses tipos de
 métodos não se aplicam a tipos como `TextField`.
 
 Se alguém estiver usando nossa biblioteca para implementar a estrutura `SelectBox` que tem
-os campos `width`, `height` e `options`, eles implementam o 
+os campos `largura`, `altura` e `opcoes`, eles implementam o 
 trait `Draw` no tipo `SelectBox`, como mostra a Listagem 17-8:
 
 <span class="filename">Arquivo: src/main.rs</span>
@@ -215,14 +215,14 @@ extern crate gui;
 use gui::Draw;
 
 struct SelectBox {
-    width: u32,
-    height: u32,
-    options: Vec<String>,
+    largura: u32,
+    altura: u32,
+    opcoes: Vec<String>,
 }
 
 impl Draw for SelectBox {
-    fn draw(&self) {
-        // Code to actually draw a select box
+    fn desenhar(&self) {
+        // Código para realmente desenhar um select box
     }
 }
 ```
@@ -231,37 +231,37 @@ impl Draw for SelectBox {
 o trait `Draw` na estrutura `SelectBox`</span>
 
 Os usuários da nosso biblioteca agoora podem escrever suas funções `main` para criar uma
-instância de `Screen`. Para a instância de `Screen`, eles podem adicionar um `SelectBox` e um `Button`
+instância de `Janela`. Para a instância de `Janela`, eles podem adicionar um `SelectBox` e um `Button`
 colocando cada um em um `Box<T>` para se tornar um objeto trait. Eles podem chamar o
-método `run` na instância de `Screen`, que irá chamar o `draw` para cada um dos
+método `executar` na instância de `Janela`, que irá chamar o `desenhar` para cada um dos
 componentes. A Listagem 17-9 mostra essa implementação:
 
 <span class="filename">Arquivo: src/main.rs</span>
 
 ```rust,ignore
-use gui::{Screen, Button};
+use gui::{Janela, Button};
 
 fn main() {
-    let screen = Screen {
-        components: vec![
+    let screen = Janela {
+        componentes: vec![
             Box::new(SelectBox {
-                width: 75,
-                height: 10,
-                options: vec![
+                largura: 75,
+                altura: 10,
+                opcoes: vec![
                     String::from("Yes"),
                     String::from("Maybe"),
                     String::from("No")
                 ],
             }),
             Box::new(Button {
-                width: 50,
-                height: 10,
+                largura: 50,
+                altura: 10,
                 label: String::from("OK"),
             }),
         ],
     };
 
-    screen.run();
+    screen.executar();
 }
 ```
 
@@ -269,19 +269,19 @@ fn main() {
 de tipos diferentes que implmentam trait semelhantes.</span>
 
 Quando escrevemos uma biblioteca, não sabemos o que alguém pode adicionar ao
-tipo `SelectBox`, mas nossa implementação de `Screen` foi capaz de operar no
+tipo `SelectBox`, mas nossa implementação de `Janela` foi capaz de operar no
 novo tipo e desenhá-lo, porque `SelectBox` implementa o tipo `Draw`, o que
-significa que ele implementa o método `draw`.
+significa que ele implementa o método `desenhar`.
 
 Esse conceito - de se preocupar apenas com as mensagem que um valor responde
 em vez do tipo concreto de valores - é similar ao conceito *duck typing*
 em linguagens dinâmicamente tipadas: se anda como um pato e é como um pato,
-então deve ser um pato! Na implementação do `run` na `Screen` na Listagem
-17-5, `run` não precisa saber qual é o tipo concreto que cada componente é.
+então deve ser um pato! Na implementação do `executar` na `Janela` na Listagem
+17-5, `executar` não precisa saber qual é o tipo concreto que cada componente é.
 Ele não verifica se um componente é uma instância de `Button` ou
-um `SelectBox`, apenas chama o método `draw` do componente. Especificando
-`Box<Draw>` como o tipo dos valores do vetor `components`, definimos
-`Screen` por precisarmos de valores nos quais podemos chamar o método `draw`.
+um `SelectBox`, apenas chama o método `desenhar` do componente. Especificando
+`Box<Draw>` como o tipo dos valores do vetor `componentes`, definimos
+`Janela` por precisarmos de valores nos quais podemos chamar o método `desenhar`.
 
 A vantagem de usar objetos trait e o sistema de tipos do Rust para escrever códigos
 semelhante ao código usando duck typing é que nunca precisamos verificar se um valor
@@ -289,23 +289,23 @@ implementa umm método em particular no tempo de execução ou se preocupar com 
 um valor não implementa um método, mas nós o chamamos mesmo assim. Rust não irá compilar nosso
 código se os valores não implementarem os traits que o objeto trait precisa.
 
-Por exemplo, a Listagem 17-10 mostra o que acontece se tentarmos criar uma `Screen`
+Por exemplo, a Listagem 17-10 mostra o que acontece se tentarmos criar uma `Janela`
 com uma `String` como um componente:
 
 <span class="filename">Arquivo: src/main.rs</span>
 
 ```rust,ignore
 extern crate gui;
-use gui::Screen;
+use gui::Janela;
 
 fn main() {
-    let screen = Screen {
-        components: vec![
+    let screen = Janela {
+        componentes: vec![
             Box::new(String::from("Hi")),
         ],
     };
 
-    screen.run();
+    screen.executar();
 }
 ```
 
@@ -325,9 +325,9 @@ error[E0277]: the trait bound `std::string::String: gui::Draw` is not satisfied
    = note: required for the cast to the object type `gui::Draw`
 ```
 
-Esse erro nos permite saber se estamos passando algo para `Screen` que não
+Esse erro nos permite saber se estamos passando algo para `Janela` que não
 pretenderíamos passar e que deveríamos passar um tipo diferente ou devemos implementar
-`Draw` na `String`, para que `Screen` possa chamar `draw` nela.
+`Draw` na `String`, para que `Janela` possa chamar `desenhar` nela.
 
 ### Objetos trait executam despacho dinâmico
 
@@ -396,8 +396,8 @@ que tentamos implementar a estrutuda da Listagem 17-4 para manter os tipos que
 implementam o trait `Clone` em vez do trait `Draw`, desta forma:
 
 ```rust,ignore
-pub struct Screen {
-    pub components: Vec<Box<Clone>>,
+pub struct Janela {
+    pub componentes: Vec<Box<Clone>>,
 }
 ```
 
@@ -407,7 +407,7 @@ Teremos o seguinte erro:
 error[E0038]: the trait `std::clone::Clone` cannot be made into an object
  --> src/lib.rs:2:5
   |
-2 |     pub components: Vec<Box<Clone>>,
+2 |     pub componentes: Vec<Box<Clone>>,
   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `std::clone::Clone` cannot be
 made into an object
   |

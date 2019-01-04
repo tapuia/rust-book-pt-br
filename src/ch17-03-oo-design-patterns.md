@@ -36,139 +36,139 @@ porque não tempos implementado o crate `blog`:
 
 ```rust,ignore
 extern crate blog;
-use blog::Post;
+use blog::Postagem;
 
 fn main() {
-    let mut post = Post::new();
+    let mut post = Postagem::new();
 
-    post.add_text("I ate a salad for lunch today");
-    assert_eq!("", post.content());
+    post.add_texto("Eu comi uma salada no almoço de hoje");
+    assert_eq!("", post.conteudo());
 
-    post.request_review();
-    assert_eq!("", post.content());
+    post.solicitar_revisao();
+    assert_eq!("", post.conteudo());
 
-    post.approve();
-    assert_eq!("I ate a salad for lunch today", post.content());
+    post.aprovar();
+    assert_eq!("Eu comi uma salada no almoço de hoje", post.conteudo());
 }
 ```
 
 <span class="caption">Listagem 17-11: Código que demonstra o desejado
 comportamento que queremos que o nosso crate`blog` tenha</span>
 
-Queremos permitir que o usuário crie uma nova postagem de blog com `Post :: new`.
+Queremos permitir que o usuário crie uma nova postagem de blog com `Postagem :: new`.
 Então, queremos permitir que o texto seja adicionado à postagem do blog enquanto ela estiver no estado de
 rascunho. Se tentarmos obter o conteúdo da postagem imediatamente, antes da aprovação,
 nada deve acontecer porque a postagem ainda é um rascunho. Adicionamos
 `assert_eq!` no código para fins de demonstração. Um excelente teste unitário para
 isso seria afirmar que uma postagem do blog em rascunho retorna uma string vazia do método
-`content`, mas não vamos escrever testes para este exemplo.
+`conteudo`, mas não vamos escrever testes para este exemplo.
 
 Em seguida, queremos possibilitar uma solicitação de revisão para a postagem e queremos que o
-`content ` retorne uma string vazia enquanto aguarda a revisão. Quand a postagem
+`conteudo ` retorne uma string vazia enquanto aguarda a revisão. Quand a postagem
 for aprovada, deve ser publicada, significa que o texto da postagem
-será retornada quando o `content` for chamado.
+será retornada quando o `conteudo` for chamado.
 
 Observe que o único tipo com o qual estamos interagindo, do crate, é o
-tipo `Post`. Esse tipo usará padrão de estados e terá um valor que será
+tipo `Postagem`. Esse tipo usará padrão de estados e terá um valor que será
 um dos três estados de objeto, representam os vários estados em que uma postagem pode estar
 em - rascunho, esperando por revisão ou publicada. Mudar de um estado para outro será 
-gerenciado internamente com o tipo `Post`. Os estados mudam em
-resposta aos métodos chamados pelos usuários da bibliotéca sobre a instância `Post`,
+gerenciado internamente com o tipo `Postagem`. Os estados mudam em
+resposta aos métodos chamados pelos usuários da bibliotéca sobre a instância `Postagem`,
 mas eles não precisam gerenciar as alterações de estados diretamente. Além disso, usuários não podem
 cometer erros nos estados, como publicar uma postagem antes de revisá-la.
 
-### Definindo `Post` e criando uma nova instância no estado de rascunho
+### Definindo `Postagem` e criando uma nova instância no estado de rascunho
 
 Vamos começar a implementação da biblioteca! Sabemos que precisamos da
-estrutura pública `Post` que contenha algum conteúdo, por isso começaremos com a
+estrutura pública `Postagem` que contenha algum conteúdo, por isso começaremos com a
 definição da estrutura e a função pública `new` associada para criar uma
-instância de `Post`, como mostra a Listageḿ 17-12. Também faremos um trait privado
-`State`. Então o `Post` conterá um objeto trait `Box<State>` dentro de um
-`Option` em um campo privado, chamado `state`. Você verá porquê o `Option`
+instância de `Postagem`, como mostra a Listageḿ 17-12. Também faremos um trait privado
+`Estado`. Então o `Postagem` conterá um objeto trait `Box<Estado>` dentro de um
+`Opcao` em um campo privado, chamado `estado`. Você verá porquê o `Opcao`
 é necessário.
 
-O trait `State` define o comportamento compartilhado por diferentes estados de postagem e os
-estados `Draft`, `PendingReview` e `Published` implementarão todos os
-trait `State`. Por equanto, o trait não tem nenhum método; e começaremos definindo
-apenas o estado `Draft`, porque esse é o estado em que queremos uma postagem inicialmente:
+O trait `Estado` define o comportamento compartilhado por diferentes estados de postagem e os
+estados `Rascunho`, `RevisaoPendente` e `Publicado` implementarão todos os
+trait `Estado`. Por equanto, o trait não tem nenhum método; e começaremos definindo
+apenas o estado `Rascunho`, porque esse é o estado em que queremos uma postagem inicialmente:
 
 <span class="filename">Arquivo: src/lib.rs</span>
 
 ```rust
-pub struct Post {
-    state: Option<Box<State>>,
-    content: String,
+pub struct Postagem {
+    estado: Opcao<Box<Estado>>,
+    conteudo: String,
 }
 
-impl Post {
-    pub fn new() -> Post {
-        Post {
-            state: Some(Box::new(Draft {})),
-            content: String::new(),
+impl Postagem {
+    pub fn new() -> Postagem {
+        Postagem {
+            estado: Some(Box::new(Rascunho {})),
+            conteudo: String::new(),
         }
     }
 }
 
-trait State {}
+trait Estado {}
 
-struct Draft {}
+struct Rascunho {}
 
-impl State for Draft {}
+impl Estado for Rascunho {}
 ```
 
-<span class="caption">Listagem 17-12: Definição da estrutura `Post` e a função `new`,
-que cria uma nova instância de `Post`, um trait `State` e uma 
-estrutura `Draft`</span>
+<span class="caption">Listagem 17-12: Definição da estrutura `Postagem` e a função `new`,
+que cria uma nova instância de `Postagem`, um trait `Estado` e uma 
+estrutura `Rascunho`</span>
 
-Quando criamos um novo `Post`, definimos seu campo `state` como um valor `Some`, que
-conterá um `Box`. Este `Box` aponta para uma nova instância da estrutura `Draft`. Isso
-garante que sempre criamos uma nova instância de `Post`, ela começará como um
-rascunho. Como o campo `state` do `Post` é privado, não há como
-criar um `Post` em qualquer outro estado!
+Quando criamos um novo `Postagem`, definimos seu campo `estado` como um valor `Some`, que
+conterá um `Box`. Este `Box` aponta para uma nova instância da estrutura `Rascunho`. Isso
+garante que sempre criamos uma nova instância de `Postagem`, ela começará como um
+rascunho. Como o campo `estado` do `Postagem` é privado, não há como
+criar um `Postagem` em qualquer outro estado!
 
 ### Armazenando o texto do conteúdo do post
 
-Na função `Post::new`, definimos o campo `content` como uma novo
+Na função `Postagem::new`, definimos o campo `conteudo` como uma novo
 `String` vazia. Listagem 17-11 mostrou que queremos poder chamar o método chamado
-`add_text` e passar um `&str` que é então adicionado ao conteúdo do texto da
-postagem do blog. Implementamos isso como uma método, em vez de expor o campo `content`
+`add_texto` e passar um `&str` que é então adicionado ao conteúdo do texto da
+postagem do blog. Implementamos isso como uma método, em vez de expor o campo `conteudo`
 como `pub`. Isso significa que podemos implementar um método posteriormente que controlará
-como os dados do campo `content` são lidos. O método `add_text` é bastante direto,
+como os dados do campo `conteudo` são lidos. O método `add_texto` é bastante direto,
 então vamos adicionar a implementação na Listagem 17-13 ao bloco
-`impl Post`:
+`impl Postagem`:
 
 <span class="filename">Arquivo: src/lib.rs</span>
 
 ```rust
-# pub struct Post {
-#     content: String,
+# pub struct Postagem {
+#     conteudo: String,
 # }
 #
-impl Post {
-    // --snip--
-    pub fn add_text(&mut self, text: &str) {
-        self.content.push_str(text);
+impl Postagem {
+    // --recorte--
+    pub fn add_texto(&mut self, text: &str) {
+        self.conteudo.push_str(text);
     }
 }
 ```
 
-<span class="caption">Listagem 17-13: Implementando o método `add_text` para adicionar o
-texto ao `content` da postagem</span>
+<span class="caption">Listagem 17-13: Implementando o método `add_texto` para adicionar o
+texto ao `conteudo` da postagem</span>
 
-O método `add_text` usa uma referência mutável ao `self`, porque estamos
-mudando a instância `Post` que estamos chamando a partir de`add_text`. Então chamamos
-`push_str` na `String` em `content` e passamos o argumento `text` para adicionar ao `content`
+O método `add_texto` usa uma referência mutável ao `self`, porque estamos
+mudando a instância `Postagem` que estamos chamando a partir de`add_texto`. Então chamamos
+`push_str` na `String` em `conteudo` e passamos o argumento `text` para adicionar ao `conteudo`
 salvo. Esse comportamento não depende do estado em que a postagem está,
-portanto, não faz parte do padrão de estados. O método `add_text` não interage
-com o campo `state`, mas faz parte do comportamento que queremos
+portanto, não faz parte do padrão de estados. O método `add_texto` não interage
+com o campo `estado`, mas faz parte do comportamento que queremos
 suportar.
 
 ### Garantindo que o conteúdo de um rascunho de postagem esteja vazio
 
-Mesmo depois que chamamos `add_text` e adicionamos algum conteúdo para nossa postagem, ainda
-queremos que o método `content` retorne um pedaço de string vazia, porque a postagem ainda
+Mesmo depois que chamamos `add_texto` e adicionamos algum conteúdo para nossa postagem, ainda
+queremos que o método `conteudo` retorne um pedaço de string vazia, porque a postagem ainda
 está no está de rascunho, como mostrado na linha 8 da Listagem 17-11. Por hora, vamos
-implementar o método `content` com a coisa mais simples que atenderá a esse
+implementar o método `conteudo` com a coisa mais simples que atenderá a esse
 requisito: sempre retornando um pedaço de string vazia. Mudaremos isso mais tarde,
 quando implementaremos a possibilidade de mudar o estado de uma postagem para que ela possa ser publicada.
 Até agora, postagens apenas podem estar no estado de rascunho, portanto, o conteúdo da publicação deve estar
@@ -177,275 +177,275 @@ vazio. Listagem 17-14 mostra essa implementação substituta:
 <span class="filename">Arquivo: src/lib.rs</span>
 
 ```rust
-# pub struct Post {
-#     content: String,
+# pub struct Postagem {
+#     conteudo: String,
 # }
 #
-impl Post {
-    // --snip--
-    pub fn content(&self) -> &str {
+impl Postagem {
+    // --recorte--
+    pub fn conteudo(&self) -> &str {
         ""
     }
 }
 ```
 
 <span class="caption">LIstagem 17-14: Adicionando temporária para
-o método `content` do `Post` que sempre retorna uma string vazia</span>
+o método `conteudo` do `Postagem` que sempre retorna uma string vazia</span>
 
-Como o método `content` adicionado, tudo na Listagem 17-11 até a linha 8
+Como o método `conteudo` adicionado, tudo na Listagem 17-11 até a linha 8
 funciona como prentendido.
 
 ### Solicitando uma revisão da postagem que altera seu estado
 
 Em seguida, nós precisamos adicionar funcionalidade para solicitar uma revisão da postagem, que deve
-mudar seu estado de `Draft` para `PendingReview`. Listagem 17-15 mostra este código:
+mudar seu estado de `Rascunho` para `RevisaoPendente`. Listagem 17-15 mostra este código:
 
 <span class="filename">Arquivo: src/lib.rs</span>
 
 ```rust
-# pub struct Post {
-#     state: Option<Box<State>>,
-#     content: String,
+# pub struct Postagem {
+#     estado: Opcao<Box<Estado>>,
+#     conteudo: String,
 # }
 #
-impl Post {
-    // --snip--
-    pub fn request_review(&mut self) {
-        if let Some(s) = self.state.take() {
-            self.state = Some(s.request_review())
+impl Postagem {
+    // --recorte--
+    pub fn solicitar_revisao(&mut self) {
+        if let Some(s) = self.estado.take() {
+            self.estado = Some(s.solicitar_revisao())
         }
     }
 }
 
-trait State {
-    fn request_review(self: Box<Self>) -> Box<State>;
+trait Estado {
+    fn solicitar_revisao(self: Box<Self>) -> Box<Estado>;
 }
 
-struct Draft {}
+struct Rascunho {}
 
-impl State for Draft {
-    fn request_review(self: Box<Self>) -> Box<State> {
-        Box::new(PendingReview {})
+impl Estado for Rascunho {
+    fn solicitar_revisao(self: Box<Self>) -> Box<Estado> {
+        Box::new(RevisaoPendente {})
     }
 }
 
-struct PendingReview {}
+struct RevisaoPendente {}
 
-impl State for PendingReview {
-    fn request_review(self: Box<Self>) -> Box<State> {
+impl Estado for RevisaoPendente {
+    fn solicitar_revisao(self: Box<Self>) -> Box<Estado> {
         self
     }
 }
 ```
 
-<span class="caption">Listagem 17-15: Implementando método `request_review` no
-`Post` e no trait `State`</span>
+<span class="caption">Listagem 17-15: Implementando método `solicitar_revisao` no
+`Postagem` e no trait `Estado`</span>
 
-Nós fornecemos ao `Post` um método público chamado `request_review` que irá tormar uma referência
-mutável para `self`. Em seguida, chamamos internamente o método `request_review`
-do estado atual do `Post` e esse segundo método `request_review` consome o
+Nós fornecemos ao `Postagem` um método público chamado `solicitar_revisao` que irá tormar uma referência
+mutável para `self`. Em seguida, chamamos internamente o método `solicitar_revisao`
+do estado atual do `Postagem` e esse segundo método `solicitar_revisao` consome o
 estado atual e retorna um novo estado.
 
-Adicionamos o método `request_review` para o trait `State`; todos os tipos
-que implementam o trait, agora precisarão implementar o método `request_review`.
+Adicionamos o método `solicitar_revisao` para o trait `Estado`; todos os tipos
+que implementam o trait, agora precisarão implementar o método `solicitar_revisao`.
 Note que em vez de ter `self`, `&self` ou `&mut self` como
 primeiro parâmetro do método, temos `self: Box<Self> `. Essa sintaxe significa que
 o método é apenas válido quando chamado em um `Box` contendo o tipo. Essa sintaxe apropria-se
 do `Box<Self>`, invalidando o antigo estado para que o valor de estado do
-`Post` possa se transfor em um novo estado.
+`Postagem` possa se transfor em um novo estado.
 
-Para consumir o antigo estado, o método `request_review` precisa apropriar-se
-do valor do estado. Este é o lugar onde o `Option` no campo `state` do `Post`:
-chamamos o método `take` para tirar o valor de `Some` do campo `state`
+Para consumir o antigo estado, o método `solicitar_revisao` precisa apropriar-se
+do valor do estado. Este é o lugar onde o `Opcao` no campo `estado` do `Postagem`:
+chamamos o método `take` para tirar o valor de `Some` do campo `estado`
 e deixar um `None` no lugar, porque Rust não nos permite ter
-campos não preenchidos nas estruturas. Isso nos permite mover o valor do `state` para fora
-do `Post` em vez de pedir emprestado. Em seguida, definiremos o valor do `state` da postagem como
+campos não preenchidos nas estruturas. Isso nos permite mover o valor do `estado` para fora
+do `Postagem` em vez de pedir emprestado. Em seguida, definiremos o valor do `estado` da postagem como
 resultado da operação.
 
-Precisamos definir o `state` como `None` temporariamente em vez de configurá-la diretamente
-com o código `self.state = self.state.request_review();` para obter a posse do
-valor de `state`. Isso garante que o `Post` não pode usar o antigo valor do `state` depois
+Precisamos definir o `estado` como `None` temporariamente em vez de configurá-la diretamente
+com o código `self.estado = self.estado.solicitar_revisao();` para obter a posse do
+valor de `estado`. Isso garante que o `Postagem` não pode usar o antigo valor do `estado` depois
 de transformá-lo em um novo estado.
 
-O método `request_review` no `Draft` precisa retornar uma nova instância em caixa de
-uma nova estrutura `PendingReview`, que representa o estado quando uma postagem está aguardando
-uma revisão. A estrutura `PendingReview` também implementa o método `request_review`,
+O método `solicitar_revisao` no `Rascunho` precisa retornar uma nova instância em caixa de
+uma nova estrutura `RevisaoPendente`, que representa o estado quando uma postagem está aguardando
+uma revisão. A estrutura `RevisaoPendente` também implementa o método `solicitar_revisao`,
 mas não faz nenhuma transformação. Em vez disso, ele retorna a si mesmo, porque
-quando solicitamos uma revisão em uma publicação já no estado `PendingReview`, ele deve
-permanecer no estado `PendingReview`.
+quando solicitamos uma revisão em uma publicação já no estado `RevisaoPendente`, ele deve
+permanecer no estado `RevisaoPendente`.
 
 Agora podemos começar a ver as vantagens do padrçao de estados: o método
-`request_review` no `Post` é o mesmo, não importa seu valor `state`. Cada
+`solicitar_revisao` no `Postagem` é o mesmo, não importa seu valor `estado`. Cada
 estado é responsável por suas próprias regras.
 
-Deixaremos o método `content` do `Post` como está, retornando uma string
-vazia. Agora podemos ter um `Post` no estado `PendingReview`, bem como no estado
-`Draft`, mas queremos o mesmo comportamento no estado `PendingReview`.
+Deixaremos o método `conteudo` do `Postagem` como está, retornando uma string
+vazia. Agora podemos ter um `Postagem` no estado `RevisaoPendente`, bem como no estado
+`Rascunho`, mas queremos o mesmo comportamento no estado `RevisaoPendente`.
 Listagem 17-11 agora funciona até a linha 11!
 
-### Adicionando o método `approve` que muda o coportamento do `content`
+### Adicionando o método `aprovar` que muda o coportamento do `conteudo`
 
-O método `approve` será semelhante ao método `request_review`: ele
-definirá `state` com um valor que o estado atual diz que deve ter quando esse
+O método `aprovar` será semelhante ao método `solicitar_revisao`: ele
+definirá `estado` com um valor que o estado atual diz que deve ter quando esse
 estado é aprovado, como mostra a Listagem 17-16:
 
 <span class="filename">Arquivo: src/lib.rs</span>
 
 ```rust
-# pub struct Post {
-#     state: Option<Box<State>>,
-#     content: String,
+# pub struct Postagem {
+#     estado: Opcao<Box<Estado>>,
+#     conteudo: String,
 # }
 #
-impl Post {
-    // --snip--
-    pub fn approve(&mut self) {
-        if let Some(s) = self.state.take() {
-            self.state = Some(s.approve())
+impl Postagem {
+    // --recorte--
+    pub fn aprovar(&mut self) {
+        if let Some(s) = self.estado.take() {
+            self.estado = Some(s.aprovar())
         }
     }
 }
 
-trait State {
-    fn request_review(self: Box<Self>) -> Box<State>;
-    fn approve(self: Box<Self>) -> Box<State>;
+trait Estado {
+    fn solicitar_revisao(self: Box<Self>) -> Box<Estado>;
+    fn aprovar(self: Box<Self>) -> Box<Estado>;
 }
 
-struct Draft {}
+struct Rascunho {}
 
-impl State for Draft {
-#     fn request_review(self: Box<Self>) -> Box<State> {
-#         Box::new(PendingReview {})
+impl Estado for Rascunho {
+#     fn solicitar_revisao(self: Box<Self>) -> Box<Estado> {
+#         Box::new(RevisaoPendente {})
 #     }
 #
-    // --snip--
-    fn approve(self: Box<Self>) -> Box<State> {
+    // --recorte--
+    fn aprovar(self: Box<Self>) -> Box<Estado> {
         self
     }
 }
 
-struct PendingReview {}
+struct RevisaoPendente {}
 
-impl State for PendingReview {
-#     fn request_review(self: Box<Self>) -> Box<State> {
+impl Estado for RevisaoPendente {
+#     fn solicitar_revisao(self: Box<Self>) -> Box<Estado> {
 #         self
 #     }
 #
-    // --snip--
-    fn approve(self: Box<Self>) -> Box<State> {
-        Box::new(Published {})
+    // --recorte--
+    fn aprovar(self: Box<Self>) -> Box<Estado> {
+        Box::new(Publicado {})
     }
 }
 
-struct Published {}
+struct Publicado {}
 
-impl State for Published {
-    fn request_review(self: Box<Self>) -> Box<State> {
+impl Estado for Publicado {
+    fn solicitar_revisao(self: Box<Self>) -> Box<Estado> {
         self
     }
 
-    fn approve(self: Box<Self>) -> Box<State> {
+    fn aprovar(self: Box<Self>) -> Box<Estado> {
         self
     }
 }
 ```
 
-<span class="caption">Listagem 17-16: Implementando o método `approve` no
-`Post` e o trait `State`</span>
+<span class="caption">Listagem 17-16: Implementando o método `aprovar` no
+`Postagem` e o trait `Estado`</span>
 
-Adicionamos o método `approve` para o trait `State` e adicionamos uma nova estrutura que
-implementa `State`, o estado `Published`.
+Adicionamos o método `aprovar` para o trait `Estado` e adicionamos uma nova estrutura que
+implementa `Estado`, o estado `Publicado`.
 
-Semelhante ao `request_review`, se chamarmos o método `approve` no `Draft`, ele
-não terá efeito, porque ele retornará `self`. Quando chamamos `approve` do
-`PendingReview`, ele retorna uma nova instância em caixa da estrutura `Published`.
-A estrutura `Published` implementa o trait `State` e, tanto para
-o método `request_review` quanto para o `approve`, ele retorna si próprio., porque
-a postagem deve permanecer no estado `Published` nesses casos.
+Semelhante ao `solicitar_revisao`, se chamarmos o método `aprovar` no `Rascunho`, ele
+não terá efeito, porque ele retornará `self`. Quando chamamos `aprovar` do
+`RevisaoPendente`, ele retorna uma nova instância em caixa da estrutura `Publicado`.
+A estrutura `Publicado` implementa o trait `Estado` e, tanto para
+o método `solicitar_revisao` quanto para o `aprovar`, ele retorna si próprio., porque
+a postagem deve permanecer no estado `Publicado` nesses casos.
 
-Agora, precisamos atualizar o método `content` do `Post`: se o estado for
-`Published`, queremos que retorne o valor do campo `content` da publicação;
+Agora, precisamos atualizar o método `conteudo` do `Postagem`: se o estado for
+`Publicado`, queremos que retorne o valor do campo `conteudo` da publicação;
 caso contrário, queremos que retorne uma string vazia, como mostra a Listagem 17-17:
 
 <span class="filename">Arquivo: src/lib.rs</span>
 
 ```rust
-# trait State {
-#     fn content<'a>(&self, post: &'a Post) -> &'a str;
+# trait Estado {
+#     fn conteudo<'a>(&self, post: &'a Postagem) -> &'a str;
 # }
-# pub struct Post {
-#     state: Option<Box<State>>,
-#     content: String,
+# pub struct Postagem {
+#     estado: Opcao<Box<Estado>>,
+#     conteudo: String,
 # }
 #
-impl Post {
-    // --snip--
-    pub fn content(&self) -> &str {
-        self.state.as_ref().unwrap().content(&self)
+impl Postagem {
+    // --recorte--
+    pub fn conteudo(&self) -> &str {
+        self.estado.as_ref().unwrap().conteudo(&self)
     }
-    // --snip--
+    // --recorte--
 }
 ```
 
-<span class="caption">Listagem 17-17: Atualizando o método `content` do `Post` para
-encarregar o método `content` em `State`</span>
+<span class="caption">Listagem 17-17: Atualizando o método `conteudo` do `Postagem` para
+encarregar o método `conteudo` em `Estado`</span>
 
 Porque o objetivo é manter todos essas regras dentro das estruturas que implementam
-`State`, chamamos o método `content`no valor em `state` e passamos a instância
+`Estado`, chamamos o método `conteudo`no valor em `estado` e passamos a instância
 da postagem (que é, `self`) como um argumento. Então retornamos o valor que é
-retornado usando o método `content` do valor do `state`.
+retornado usando o método `conteudo` do valor do `estado`.
 
-Nós chamamos o método `as__ref` do `Option` porque queremos uma referência ao valor
-do `Option` em vez da propriedade do valor. Como `state`
-é um `Option<Box<State>>`, quando chamamos `as_ref`, um `Option<Box<State>>` é
+Nós chamamos o método `as__ref` do `Opcao` porque queremos uma referência ao valor
+do `Opcao` em vez da propriedade do valor. Como `estado`
+é um `Opcao<Box<Estado>>`, quando chamamos `as_ref`, um `Opcao<Box<Estado>>` é
 retornado. Se não chamarmos `as__ref`, receberíamos um erro,
-porque não podemos obter `state` emprestado do `&self` do parâmetro da função.
+porque não podemos obter `estado` emprestado do `&self` do parâmetro da função.
 
 Então chamamos o método `unwrap`, que sabemos que nunca vai entrar em pânico, porque sabemos
-que os métodos em `Post`garantem que o `state` sempre conterá um valor `Some`
+que os métodos em `Postagem`garantem que o `estado` sempre conterá um valor `Some`
 quando esses métodos forem realizados. Esse é um dos casos sobre os quais falamos na
 seção "Casos em que Você Tem Mais Informação Que o Compilador" do Capítulo
 9, quando sabemos que um valor `None` nunca é possível, mesmo que o compilador não
 consiga ententer isso.
 
-Nesse momento, quando chamamos `content` no `&Box<State>`, a coerção deref terá
+Nesse momento, quando chamamos `conteudo` no `&Box<Estado>`, a coerção deref terá
 efeito no `&` e no `Nox`, então finalmente o método
-`content` é chamado no tipo que implementa o trait `State`. Isso significa que precisamos adicionar
-`content` à definição do trait `State` e que é onde colocaremos
+`conteudo` é chamado no tipo que implementa o trait `Estado`. Isso significa que precisamos adicionar
+`conteudo` à definição do trait `Estado` e que é onde colocaremos
 a lógica de qual conteúdo retornar, dependendo do estado que temos, como mostra
 a Listagem 17-18:
 
 <span class="filename">Arquivo: src/lib.rs</span>
 
 ```rust
-# pub struct Post {
-#     content: String
+# pub struct Postagem {
+#     conteudo: String
 # }
-trait State {
-    // --snip--
-    fn content<'a>(&self, post: &'a Post) -> &'a str {
+trait Estado {
+    // --recorte--
+    fn conteudo<'a>(&self, post: &'a Postagem) -> &'a str {
         ""
     }
 }
 
-// --snip--
-struct Published {}
+// --recorte--
+struct Publicado {}
 
-impl State for Published {
-    // --snip--
-    fn content<'a>(&self, post: &'a Post) -> &'a str {
-        &post.content
+impl Estado for Publicado {
+    // --recorte--
+    fn conteudo<'a>(&self, post: &'a Postagem) -> &'a str {
+        &post.conteudo
     }
 }
 ```
 
-<span class="caption">Listagem 17-18: Adicionando o método `content` ao trait
-`State`</span>
+<span class="caption">Listagem 17-18: Adicionando o método `conteudo` ao trait
+`Estado`</span>
 
-Adicionamos uma implementação padrão para o método `content`, que retorna uma
-string vazia. Isso significa que não preciamos implementar `content` nas estruturas `Draft` e
-`PendingReview`. A estrutura `Published` irá sobrepor o método `content`
-e retornar o valor do `post.content`.
+Adicionamos uma implementação padrão para o método `conteudo`, que retorna uma
+string vazia. Isso significa que não preciamos implementar `conteudo` nas estruturas `Rascunho` e
+`RevisaoPendente`. A estrutura `Publicado` irá sobrepor o método `conteudo`
+e retornar o valor do `post.conteudo`.
 
 Observe que precisamos anotações de vida útil nesse método, como discutimos no
 Capítulo 10. Estamos fazendo uma referência a um `post` como argumento e retornando uma
@@ -454,26 +454,26 @@ relacionada ao tempo de vida útil do argumento `post`.
 
 E estamos prontos - tudo da Listagem 17-11 agora funcionam! Nós implementamos o padrão de estados
 com as regras do fluxo de trabalho da postagem no blog. A lógica relacionada
-às regras vive nos objetos de estados, em vez de estar espalhada por todo o `Post`.
+às regras vive nos objetos de estados, em vez de estar espalhada por todo o `Postagem`.
 
 ### Vantagens e desvantagens do padrão de estados
 
 Mostramos que o Rust é capaz de implementar o padrão de estado orientação a objetos
 para encapsular os diferentes tipos de comportamentos que um post deve ter em
-cada estado. Os métodos do `Post` não sabem nada sobre os vários comportamentos. A
+cada estado. Os métodos do `Postagem` não sabem nada sobre os vários comportamentos. A
 maneira como organizamos o código, nós só temos de procurar num só lugar pra conhecer as
-diferentes formas como uma postagem pode comportar-se: a implementação do trait `State`
-na estrutura `Published`.
+diferentes formas como uma postagem pode comportar-se: a implementação do trait `Estado`
+na estrutura `Publicado`.
 
 Se fôssemos criar uma implementação alternativa que não usasse o padrão
-de estados, poderíamos usar instruções `match` nos métodos do `Post` ou
+de estados, poderíamos usar instruções `match` nos métodos do `Postagem` ou
 mesmo no código `main`, que verifica o estado da postagem e muda o comportamento
 nesses locais. Isso significaria que teríamos que procurar em vários lugares para
 entender todas as implicações de uma postagem estar no estado publicado! Isso só
 aumentaria o número de estados que adicionamos: cada uma dessas instruções `match`
 precisaria de outra ramificação.
 
-Com o padrão de de estados, os métodos de `Post` e os locais que usam `Post` não
+Com o padrão de de estados, os métodos de `Postagem` e os locais que usam `Postagem` não
 precisam da instrução `match` e para adicionar um novo estado, apenas precisamos adicionar uma nova estrutura e
 implementar os métodos trait nessa estrutura.
 
@@ -481,32 +481,32 @@ A implementação usando o padrão de estados é fácil de estender para adicion
 funcionalidades. Para ver a simplicidade de manter o código que usa padrão de
 estados, tente usar essas sugestões:
 
-* Adicionar um método `reject` que altere o estado de postagem de `PendingReview` de volta
-para `Draft`.
-* Requer duas chamadas para `approve` antes que o estado possa ser alterado para `Published`.
-* Permitir que os usuários adicinem conteúdo de texto somente quando uma postagem estiver no estado `Draft`.
+* Adicionar um método `reject` que altere o estado de postagem de `RevisaoPendente` de volta
+para `Rascunho`.
+* Requer duas chamadas para `aprovar` antes que o estado possa ser alterado para `Publicado`.
+* Permitir que os usuários adicinem conteúdo de texto somente quando uma postagem estiver no estado `Rascunho`.
   Dica: Ter o objeto de estado responsável pelo que pode mudar sobre o 
-  conteúdo, mas não responsável por modificar o `Post`.
+  conteúdo, mas não responsável por modificar o `Postagem`.
 
 Uma desvantagem do padrão de estados é que como os estados implementam as
 transições entre estados, alguns dos estados estão acoplados uns aos outros. Se adicionarmos
-outros estados entre `PendingReview` e `Published`, como um `Scheduled`,
-teríamos que mudar o código de `PendingReview` para fazer a transição para
-`Scheduled`. Seria menos trabalhoso se `PendingReview` não precisasse de
+outros estados entre `RevisaoPendente` e `Publicado`, como um `Scheduled`,
+teríamos que mudar o código de `RevisaoPendente` para fazer a transição para
+`Scheduled`. Seria menos trabalhoso se `RevisaoPendente` não precisasse de
 mudanças com a adição de um novo estado, mas isso significaria mudar para
 outro padrão de projetos.
 
 Outra desvantagem é que nós duplicamos algumas lógicas. Para eleminar parte da
 duplicação, podemos tentar fazer a implementação padrão dos métodos
-`request_review` e `approve` no trait `State`, que retorna `self`;
+`solicitar_revisao` e `aprovar` no trait `Estado`, que retorna `self`;
 no entanto, isso violaria a segurança dos objetos, porque o trait não sabe
-exatamente o que é o `self` concreto. Queremos que seja possível usar `State` como um
+exatamente o que é o `self` concreto. Queremos que seja possível usar `Estado` como um
 objeto trait, entao precisamos que seus métodos sejam objetos seguros.
 
-Outra duplicação inclui a implementação semelhante dos métodos `request_review`
-e `approve` do `Post`. Ambos os métodos delegam a implementação do
-mesmo método sobre o valor do campo `state` do `Option` e definem  o novo
-valor do campo `state` para o resultado. Se tivéssemos muitos métodos no `Post`
+Outra duplicação inclui a implementação semelhante dos métodos `solicitar_revisao`
+e `aprovar` do `Postagem`. Ambos os métodos delegam a implementação do
+mesmo método sobre o valor do campo `estado` do `Opcao` e definem  o novo
+valor do campo `estado` para o resultado. Se tivéssemos muitos métodos no `Postagem`
 que seguissem  esse padrão, poderíamos considerar a definição de uma macro para eliminar
 a repetição (veja o Apêndice D, Macros).
 
@@ -529,69 +529,69 @@ Vamos considerar a primeira parte do `main` na Listagem 17-11:
 
 ```rust,ignore
 fn main() {
-    let mut post = Post::new();
+    let mut post = Postagem::new();
 
-    post.add_text("I ate a salad for lunch today");
-    assert_eq!("", post.content());
+    post.add_texto("Eu comi uma salada no almoço de hoje");
+    assert_eq!("", post.conteudo());
 }
 ```
 
-Ainda permitimos a criação de novas postagens no estado de rascunho, usando `Post::new`
+Ainda permitimos a criação de novas postagens no estado de rascunho, usando `Postagem::new`
 e a capacidade de adicionar texto ao conteúdo da postagem. Mas em vez de ter um
-método `content` em um rascunho, que retorna uma string vazia, vamos fazer com que as
-mensagens de rascunho não tenham o método `content`. Dessa forma, se tentarmos pegar o
+método `conteudo` em um rascunho, que retorna uma string vazia, vamos fazer com que as
+mensagens de rascunho não tenham o método `conteudo`. Dessa forma, se tentarmos pegar o
 conteúdo de uma postagem de rascunho, receberemos um erro do compilador informando que o método
 não existe. Como resultado, será possível exibir , acidentalmente,
 o conteúdo do rascunho em produção, porque esse código nem será compilado.
-Listagem 17-19 mostra a definição de uma estrutura `Post`, uma estrutura `DraftPost` e
+Listagem 17-19 mostra a definição de uma estrutura `Postagem`, uma estrutura `RascunhoPostagem` e
 métodos em cada um deles:
 
 <span class="filename">Arquivo: src/lib.rs</span>
 
 ```rust
-pub struct Post {
-    content: String,
+pub struct Postagem {
+    conteudo: String,
 }
 
-pub struct DraftPost {
-    content: String,
+pub struct RascunhoPostagem {
+    conteudo: String,
 }
 
-impl Post {
-    pub fn new() -> DraftPost {
-        DraftPost {
-            content: String::new(),
+impl Postagem {
+    pub fn new() -> RascunhoPostagem {
+        RascunhoPostagem {
+            conteudo: String::new(),
         }
     }
 
-    pub fn content(&self) -> &str {
-        &self.content
+    pub fn conteudo(&self) -> &str {
+        &self.conteudo
     }
 }
 
-impl DraftPost {
-    pub fn add_text(&mut self, text: &str) {
-        self.content.push_str(text);
+impl RascunhoPostagem {
+    pub fn add_texto(&mut self, text: &str) {
+        self.conteudo.push_str(text);
     }
 }
 ```
 
-<span class="caption">Arquivo 17-19: Uma `Post` com um método `content`e um
-`DraftPost` sem um método `content`</span>
+<span class="caption">Arquivo 17-19: Uma `Postagem` com um método `conteudo`e um
+`RascunhoPostagem` sem um método `conteudo`</span>
 
-Ambas as estruturas `Post` e `DraftPost` têm um campo `content` privado, que
-armazena o texto da postagem do blog. As estruturas não têm mais o campo `state` porque
-estamos movendo a codificação do estado para os tipos de cada estrutura. A estrutura `Post`
-representará uma postagem publicada e tem um método `content` que
-retorna o `content`.
+Ambas as estruturas `Postagem` e `RascunhoPostagem` têm um campo `conteudo` privado, que
+armazena o texto da postagem do blog. As estruturas não têm mais o campo `estado` porque
+estamos movendo a codificação do estado para os tipos de cada estrutura. A estrutura `Postagem`
+representará uma postagem publicada e tem um método `conteudo` que
+retorna o `conteudo`.
 
-Nós ainta temos uma função `Post::new`, mas ao invés de retornar uma instância de
-`Post`, ela retorna uma instância de `DraftPost`. Como `content` é privado
-e não há nenhuma função que retorne `Post`, não é possível criar uma
-instância de `Post` agora.
+Nós ainta temos uma função `Postagem::new`, mas ao invés de retornar uma instância de
+`Postagem`, ela retorna uma instância de `RascunhoPostagem`. Como `conteudo` é privado
+e não há nenhuma função que retorne `Postagem`, não é possível criar uma
+instância de `Postagem` agora.
 
-A estrutura `DraftPost` tem um método `add_text` para que possamos adicionar texto ao `content`
-como antes, mas note que `DraftPost` não possui um método `content` definido!
+A estrutura `RascunhoPostagem` tem um método `add_texto` para que possamos adicionar texto ao `conteudo`
+como antes, mas note que `RascunhoPostagem` não possui um método `conteudo` definido!
 Então, agora, o programa garante que todas as postagens iniciem como rascunhos e, rascunho
 não têm seu conteúdo disponível para exibição. Qualquer tentativa de contornar essas
 restrições resultará em um erro de compilador.
@@ -601,63 +601,63 @@ restrições resultará em um erro de compilador.
 Então, como conseguimos uma publicar uma postagem? Queremos impor a regra de que um
 rascunho tenha de ser revisada e aprovada antes dela poder ser publicada. Uma postagem no estado de
 revisão pendente ainda não deve exibir nenhum conteúdo. Vamos implementar essas restrições
-adicionando outra estrutura, `PendingReviewPost`, definindo o método
-`request_review` no `DraftPost` para retornar um `PendingReviewPost` e
-definindo um método `approve` no `PendingReviewPost` para retornar um `Post`, como
+adicionando outra estrutura, `RevisaoPendentePostagem`, definindo o método
+`solicitar_revisao` no `RascunhoPostagem` para retornar um `RevisaoPendentePostagem` e
+definindo um método `aprovar` no `RevisaoPendentePostagem` para retornar um `Postagem`, como
 mostra a Listagem 17-20:
 
 <span class="filename">Arquivo: src/lib.rs</span>
 
 ```rust
-# pub struct Post {
-#     content: String,
+# pub struct Postagem {
+#     conteudo: String,
 # }
 #
-# pub struct DraftPost {
-#     content: String,
+# pub struct RascunhoPostagem {
+#     conteudo: String,
 # }
 #
-impl DraftPost {
-    // --snip--
+impl RascunhoPostagem {
+    // --recorte--
 
-    pub fn request_review(self) -> PendingReviewPost {
-        PendingReviewPost {
-            content: self.content,
+    pub fn solicitar_revisao(self) -> RevisaoPendentePostagem {
+        RevisaoPendentePostagem {
+            conteudo: self.conteudo,
         }
     }
 }
 
-pub struct PendingReviewPost {
-    content: String,
+pub struct RevisaoPendentePostagem {
+    conteudo: String,
 }
 
-impl PendingReviewPost {
-    pub fn approve(self) -> Post {
-        Post {
-            content: self.content,
+impl RevisaoPendentePostagem {
+    pub fn aprovar(self) -> Postagem {
+        Postagem {
+            conteudo: self.conteudo,
         }
     }
 }
 ```
 
-<span class="caption">Listagem 17-20: Uma `PendingReviewPost` que é criado
-chamando `request_review` no `DraftPost` e um método `approve` que transforma um
-`PendingReviewPost` em um `Post` publicado</span>
+<span class="caption">Listagem 17-20: Uma `RevisaoPendentePostagem` que é criado
+chamando `solicitar_revisao` no `RascunhoPostagem` e um método `aprovar` que transforma um
+`RevisaoPendentePostagem` em um `Postagem` publicado</span>
 
-Os métodos `request_review` e `approve` tomam posso do `self`, consumindo
-as instâncias `DraftPost` e `PendingReviewPost` e transformando-os
-em `PendingReviewPost` e `Post` publicado respectivamente. Dessa forma,
-não teremos instâncias `DraftPost` remanecentes após chamarmos
-`request_review` e, assim por diante. A estrutura `PendingReviewPost` não tem um método
-`content` definido dele, portanto, tentar ler seu conteúdo
-resulta em um erro do compilador. como em `DraftPost`. Porque o único modo de ter uma
-instância pública de `Post` que tenha um método `content` definico é chamar o
-método `approve` em `PendingReviewPost` e a única maneura de obter
-`PendingReviewPost` é chamar o método `request_review` em `DraftPost`,
+Os métodos `solicitar_revisao` e `aprovar` tomam posso do `self`, consumindo
+as instâncias `RascunhoPostagem` e `RevisaoPendentePostagem` e transformando-os
+em `RevisaoPendentePostagem` e `Postagem` publicado respectivamente. Dessa forma,
+não teremos instâncias `RascunhoPostagem` remanecentes após chamarmos
+`solicitar_revisao` e, assim por diante. A estrutura `RevisaoPendentePostagem` não tem um método
+`conteudo` definido dele, portanto, tentar ler seu conteúdo
+resulta em um erro do compilador. como em `RascunhoPostagem`. Porque o único modo de ter uma
+instância pública de `Postagem` que tenha um método `conteudo` definico é chamar o
+método `aprovar` em `RevisaoPendentePostagem` e a única maneura de obter
+`RevisaoPendentePostagem` é chamar o método `solicitar_revisao` em `RascunhoPostagem`,
 agora codificamos o fluxo de trabalho da postagem do blog em um sistema de tipos.
 
-Mas também temos que fazer algumas pequenas mudanças no`main`. Os métodos `request_review` e
-`approve` retornam novas instâncias em vez de modificar a estrutura para qual são chamadas,
+Mas também temos que fazer algumas pequenas mudanças no`main`. Os métodos `solicitar_revisao` e
+`aprovar` retornam novas instâncias em vez de modificar a estrutura para qual são chamadas,
 então precisamos adicionar mais `let post` shadowing para salvar
 as instâncias retornadas. Também não temos certeza se o conteúdo do rascunho e da
 postagem em revisão é uma string vazia, nem precisamos delas: não podemos
@@ -668,18 +668,18 @@ O código atualizado na `main` é mostradp na Listagem 17-21:
 
 ```rust,ignore
 extern crate blog;
-use blog::Post;
+use blog::Postagem;
 
 fn main() {
-    let mut post = Post::new();
+    let mut post = Postagem::new();
 
-    post.add_text("I ate a salad for lunch today");
+    post.add_texto("Eu comi uma salada no almoço de hoje");
 
-    let post = post.request_review();
+    let post = post.solicitar_revisao();
 
-    let post = post.approve();
+    let post = post.aprovar();
 
-    assert_eq!("I ate a salad for lunch today", post.content());
+    assert_eq!("Eu comi uma salada no almoço de hoje", post.conteudo());
 }
 ```
 
@@ -689,7 +689,7 @@ implementação do fluxo de trabalho da psotagem no blog</span>
 As mudanças que precisamos fazer na `main`reatribuir `post`, o que significa que essa
 implementação não segue mais o padrão de estados orientado a objetos:
 as transformações entre os estados não são mais encapsuladas inteiramente
-dentro da implementação do `Post`. No entanto, nosso ganho é que estados inválidos agora
+dentro da implementação do `Postagem`. No entanto, nosso ganho é que estados inválidos agora
 são impossíveis por causa do sistema de tipos e a verificação de tipos que acontecem em
 tempo de compilação! Isso garante que certos bugs, como o conteúdo de uma postagem
 não publicada sendo exibida, será descoberta antes de chegar em
