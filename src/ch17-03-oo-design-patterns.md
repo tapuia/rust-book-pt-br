@@ -515,3 +515,84 @@ não estamos aproveitando ao máximo os pontos fortes do Rust como
 poderíamos. Vamos ver algumas mudanças que podemos fazer no o crate `blog`, que pode tornar
 estados e transições inválidas em erros em tempo de compilação.
 
+### Codificando estados e comportamento como tipo
+
+Mostraremos como repensar o padrão de estados para obter um conjunto diferente de
+compensações. Em vez de encapsular completamente os estados e transições para que o
+código externo não tenha conhecimento dele, codificaremos os estados em diferentes
+tipos. Consequentemente, o sistema de verificação de tipo do Rust impedirá que as tentativas de usar
+mensagens de rascunho, em que apenas as postagens publicadas sejam permitidas, emitem um erro do compilador.
+
+Vamos considerar a primeira parte do `main` na Listagem 17-11:
+
+<span class="filename">Arquivo: src/main.rs</span>
+
+```rust,ignore
+fn main() {
+    let mut post = Post::new();
+
+    post.add_text("I ate a salad for lunch today");
+    assert_eq!("", post.content());
+}
+```
+
+Ainda permitimos a criação de novas postagens no estado de rascunho, usando `Post::new`
+e a capacidade de adicionar texto ao conteúdo da postagem. Mas em vez de ter um
+método `content` em um rascunho, que retorna uma string vazia, vamos fazer com que as
+mensagens de rascunho não tenham o método `content`. Dessa forma, se tentarmos pegar o
+conteúdo de uma postagem de rascunho, receberemos um erro do compilador informando que o método
+não existe. Como resultado, será possível exibir , acidentalmente,
+o conteúdo do rascunho em produção, porque esse código nem será compilado.
+Listagem 17-19 mostra a definição de uma estrutura `Post`, uma estrutura `DraftPost` e
+métodos em cada um deles:
+
+<span class="filename">Arquivo: src/lib.rs</span>
+
+```rust
+pub struct Post {
+    content: String,
+}
+
+pub struct DraftPost {
+    content: String,
+}
+
+impl Post {
+    pub fn new() -> DraftPost {
+        DraftPost {
+            content: String::new(),
+        }
+    }
+
+    pub fn content(&self) -> &str {
+        &self.content
+    }
+}
+
+impl DraftPost {
+    pub fn add_text(&mut self, text: &str) {
+        self.content.push_str(text);
+    }
+}
+```
+
+<span class="caption">Arquivo 17-19: Uma `Post` com um método `content`e um
+`DraftPost` sem um método `content`</span>
+
+Ambas as estruturas `Post` e `DraftPost` têm um campo `content` privado, que
+armazena o texto da postagem do blog. As estruturas não têm mais o campo `state` porque
+estamos movendo a codificação do estado para os tipos de cada estrutura. A estrutura `Post`
+representará uma postagem publicada e tem um método `content` que
+retorna o `content`.
+
+Nós ainta temos uma função `Post::new`, mas ao invés de retornar uma instância de
+`Post`, ela retorna uma instância de `DraftPost`. Como `content` é privado
+e não há nenhuma função que retorne `Post`, não é possível criar uma
+instância de `Post` agora.
+
+A estrutura `DraftPost` tem um método `add_text` para que possamos adicionar texto ao `content`
+como antes, mas note que `DraftPost` não possui um método `content` definido!
+Então, agora, o programa garante que todas as postagens iniciem como rascunhos e, rascunho
+não têm seu conteúdo disponível para exibição. Qualquer tentativa de contornar essas
+restrições resultará em um erro de compilador.
+
