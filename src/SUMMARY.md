@@ -78,7 +78,13 @@
     - [Installing Binaries from Crates.io with `cargo install`](ch14-04-installing-binaries.md)
     - [Extending Cargo with Custom Commands](ch14-05-extending-cargo.md)
 
-- [Smart Pointers](ch15-00-smart-pointers.md)
+- [🇧🇷 Ponteiros Inteligentes (Smart Pointers)](ch15-00-smart-pointers.md)
+    - [🇧🇷 `Box<T>` Aponta para Dados no Heap e Tem Tamanho Conhecido](ch15-01-box.md)
+    - [🇧🇷 Tratando Ponteiros Inteligentes como Referências Normais com a Trait `Deref`](ch15-02-deref.md)
+    - [🇧🇷 A Trait `Drop` Roda Código durante a Limpeza](ch15-03-drop.md)
+    - [🇧🇷 `Rc<T>`, o Ponteiro Inteligente com Contagem de Referências](ch15-04-rc.md)
+    - [🇧🇷 `RefCell<T>` e a Pattern de Mutabilidade Interior](ch15-05-interior-mutability.md)
+    - [🇧🇷 Ciclos de Referências Podem Vazar Memória](ch15-06-reference-cycles.md)
 
 - [Concurrency](ch16-00-concurrency.md)
 
