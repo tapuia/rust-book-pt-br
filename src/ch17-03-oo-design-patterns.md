@@ -709,3 +709,16 @@ alguns bugs em tempo de compilação. Padrões orientados a objetos nem sempre s
 melhor solução em Rust devido certos recursos, como propriedade, que
 as linguagens orientadas a objetos não têm.
 
+## Resumo
+
+Não importa se você acha que Rust é uma linguagem orientada a objetos depois
+de ler este capítulo, você agora sabe que pode usar objetos trait para obter alguns
+recursos orientado a objetos em Rust. O despacho dinâmico pode dar ao seu código alguma
+flexibilidade em troca de um pouco de desempenho em tempo de execução. Você pode usar essa
+flexibilidade para implementar padrão orientado a objetos que podem ajudar na manutenção
+de seu código. Rust também tem outros recursos, como propriedade, que
+linguagens orientadas aobjetos não têm. Um padrão orientado a objetos nem sempre
+é a melhor maneira de aproveitar os pontos fortes do Rust, mas é uma opção disponível.
+
+Em seguida, veremos os padrões, que são outros dos recursos que permitem
+muita flexibilidade. Veremos brevemente eles ao longo do livro, mas ainda não vimos a capacidade total deles. Vamos lá!
