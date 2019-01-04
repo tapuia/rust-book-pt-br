@@ -596,3 +596,116 @@ Então, agora, o programa garante que todas as postagens iniciem como rascunhos 
 não têm seu conteúdo disponível para exibição. Qualquer tentativa de contornar essas
 restrições resultará em um erro de compilador.
 
+#### Implementando transações como transformações em diferentes tipos
+
+Então, como conseguimos uma publicar uma postagem? Queremos impor a regra de que um
+rascunho tenha de ser revisada e aprovada antes dela poder ser publicada. Uma postagem no estado de
+revisão pendente ainda não deve exibir nenhum conteúdo. Vamos implementar essas restrições
+adicionando outra estrutura, `PendingReviewPost`, definindo o método
+`request_review` no `DraftPost` para retornar um `PendingReviewPost` e
+definindo um método `approve` no `PendingReviewPost` para retornar um `Post`, como
+mostra a Listagem 17-20:
+
+<span class="filename">Arquivo: src/lib.rs</span>
+
+```rust
+# pub struct Post {
+#     content: String,
+# }
+#
+# pub struct DraftPost {
+#     content: String,
+# }
+#
+impl DraftPost {
+    // --snip--
+
+    pub fn request_review(self) -> PendingReviewPost {
+        PendingReviewPost {
+            content: self.content,
+        }
+    }
+}
+
+pub struct PendingReviewPost {
+    content: String,
+}
+
+impl PendingReviewPost {
+    pub fn approve(self) -> Post {
+        Post {
+            content: self.content,
+        }
+    }
+}
+```
+
+<span class="caption">Listagem 17-20: Uma `PendingReviewPost` que é criado
+chamando `request_review` no `DraftPost` e um método `approve` que transforma um
+`PendingReviewPost` em um `Post` publicado</span>
+
+Os métodos `request_review` e `approve` tomam posso do `self`, consumindo
+as instâncias `DraftPost` e `PendingReviewPost` e transformando-os
+em `PendingReviewPost` e `Post` publicado respectivamente. Dessa forma,
+não teremos instâncias `DraftPost` remanecentes após chamarmos
+`request_review` e, assim por diante. A estrutura `PendingReviewPost` não tem um método
+`content` definido dele, portanto, tentar ler seu conteúdo
+resulta em um erro do compilador. como em `DraftPost`. Porque o único modo de ter uma
+instância pública de `Post` que tenha um método `content` definico é chamar o
+método `approve` em `PendingReviewPost` e a única maneura de obter
+`PendingReviewPost` é chamar o método `request_review` em `DraftPost`,
+agora codificamos o fluxo de trabalho da postagem do blog em um sistema de tipos.
+
+Mas também temos que fazer algumas pequenas mudanças no`main`. Os métodos `request_review` e
+`approve` retornam novas instâncias em vez de modificar a estrutura para qual são chamadas,
+então precisamos adicionar mais `let post` shadowing para salvar
+as instâncias retornadas. Também não temos certeza se o conteúdo do rascunho e da
+postagem em revisão é uma string vazia, nem precisamos delas: não podemos
+compilar código que tente usar o conteúdo da postagem nesses estados.
+O código atualizado na `main` é mostradp na Listagem 17-21:
+
+<span class="filename">Arquivo: src/main.rs</span>
+
+```rust,ignore
+extern crate blog;
+use blog::Post;
+
+fn main() {
+    let mut post = Post::new();
+
+    post.add_text("I ate a salad for lunch today");
+
+    let post = post.request_review();
+
+    let post = post.approve();
+
+    assert_eq!("I ate a salad for lunch today", post.content());
+}
+```
+
+<span class="caption">Listagem 17-21: Modificações na `main` para usar a nova
+implementação do fluxo de trabalho da psotagem no blog</span>
+
+As mudanças que precisamos fazer na `main`reatribuir `post`, o que significa que essa
+implementação não segue mais o padrão de estados orientado a objetos:
+as transformações entre os estados não são mais encapsuladas inteiramente
+dentro da implementação do `Post`. No entanto, nosso ganho é que estados inválidos agora
+são impossíveis por causa do sistema de tipos e a verificação de tipos que acontecem em
+tempo de compilação! Isso garante que certos bugs, como o conteúdo de uma postagem
+não publicada sendo exibida, será descoberta antes de chegar em
+produção.
+
+Experimente as tarefas sugeridas como requisitos adicionais que mencionamos no
+inícion dessa seção sobre o crate `blog` como está após a Listagem 17-20 para ver
+o que você acha sobre o design desta versão do código. Observe que algumas tarefas
+podem ser concluídas já neste design!
+
+Vimos que, embora o Rust seja capas de implementar o padrão de projetos orientado a objetos,
+outros padrões, como codificar estados em sistema de tipos,
+também estão disponíveis. Esses padrões têm diferentes vantagens e desvantagens. Apesar
+de você poder estar bastante familiarizado com o padrão orientado a objetos, repensar
+o problema para aproveitar os recursos do Rust pode fornecer benefícios, como evitar
+alguns bugs em tempo de compilação. Padrões orientados a objetos nem sempre serão a
+melhor solução em Rust devido certos recursos, como propriedade, que
+as linguagens orientadas a objetos não têm.
+
