@@ -88,7 +88,10 @@
 
 - [Concurrency](ch16-00-concurrency.md)
 
-- [Is Rust OOP?](ch17-00-oop.md)
+- [🇧🇷 Rust é uma linguagem orientada a objetos?](ch17-00-oop.md)
+    - [🇧🇷 O que significa orientado a objetos?](ch17-01-what-is-oo.md)
+    - [🇧🇷 Usando objetos trait que permitem valores de tipos diferentes](ch17-02-trait-objects.md)
+    - [🇧🇷 Implementando um padrão de projeto orientado a objetos](ch17-03-oo-design-patterns.md)
 
 ## Advanced Topics
 
