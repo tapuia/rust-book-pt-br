@@ -10,15 +10,15 @@
 
 - [🇧🇷 Conceitos Comuns de Programação](ch03-00-common-programming-concepts.md)
     - [🇧🇷 Variáveis e Mutabilidade](ch03-01-variables-and-mutability.md)
-    - [Data Types](ch03-02-data-types.md)
-    - [How Functions Work](ch03-03-how-functions-work.md)
-    - [Comments](ch03-04-comments.md)
-    - [Control Flow](ch03-05-control-flow.md)
+    - [🇧🇷 Tipos de dados](ch03-02-data-types.md)
+    - [🇧🇷 Funções](ch03-03-how-functions-work.md)
+    - [🇧🇷 Comentários](ch03-04-comments.md)
+    - [🇧🇷 Controle de fluxo](ch03-05-control-flow.md)
 
-- [Understanding Ownership](ch04-00-understanding-ownership.md)
-    - [What is Ownership?](ch04-01-what-is-ownership.md)
-    - [References & Borrowing](ch04-02-references-and-borrowing.md)
-    - [Slices](ch04-03-slices.md)
+- [🇧🇷 Entendendo _Ownership_](ch04-00-understanding-ownership.md)
+    - [🇧🇷 O Que É Ownership?](ch04-01-what-is-ownership.md)
+    - [🇧🇷 Referências e _Borrowing_](ch04-02-references-and-borrowing.md)
+    - [🇧🇷 _Slices_](ch04-03-slices.md)
 
 - [🇧🇷 Structs](ch05-00-structs.md)
     - [Method Syntax](ch05-01-method-syntax.md)
@@ -40,15 +40,15 @@
     - [🇧🇷 Strings](ch08-02-strings.md)
     - [🇧🇷 Hash Maps](ch08-03-hash-maps.md)
 
-- [Error Handling](ch09-00-error-handling.md)
-    - [Unrecoverable Errors with `panic!`](ch09-01-unrecoverable-errors-with-panic.md)
-    - [Recoverable Errors with `Result`](ch09-02-recoverable-errors-with-result.md)
-    - [To `panic!` or Not To `panic!`](ch09-03-to-panic-or-not-to-panic.md)
+- [🇧🇷 Tratamento de Erros](ch09-00-error-handling.md)
+    - [🇧🇷 Erros Irrecuperáveis com `panic!`](ch09-01-unrecoverable-errors-with-panic.md)
+    - [🇧🇷 Erros recuperáveis com `Result`](ch09-02-recoverable-errors-with-result.md)
+    - [🇧🇷 Entrar em `panic!` ou Não Entrar em `panic!`](ch09-03-to-panic-or-not-to-panic.md)
 
-- [Generics](ch10-00-generics.md)
-    - [Syntax](ch10-01-syntax.md)
-    - [Traits](ch10-02-traits.md) - NEED DEFAULT METHOD IMPLEMENTATIONS
-    - [Lifetime syntax](ch10-03-lifetime-syntax.md)
+- [🇧🇷 Tipos Genéricos, _Traits_, e Tempos de vida (_Lifetimes_)](ch10-00-generics.md)
+    - [🇧🇷 Tipos Genéricos de Dados](ch10-01-syntax.md)
+    - [🇧🇷 Traits: Definindo Comportamento Compartilhado](ch10-02-traits.md) - NEED DEFAULT METHOD IMPLEMENTATIONS
+    - [🇧🇷 Validating References with Lifetimes](ch10-03-lifetime-syntax.md)
 
 - [Testing](ch11-00-testing.md)
     - [Writing tests](ch11-01-writing-tests.md)
@@ -78,7 +78,13 @@
     - [Installing Binaries from Crates.io with `cargo install`](ch14-04-installing-binaries.md)
     - [Extending Cargo with Custom Commands](ch14-05-extending-cargo.md)
 
-- [Smart Pointers](ch15-00-smart-pointers.md)
+- [🇧🇷 Ponteiros Inteligentes (Smart Pointers)](ch15-00-smart-pointers.md)
+    - [🇧🇷 `Box<T>` Aponta para Dados no Heap e Tem Tamanho Conhecido](ch15-01-box.md)
+    - [🇧🇷 Tratando Ponteiros Inteligentes como Referências Normais com a Trait `Deref`](ch15-02-deref.md)
+    - [🇧🇷 A Trait `Drop` Roda Código durante a Limpeza](ch15-03-drop.md)
+    - [🇧🇷 `Rc<T>`, o Ponteiro Inteligente com Contagem de Referências](ch15-04-rc.md)
+    - [🇧🇷 `RefCell<T>` e a Pattern de Mutabilidade Interior](ch15-05-interior-mutability.md)
+    - [🇧🇷 Ciclos de Referências Podem Vazar Memória](ch15-06-reference-cycles.md)
 
 - [Concurrency](ch16-00-concurrency.md)
 
