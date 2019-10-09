@@ -1,57 +1,62 @@
-# NOTICE ABOUT STATUS
+# A Linguagem de Programação Rust
 
-The second edition of The Rust Programming Language is getting ever closer to being printed!
+<!-- [![Build Status](https://travis-ci.com/rust-lang/book.svg?branch=master)](https://travis-ci.com/rust-lang/book)
 
-This means we're not able to make large changes to chapters that are in any column to the
-right of, and including, the "Frozen" column [on our Project board][proj]. Issues or pull
-requests submitted for frozen chapters are welcome but will be closed until we start work
-on a third edition. Thank you!
+This repository contains the source of "The Rust Programming Language" book. -->
 
-[proj]: https://github.com/rust-lang/book/projects/1
+[![Build Status](https://travis-ci.com/rust-lang/book.svg?branch=master)](https://travis-ci.com/rust-lang/book)
 
-# The Rust Programming Language
+Este repositório contém o código-fonte do livro "A Linguagem de Programação Rust".
 
-[![Build Status](https://travis-ci.org/rust-lang/book.svg?branch=master)](https://travis-ci.org/rust-lang/book)
-
-This repo contains two editions of “The Rust Programming Language”; we
-recommend starting with the second edition.
-
-The second edition is a rewrite that will be printed by No Starch Press,
-available around May 2018. Check [the No Starch Page][nostarch] for the latest
-information on the release date and how to order.
+<!-- [The book is available in dead-tree form from No Starch Press][nostarch]
 
 [nostarch]: https://nostarch.com/rust
 
-You can read the book for free online! Please see the book as shipped with the
-latest [stable], [beta], or [nightly] Rust releases. Be aware that issues in
-those versions may have been fixed in this repository already.
+You can also read the book for free online. Please see the book as shipped with
+the latest [stable], [beta], or [nightly] Rust releases. Be aware that issues
+in those versions may have been fixed in this repository already, as those
+releases are updated less frequently.
 
-[stable]: https://doc.rust-lang.org/stable/book/second-edition/
-[beta]: https://doc.rust-lang.org/beta/book/second-edition/
-[nightly]: https://doc.rust-lang.org/nightly/book/second-edition/
+[stable]: https://doc.rust-lang.org/stable/book/
+[beta]: https://doc.rust-lang.org/beta/book/
+[nightly]: https://doc.rust-lang.org/nightly/book/ -->
 
-[The first edition is still available to read online][first].
+[Este livro está disponível na forma de árvore morta pela No Starch Press][nostarch].
 
-[first]: https://doc.rust-lang.org/book/
+[nostarch]: https://nostarch.com/rust
 
+Você também pode ler o livro gratuitamente online. Por favor veja o livro assim como incluído com as versões [estável][stable], [beta] e [nightly] de Rust. Esteja ciente de que problemas nessas versões podem já ter sido corrigidas neste repositório, dado que essas versões são atualizadas menos frequentemente.
 
-## Requirements
+[stable]: https://doc.rust-lang.org/stable/book/
+[beta]: https://doc.rust-lang.org/beta/book/
+[nightly]: https://doc.rust-lang.org/nightly/book/
 
-Building the book requires [mdBook], ideally the same version that
-[rust-lang/rust uses in this file][rust-mdbook]. To get it:
+<!-- ## Requirements
 
-[mdBook]: https://github.com/azerupi/mdBook
+Building the book requires [mdBook], ideally the same 0.3.x version that
+rust-lang/rust uses in [this file][rust-mdbook]. To get it:
+
+[mdbook]: https://github.com/rust-lang-nursery/mdBook
+[rust-mdbook]: https://github.com/rust-lang/rust/blob/master/src/tools/rustbook/Cargo.toml
+
+```bash
+$ cargo install mdbook --vers [version-num]
+``` -->
+
+## Requisitos
+
+Construir o livro requer o [mdBook]. Idealmente a mesma versão 0.3.x que rust-lang/rust usa [nesse arquivo][rust-mdbook]. Para obtê-lo:
+
+[mdbook]: https://github.com/rust-lang-nursery/mdBook
 [rust-mdbook]: https://github.com/rust-lang/rust/blob/master/src/tools/rustbook/Cargo.toml
 
 ```bash
 $ cargo install mdbook --vers [version-num]
 ```
 
-## Building
+<!-- ## Building
 
-To build the book, first `cd` into either the `first-edition` or
-`second-edition` directory depending on which edition of the book you would
-like to build. Then type:
+To build the book, type:
 
 ```bash
 $ mdbook build
@@ -61,6 +66,7 @@ The output will be in the `book` subdirectory. To check it out, open it in
 your web browser.
 
 _Firefox:_
+
 ```bash
 $ firefox book/index.html                       # Linux
 $ open -a "Firefox" book/index.html             # OS X
@@ -69,6 +75,7 @@ $ start firefox.exe .\book\index.html           # Windows (Cmd)
 ```
 
 _Chrome:_
+
 ```bash
 $ google-chrome book/index.html                 # Linux
 $ open -a "Google Chrome" book/index.html       # OS X
@@ -80,51 +87,73 @@ To run the tests:
 
 ```bash
 $ mdbook test
+``` -->
+
+## Construindo
+
+Para construir o livro, entre:
+
+```bash
+$ mdbook build
 ```
 
-## Contributing
+O resultado estará na subpasta `book`. Para checá-lo, o abra no seu browser.
+
+_Firefox:_
+
+```bash
+$ firefox book/index.html                       # Linux
+$ open -a "Firefox" book/index.html             # OS X
+$ Start-Process "firefox.exe" .\book\index.html # Windows (PowerShell)
+$ start firefox.exe .\book\index.html           # Windows (Cmd)
+```
+
+_Chrome:_
+
+```bash
+$ google-chrome book/index.html                 # Linux
+$ open -a "Google Chrome" book/index.html       # OS X
+$ Start-Process "chrome.exe" .\book\index.html  # Windows (PowerShell)
+$ start chrome.exe .\book\index.html            # Windows (Cmd)
+```
+
+Para rodar os testes:
+
+```bash
+$ mdbook test
+```
+
+<!-- ## Contributing
 
 We'd love your help! Please see [CONTRIBUTING.md][contrib] to learn about the
 kinds of contributions we're looking for.
 
+[contrib]: https://github.com/rust-lang/book/blob/master/CONTRIBUTING.md -->
+
+## Contribuindo
+
+Nós adoraríamos sua ajuda! Por favor veja o [CONTRIBUTING.md][contrib] para saber mais sobre o tipo de contribuições que nós procuramos.
+
 [contrib]: https://github.com/rust-lang/book/blob/master/CONTRIBUTING.md
 
-### Translations
+<!-- ### Translations
 
-We'd especially love help translating the second edition of the book! See the
-[Translations] label to join in efforts that are currently in progress. Open
-a new issue to start working on a new language! We're waiting on [mdbook
-support] for multiple languages before we merge any in, but feel free to
-start! The chapters in [the frozen column] of the project won't see major
-changes, so if you start with those, you won't have to redo work :)
+We'd love help translating the book! See the [Translations] label to join in
+efforts that are currently in progress. Open a new issue to start working on
+a new language! We're waiting on [mdbook support] for multiple languages
+before we merge any in, but feel free to start!
 
-[Translations]: https://github.com/rust-lang/book/issues?q=is%3Aopen+is%3Aissue+label%3ATranslations
-[mdbook support]: https://github.com/azerupi/mdBook/issues/5
-[the frozen column]: https://github.com/rust-lang/book/projects/1
+[translations]: https://github.com/rust-lang/book/issues?q=is%3Aopen+is%3Aissue+label%3ATranslations
+[mdbook support]: https://github.com/rust-lang-nursery/mdBook/issues/5 -->
 
-## No Starch
+### Traduções
 
-As the second edition of the book will be published by No Starch, we first
-iterate here, then ship the text off to No Starch. Then they do editing, and we
-fold it back in.
+Nós adoraríamos ajuda na tradução deste livro! Veja os labels [Translating][translations] para se ajuntar aos esforços que estão atualmente em progresso. Abra novas issues para começar a trabalhar numa nova linguagem! Nós estamos esperando pelo [suporte do mdbook][mdbook support] a múltiplas linguagens antes de juntá-las a esse repositório, mas sinta-se livre para começar!
 
-As such, there’s a directory, *nostarch*, which corresponds to the text in No
-Starch’s system.
+[translations]: https://github.com/rust-lang/book/issues?q=is%3Aopen+is%3Aissue+label%3ATranslations
+[mdbook support]: https://github.com/rust-lang-nursery/mdBook/issues/5
 
-When we've started working with No Starch in a word doc, we will also check
-those into the repo in the *nostarch/odt* directory. To extract the text from
-the word doc as markdown in order to backport changes to the online book:
-
-1. Open the doc file in LibreOffice
-1. Accept all tracked changes
-1. Save as Microsoft Word 2007-2013 XML (.docx) in the *tmp* directory
-1. Run `./doc-to-md.sh`
-1. Inspect changes made to the markdown file in the *nostarch* directory and
-   copy the changes to the *src* directory as appropriate.
-
-## Graphviz dot
-
-This is mostly for Carol's reference because she keeps having to look it up.
+<!-- ## Graphviz dot
 
 We're using [Graphviz](http://graphviz.org/) for some of the diagrams in the
 book. The source for those files live in the `dot` directory. To turn a `dot`
@@ -136,12 +165,26 @@ $ dot dot/trpl04-01.dot -Tsvg > src/img/trpl04-01.svg
 
 In the generated SVG, remove the width and the height attributes from the `svg`
 element and set the `viewBox` attribute to `0.00 0.00 1000.00 1000.00` or other
-values that don't cut off the image.
+values that don't cut off the image. -->
 
-## Spellchecking
+## Graphviz dot
+
+Nós estamos usando o [Graphviz](http://graphviz.org/) para alguns dos diagramas no livro. Os arquivos-fonte estão no diretório `dot`. Para transformar um arquivo `dot`, por exemplo o `dot/trpl04-01.dot`, em `svg`, rode:
+
+```bash
+$ dot dot/trpl04-01.dot -Tsvg > src/img/trpl04-01.svg
+```
+
+No arquivo SVG gerado, remova os atributos _width_ e _height_ do elemento `svg` e dê `0.00 0.00 1000.00 1000.00`, ou outros valores que não cortem a imagem, ao atributo `viewBox`.
+
+<!-- ## Spellchecking
 
 To scan source files for spelling errors, you can use the `spellcheck.sh`
 script. It needs a dictionary of valid words, which is provided in
 `dictionary.txt`. If the script produces a false positive (say, you used word
 `BTreeMap` which the script considers invalid), you need to add this word to
-`dictionary.txt` (keep the sorted order for consistency).
+`dictionary.txt` (keep the sorted order for consistency). -->
+
+## Checagem de grafia
+
+Para procurar erros de grafia nos arquivos, você pode usar o _script_ `spellcheck.sh`. Ele precisa de um dicionário de palavras válidas, o qual é provido em `dictionary.txt`. Se o script produzir um falso positivo (por exemplo, se você usou a palavra `BTreeMap`, a qual o script considera inválida), você precisará adicionar essa palavra a `dicitonary.txt` (mantenha-o ordenado por consistência).
